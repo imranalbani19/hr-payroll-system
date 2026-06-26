@@ -1831,9 +1831,6 @@ function showToast(msg, type='success'){
   t.textContent=msg; c.appendChild(t); setTimeout(()=>t.remove(),3500);
 }
 
-// ===== API CONFIGURATION =====
-const SURL = 'https://script.google.com/macros/s/AKfycbyJExQ3PsUJCqzHGhM28e4Sp2xdUtiXNYL5fn7BhdXZy0TeVIel7c0_ws0XfG11MYI/exec';
-
 // ===== API CALL =====
 async function api(action, params={}){
   try{
