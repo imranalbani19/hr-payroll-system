@@ -1833,24 +1833,13 @@ function showToast(msg, type='success'){
 
 // ===== API CALL =====
 async function api(action, params={}){
+  const qs = Object.entries({action,...params}).map(([k,v])=>k+'='+encodeURIComponent(v)).join('&');
   try{
-    const r = await fetch(SURL, {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'text/plain;charset=utf-8' // গুগল অ্যাপস স্ক্রিপ্ট ও ব্রাউজারের CORS সমস্যা দূর করার জন্য এটি সবচেয়ে কার্যকরী
-      },
-      body: JSON.stringify({ action, ...params })
-    });
-    
+    const r = await fetch(SURL+'?'+qs);
     const j = await r.json();
-    if(j.error){
-      showToast('⚠️ '+j.error,'danger');
-      return null;
-    }
+    if(j.error){showToast('⚠️ '+j.error,'danger');return null;}
     return j;
   }catch(e){
-    console.error("API Error: ", e);
     showToast('❌ সার্ভার সংযোগ ব্যর্থ','danger');
     return null;
   }
