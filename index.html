@@ -1833,14 +1833,27 @@ function showToast(msg, type='success'){
 
 // ===== API CALL =====
 async function api(action, params={}){
-  const qs = Object.entries({action,...params}).map(([k,v])=>k+'='+encodeURIComponent(v)).join('&');
+  const flat = {action};
+  Object.entries(params).forEach(([k,v])=>{
+    flat[k] = typeof v === 'object' ? JSON.stringify(v) : (v===undefined||v===null?'':v);
+  });
   try{
-    const r = await fetch(SURL+'?'+qs);
-    const j = await r.json();
-    if(j.error){showToast('⚠️ '+j.error,'danger');return null;}
+    // text/plain content-type এড়িয়ে যায় CORS preflight, Apps Script ঠিকমতো পায়
+    const r = await fetch(SURL, {
+      method: 'POST',
+      headers: {'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(flat)
+    });
+    const text = await r.text();
+    if(text.trim().startsWith('<')){
+      showToast('⚠️ সার্ভার থেকে ভুল রেসপন্স এসেছে','danger');
+      return null;
+    }
+    const j = JSON.parse(text);
+    if(j && j.error){showToast('⚠️ '+j.error,'danger');return null;}
     return j;
   }catch(e){
-    showToast('❌ সার্ভার সংযোগ ব্যর্থ','danger');
+    showToast('❌ সার্ভার সংযোগ ব্যর্থ: '+e.message,'danger');
     return null;
   }
 }
@@ -1987,25 +2000,43 @@ function filterByDept(dept){
 
 async function addEmployee(){
   const modal=document.getElementById('modal-addEmployee');
-  const inputs=modal.querySelectorAll('input,select');
-  const name=inputs[0].value.trim();
-  const id=inputs[1].value.trim();
-  const post=inputs[2].value;
-  const dept=inputs[3].value;
-  const salary=inputs[4].value;
-  const joinDate=inputs[5].value;
-  const phone=inputs[6].value;
-  const nid=inputs[7].value;
-  const shift=inputs[8].value.includes('D')?'D':inputs[8].value.includes('E')?'E':'N';
-  const bank=inputs[9].value;
+  // লেবেল ধরে ভ্যালু নিই — index নির্ভর না
+  const get = (ph) => {
+    const el = modal.querySelector('input[placeholder="'+ph+'"],input[type="date"],input[type="number"]');
+    return el ? el.value.trim() : '';
+  };
+  const getAll = () => {
+    const inputs = [...modal.querySelectorAll('input')];
+    const selects = [...modal.querySelectorAll('select')];
+    return {inputs, selects};
+  };
+
+  const allInputs = modal.querySelectorAll('input');
+  const allSelects = modal.querySelectorAll('select');
+
+  const name = modal.querySelector('input[placeholder="কর্মীর পূর্ণ নাম"]')?.value?.trim()||'';
+  const empId = modal.querySelector('input[placeholder="E001"]')?.value?.trim()||('E'+String(Date.now()).slice(-4));
+  const post = allSelects[0]?.value||'অপারেটর';
+  const dept = allSelects[1]?.value||'উৎপাদন';
+  const salary = modal.querySelector('input[placeholder="20000"]')?.value||'0';
+  const joinDate = modal.querySelector('input[type="date"]')?.value||'';
+  const phone = modal.querySelector('input[placeholder="01XXXXXXXXX"]')?.value||'';
+  const nid = allInputs[7]?.value||'';
+  const shiftRaw = allSelects[2]?.value||'দিনের শিফট (D)';
+  const shift = shiftRaw.includes('E')||shiftRaw.includes('সন্ধ্যা') ? 'E' : shiftRaw.includes('N')||shiftRaw.includes('রাত') ? 'N' : 'D';
+  const bank = allInputs[9]?.value||'';
 
   if(!name){showToast('নাম দিন!','warning');return;}
 
-  const res=await api('addEmployee',{name,id,post,dept,salary,joinDate,phone,nid,shift,bank});
-  if(res){
+  const res = await api('addEmployee',{
+    name, id:empId, post, dept, salary, joinDate, phone, nid, shift, bank
+  });
+  if(res && res.success){
     showToast('✅ '+name+' যোগ হয়েছে');
     closeModal('addEmployee');
-    loadEmployees();
+    // modal clear
+    modal.querySelectorAll('input').forEach(i=>i.value='');
+    setTimeout(()=>loadEmployees(), 1500);
   }
 }
 
