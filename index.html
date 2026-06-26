@@ -1,0 +1,2408 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR ও পেরোল ম্যানেজমেন্ট সিস্টেম</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --primary: #1a56db;
+    --primary-dark: #1e429f;
+    --primary-light: #e8f0fe;
+    --secondary: #0e9f6e;
+    --secondary-light: #def7ec;
+    --danger: #e02424;
+    --danger-light: #fde8e8;
+    --warning: #ff8a00;
+    --warning-light: #fff3e0;
+    --purple: #7e3af2;
+    --purple-light: #edebfe;
+    --bg: #f0f4f8;
+    --sidebar-bg: #0f172a;
+    --sidebar-text: #94a3b8;
+    --sidebar-active: #1a56db;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Hind Siliguri', 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    width: 250px;
+    min-height: 100vh;
+    background: var(--sidebar-bg);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 100;
+    transition: transform 0.3s;
+  }
+
+  .sidebar-logo {
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .logo-badge {
+    background: var(--primary);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  .logo-title {
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .logo-sub {
+    color: var(--sidebar-text);
+    font-size: 11px;
+    margin-top: 2px;
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    padding: 12px 0;
+    overflow-y: auto;
+  }
+
+  .nav-section {
+    padding: 8px 16px 4px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #475569;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    color: var(--sidebar-text);
+    cursor: pointer;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+    font-size: 13.5px;
+  }
+
+  .nav-item:hover {
+    background: rgba(255,255,255,0.05);
+    color: white;
+  }
+
+  .nav-item.active {
+    background: rgba(26,86,219,0.15);
+    color: white;
+    border-left-color: var(--primary);
+  }
+
+  .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+
+  .sidebar-footer {
+    padding: 16px 20px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .user-avatar {
+    width: 34px; height: 34px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 13px;
+  }
+
+  .user-name { color: white; font-size: 13px; font-weight: 500; }
+  .user-role { color: var(--sidebar-text); font-size: 11px; }
+
+  /* ===== MAIN CONTENT ===== */
+  .main {
+    margin-left: 250px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .topbar {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .topbar-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .topbar-date {
+    font-size: 12px;
+    color: var(--text-muted);
+    background: var(--bg);
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-primary:hover { background: var(--primary-dark); }
+  .btn-success { background: var(--secondary); color: white; }
+  .btn-success:hover { background: #057a55; }
+  .btn-danger { background: var(--danger); color: white; }
+  .btn-outline {
+    background: white;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { background: var(--bg); }
+  .btn-sm { padding: 5px 10px; font-size: 12px; }
+
+  .content {
+    padding: 24px;
+    flex: 1;
+  }
+
+  /* ===== PAGE SECTIONS ===== */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+
+  .card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .card-body { padding: 20px; }
+
+  /* ===== STAT CARDS ===== */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .stat-icon {
+    width: 46px; height: 46px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .stat-value {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .stat-change {
+    font-size: 11px;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  .stat-change.up { color: var(--secondary); }
+  .stat-change.down { color: var(--danger); }
+
+  /* ===== GRID LAYOUT ===== */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  /* ===== TABLE ===== */
+  .table-wrap { overflow-x: auto; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th {
+    background: var(--bg);
+    padding: 11px 14px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13.5px;
+    color: var(--text);
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f8fafc; }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .badge-success { background: var(--secondary-light); color: #065f46; }
+  .badge-danger { background: var(--danger-light); color: #9b1c1c; }
+  .badge-warning { background: var(--warning-light); color: #92400e; }
+  .badge-info { background: var(--primary-light); color: #1e429f; }
+  .badge-purple { background: var(--purple-light); color: #5521b5; }
+
+  /* ===== FORM ===== */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .form-full { grid-column: 1 / -1; }
+
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-label { font-size: 13px; font-weight: 500; color: var(--text); }
+
+  .form-control {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text);
+    background: white;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,86,219,0.08); }
+  select.form-control { cursor: pointer; }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: white;
+    border-radius: var(--radius);
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .modal-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .modal-title { font-size: 16px; font-weight: 600; }
+  .modal-close {
+    background: none; border: none; font-size: 20px;
+    cursor: pointer; color: var(--text-muted);
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 6px;
+  }
+  .modal-close:hover { background: var(--bg); }
+  .modal-body { padding: 24px; }
+  .modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  /* ===== UPLOAD AREA ===== */
+  .upload-area {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .upload-area:hover, .upload-area.drag-over {
+    border-color: var(--primary);
+    background: var(--primary-light);
+  }
+
+  .upload-icon { font-size: 40px; margin-bottom: 12px; }
+  .upload-text { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+  .upload-sub { font-size: 12px; color: var(--text-muted); }
+
+  /* ===== ATTENDANCE CALENDAR ===== */
+  .att-calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+
+  .att-day-header {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 6px;
+    text-transform: uppercase;
+  }
+
+  .att-day {
+    aspect-ratio: 1;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    gap: 2px;
+  }
+
+  .att-day .day-num { font-size: 13px; font-weight: 600; }
+  .att-day .day-status { font-size: 9px; font-weight: 600; }
+
+  .att-day.present { background: var(--secondary-light); color: #065f46; border-color: #6ee7b7; }
+  .att-day.absent { background: var(--danger-light); color: #9b1c1c; border-color: #fca5a5; }
+  .att-day.leave { background: var(--warning-light); color: #92400e; border-color: #fcd34d; }
+  .att-day.holiday { background: var(--purple-light); color: #5521b5; border-color: #c4b5fd; }
+  .att-day.weekend { background: #f1f5f9; color: var(--text-muted); }
+  .att-day.empty { background: transparent; border: none; cursor: default; }
+
+  /* ===== PAYROLL ===== */
+  .payroll-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .payroll-box {
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    text-align: center;
+  }
+
+  .payroll-box.earning { background: var(--secondary-light); }
+  .payroll-box.deduction { background: var(--danger-light); }
+  .payroll-box.net { background: var(--primary-light); }
+
+  .payroll-box-label { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
+  .payroll-box-value { font-size: 22px; font-weight: 700; color: var(--text); }
+
+  .payroll-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13.5px;
+  }
+
+  .payroll-row:last-child { border-bottom: none; }
+  .payroll-row.total { font-weight: 700; font-size: 15px; padding-top: 14px; }
+
+  /* ===== SHIFT ROSTER ===== */
+  .roster-grid {
+    display: grid;
+    grid-template-columns: 140px repeat(7, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+
+  .roster-cell {
+    background: white;
+    padding: 10px 8px;
+    text-align: center;
+    font-size: 12px;
+  }
+
+  .roster-cell.header {
+    background: var(--bg);
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+
+  .roster-cell.emp-name {
+    text-align: left;
+    font-weight: 500;
+    color: var(--text);
+    padding-left: 12px;
+    background: #fafafa;
+  }
+
+  .shift-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .shift-d { background: #fef3c7; color: #92400e; }
+  .shift-n { background: #ede9fe; color: #5521b5; }
+  .shift-e { background: #d1fae5; color: #065f46; }
+  .shift-off { background: #f1f5f9; color: #94a3b8; }
+
+  /* ===== LEAVE ===== */
+  .leave-balance-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .leave-balance-card {
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .leave-type-label { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
+
+  .leave-balance-circle {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 700;
+    margin: 0 auto 8px;
+  }
+
+  .leave-used { font-size: 11px; color: var(--text-muted); }
+
+  /* ===== NOTICE ===== */
+  .notice {
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    border-left: 4px solid;
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+
+  .notice-info { background: var(--primary-light); border-color: var(--primary); color: #1e429f; }
+  .notice-success { background: var(--secondary-light); border-color: var(--secondary); color: #065f46; }
+  .notice-warning { background: var(--warning-light); border-color: var(--warning); color: #92400e; }
+
+  /* ===== SEARCH/FILTER BAR ===== */
+  .filter-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .search-input {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+  }
+
+  .search-input input {
+    width: 100%;
+    padding: 9px 12px 9px 36px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    background: white;
+  }
+
+  .search-input input:focus { border-color: var(--primary); }
+
+  .search-icon {
+    position: absolute;
+    left: 11px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  /* ===== AVATAR ===== */
+  .emp-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: white;
+    flex-shrink: 0;
+  }
+
+  .emp-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .emp-name-text { font-weight: 500; }
+  .emp-id-text { font-size: 11px; color: var(--text-muted); }
+
+  /* ===== QUICK ACTIONS ===== */
+  .quick-actions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .quick-action {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .quick-action:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+
+  .qa-icon { font-size: 28px; margin-bottom: 8px; }
+  .qa-label { font-size: 12px; font-weight: 600; color: var(--text); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1024px) {
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .quick-actions { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 768px) {
+    .sidebar { transform: translateX(-100%); }
+    .main { margin-left: 0; }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .leave-balance-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .mb-16 { margin-bottom: 16px; }
+  .mb-24 { margin-bottom: 24px; }
+  .mt-16 { margin-top: 16px; }
+  .text-right { text-align: right; }
+  .flex { display: flex; }
+  .flex-center { display: flex; align-items: center; }
+  .gap-8 { gap: 8px; }
+  .gap-12 { gap: 12px; }
+  .fw-600 { font-weight: 600; }
+  .text-muted { color: var(--text-muted); font-size: 12px; }
+
+  /* ===== PROGRESS BAR ===== */
+  .progress-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 6px;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s;
+  }
+
+  /* ===== TABS ===== */
+  .tabs {
+    display: flex;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 20px;
+    gap: 0;
+  }
+
+  .tab {
+    padding: 10px 18px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+  }
+
+  .tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+  }
+
+  .tab:hover { color: var(--text); }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ===== PAYSLIP PRINT ===== */
+  .payslip {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 30px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    font-family: 'Hind Siliguri', sans-serif;
+  }
+
+  .payslip-header {
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--text);
+    margin-bottom: 20px;
+  }
+
+  .payslip-company { font-size: 20px; font-weight: 700; }
+  .payslip-title { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+
+  .payslip-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 20px;
+    font-size: 13px;
+  }
+
+  .payslip-info-row { display: flex; gap: 8px; }
+  .pir-label { font-weight: 600; min-width: 100px; }
+
+  .payslip-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .payslip-table th, .payslip-table td {
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+    text-align: left;
+  }
+  .payslip-table th { background: var(--bg); font-weight: 600; }
+
+  @media print {
+    .sidebar, .topbar, .btn, .filter-bar { display: none !important; }
+    .main { margin-left: 0; }
+    .payslip { border: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-badge">HR & PAYROLL</div>
+    <div class="logo-title">কর্মী ব্যবস্থাপনা</div>
+    <div class="logo-sub">সিস্টেম v1.0</div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">প্রধান</div>
+    <div class="nav-item active" onclick="navigate('dashboard')">
+      <span class="nav-icon">📊</span> ড্যাশবোর্ড
+    </div>
+
+    <div class="nav-section">কর্মী</div>
+    <div class="nav-item" onclick="navigate('employees')">
+      <span class="nav-icon">👥</span> কর্মী তালিকা
+    </div>
+    <div class="nav-item" onclick="navigate('departments')">
+      <span class="nav-icon">🏢</span> বিভাগ ও পদ
+    </div>
+
+    <div class="nav-section">হাজিরা</div>
+    <div class="nav-item" onclick="navigate('attendance')">
+      <span class="nav-icon">🕐</span> হাজিরা রেকর্ড
+    </div>
+    <div class="nav-item" onclick="navigate('import')">
+      <span class="nav-icon">📂</span> CSV ইমপোর্ট
+    </div>
+
+    <div class="nav-section">বেতন</div>
+    <div class="nav-item" onclick="navigate('payroll')">
+      <span class="nav-icon">💰</span> পেরোল
+    </div>
+    <div class="nav-item" onclick="navigate('overtime')">
+      <span class="nav-icon">⏰</span> ওভারটাইম
+    </div>
+    <div class="nav-item" onclick="navigate('bonus')">
+      <span class="nav-icon">🎁</span> বোনাস ও কাটা
+    </div>
+
+    <div class="nav-section">ছুটি ও শিফট</div>
+    <div class="nav-item" onclick="navigate('leave')">
+      <span class="nav-icon">🏖️</span> ছুটি ব্যবস্থাপনা
+    </div>
+    <div class="nav-item" onclick="navigate('roster')">
+      <span class="nav-icon">📅</span> রোস্টার / শিফট
+    </div>
+
+    <div class="nav-section">রিপোর্ট</div>
+    <div class="nav-item" onclick="navigate('reports')">
+      <span class="nav-icon">📋</span> রিপোর্ট
+    </div>
+    <div class="nav-item" onclick="navigate('settings')">
+      <span class="nav-icon">⚙️</span> সেটিংস
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="user-avatar">A</div>
+      <div>
+        <div class="user-name">Admin</div>
+        <div class="user-role">সুপার অ্যাডমিন</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="page-title">ড্যাশবোর্ড</div>
+    <div class="topbar-right">
+      <div class="topbar-date" id="current-date"></div>
+      <button class="btn btn-primary btn-sm" onclick="navigate('employees'); openModal('addEmployee')">
+        + নতুন কর্মী
+      </button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="page active" id="page-dashboard">
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#e8f0fe">👥</div>
+          <div>
+            <div class="stat-value">47</div>
+            <div class="stat-label">মোট কর্মী</div>
+            <div class="stat-change up">↑ ৩ জন এই মাসে</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#def7ec">✅</div>
+          <div>
+            <div class="stat-value">41</div>
+            <div class="stat-label">আজ উপস্থিত</div>
+            <div class="stat-change up">৮৭.২% হাজিরা</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#fde8e8">❌</div>
+          <div>
+            <div class="stat-value">6</div>
+            <div class="stat-label">আজ অনুপস্থিত</div>
+            <div class="stat-change down">৩ জন ছুটিতে</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#edebfe">💰</div>
+          <div>
+            <div class="stat-value">৳৪.২L</div>
+            <div class="stat-label">এই মাসের বেতন</div>
+            <div class="stat-change">জুন ২০২৫</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-actions mb-24">
+        <div class="quick-action" onclick="navigate('import')">
+          <div class="qa-icon">📂</div>
+          <div class="qa-label">CSV ইমপোর্ট</div>
+        </div>
+        <div class="quick-action" onclick="navigate('payroll')">
+          <div class="qa-icon">💰</div>
+          <div class="qa-label">পেরোল তৈরি</div>
+        </div>
+        <div class="quick-action" onclick="navigate('leave')">
+          <div class="qa-icon">🏖️</div>
+          <div class="qa-label">ছুটি অনুমোদন</div>
+        </div>
+        <div class="quick-action" onclick="navigate('roster')">
+          <div class="qa-icon">📅</div>
+          <div class="qa-label">শিফট রোস্টার</div>
+        </div>
+      </div>
+
+      <div class="grid-2 mb-16">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">আজকের হাজিরা</div>
+            <span class="badge badge-success">লাইভ</span>
+          </div>
+          <div class="card-body">
+            <div class="payroll-row">
+              <span>✅ উপস্থিত</span><strong style="color:var(--secondary)">41 জন</strong>
+            </div>
+            <div class="payroll-row">
+              <span>❌ অনুপস্থিত</span><strong style="color:var(--danger)">3 জন</strong>
+            </div>
+            <div class="payroll-row">
+              <span>🏖️ ছুটিতে</span><strong style="color:var(--warning)">3 জন</strong>
+            </div>
+            <div class="payroll-row">
+              <span>⏰ দেরিতে এসেছে</span><strong style="color:var(--purple)">5 জন</strong>
+            </div>
+            <div class="payroll-row">
+              <span>🌙 নাইট শিফট</span><strong>8 জন</strong>
+            </div>
+            <div class="progress-bar mt-16">
+              <div class="progress-fill" style="width:87%;background:var(--secondary)"></div>
+            </div>
+            <div class="text-muted mt-16">৮৭% উপস্থিতি হার</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">পেন্ডিং কাজ</div>
+          </div>
+          <div class="card-body">
+            <div class="payroll-row">
+              <span>📋 ছুটির আবেদন</span>
+              <span class="badge badge-warning">5টি</span>
+            </div>
+            <div class="payroll-row">
+              <span>⏰ ওভারটাইম অনুমোদন</span>
+              <span class="badge badge-info">8টি</span>
+            </div>
+            <div class="payroll-row">
+              <span>💰 পেরোল অনুমোদন</span>
+              <span class="badge badge-purple">জুন মাস</span>
+            </div>
+            <div class="payroll-row">
+              <span>👤 নতুন কর্মী যাচাই</span>
+              <span class="badge badge-warning">2 জন</span>
+            </div>
+            <div class="mt-16">
+              <button class="btn btn-primary btn-sm" style="width:100%" onclick="navigate('leave')">
+                সব পেন্ডিং দেখুন →
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">সাম্প্রতিক হাজিরা লগ</div>
+          <button class="btn btn-outline btn-sm" onclick="navigate('attendance')">সব দেখুন</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>কর্মী</th>
+                <th>ইন টাইম</th>
+                <th>আউট টাইম</th>
+                <th>মোট সময়</th>
+                <th>ওভারটাইম</th>
+                <th>অবস্থা</th>
+              </tr>
+            </thead>
+            <tbody id="dash-att-table">
+              <!-- Filled by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== EMPLOYEES ===== -->
+    <div class="page" id="page-employees">
+      <div class="filter-bar">
+        <div class="search-input">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="কর্মীর নাম বা আইডি খুঁজুন..." oninput="filterEmployees(this.value)">
+        </div>
+        <select class="form-control" style="width:auto" onchange="filterByDept(this.value)">
+          <option value="">সব বিভাগ</option>
+          <option>উৎপাদন</option>
+          <option>অ্যাকাউন্টস</option>
+          <option>HR</option>
+          <option>IT</option>
+          <option>মার্কেটিং</option>
+          <option>অপারেশন</option>
+        </select>
+        <select class="form-control" style="width:auto">
+          <option>সব অবস্থা</option>
+          <option>সক্রিয়</option>
+          <option>নিষ্ক্রিয়</option>
+        </select>
+        <button class="btn btn-primary" onclick="openModal('addEmployee')">+ নতুন কর্মী</button>
+      </div>
+
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>কর্মী</th>
+                <th>পদ</th>
+                <th>বিভাগ</th>
+                <th>যোগদান তারিখ</th>
+                <th>মূল বেতন</th>
+                <th>শিফট</th>
+                <th>অবস্থা</th>
+                <th>অ্যাকশন</th>
+              </tr>
+            </thead>
+            <tbody id="emp-table">
+              <!-- Filled by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DEPARTMENTS ===== -->
+    <div class="page" id="page-departments">
+      <div class="grid-2 mb-16">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">বিভাগ সমূহ</div>
+            <button class="btn btn-primary btn-sm" onclick="openModal('addDept')">+ বিভাগ যোগ</button>
+          </div>
+          <div class="card-body">
+            <table>
+              <thead><tr><th>বিভাগের নাম</th><th>কর্মী</th><th>প্রধান</th><th>অ্যাকশন</th></tr></thead>
+              <tbody>
+                <tr><td>উৎপাদন</td><td><span class="badge badge-info">18 জন</span></td><td>রাহেলা বেগম</td><td><button class="btn btn-outline btn-sm">এডিট</button></td></tr>
+                <tr><td>অ্যাকাউন্টস</td><td><span class="badge badge-info">6 জন</span></td><td>করিম সাহেব</td><td><button class="btn btn-outline btn-sm">এডিট</button></td></tr>
+                <tr><td>HR</td><td><span class="badge badge-info">4 জন</span></td><td>নাসরিন</td><td><button class="btn btn-outline btn-sm">এডিট</button></td></tr>
+                <tr><td>IT</td><td><span class="badge badge-info">5 জন</span></td><td>রাফি</td><td><button class="btn btn-outline btn-sm">এডিট</button></td></tr>
+                <tr><td>মার্কেটিং</td><td><span class="badge badge-info">8 জন</span></td><td>সুমাইয়া</td><td><button class="btn btn-outline btn-sm">এডিট</button></td></tr>
+                <tr><td>অপারেশন</td><td><span class="badge badge-info">6 জন</span></td><td>ইমরান</td><td><button class="btn btn-outline btn-sm">এডিট</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">পদ সমূহ</div>
+            <button class="btn btn-primary btn-sm">+ পদ যোগ</button>
+          </div>
+          <div class="card-body">
+            <table>
+              <thead><tr><th>পদের নাম</th><th>বিভাগ</th><th>গ্রেড</th></tr></thead>
+              <tbody>
+                <tr><td>ম্যানেজার</td><td>সব</td><td><span class="badge badge-purple">A</span></td></tr>
+                <tr><td>সিনিয়র অফিসার</td><td>সব</td><td><span class="badge badge-info">B</span></td></tr>
+                <tr><td>অফিসার</td><td>সব</td><td><span class="badge badge-success">C</span></td></tr>
+                <tr><td>সহকারী</td><td>সব</td><td><span class="badge badge-warning">D</span></td></tr>
+                <tr><td>অপারেটর</td><td>উৎপাদন</td><td><span class="badge badge-warning">E</span></td></tr>
+                <tr><td>হেলপার</td><td>উৎপাদন</td><td><span class="badge badge-danger">F</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ATTENDANCE ===== -->
+    <div class="page" id="page-attendance">
+      <div class="filter-bar">
+        <div class="search-input">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="কর্মী খুঁজুন...">
+        </div>
+        <input type="month" class="form-control" style="width:auto" value="2025-06" onchange="loadCalendar(this.value)">
+        <select class="form-control" style="width:auto">
+          <option>সব বিভাগ</option>
+          <option>উৎপাদন</option>
+          <option>অ্যাকাউন্টস</option>
+        </select>
+        <button class="btn btn-primary" onclick="navigate('import')">📂 CSV ইমপোর্ট</button>
+        <button class="btn btn-outline">📥 রিপোর্ট ডাউনলোড</button>
+      </div>
+
+      <div class="grid-2 mb-16">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">👤 কর্মীর হাজিরা ক্যালেন্ডার</div>
+            <select class="form-control" style="width:auto" id="cal-emp-select" onchange="drawCalendar()">
+              <option value="E001">মো. রফিকুল ইসলাম</option>
+              <option value="E002">সুমাইয়া আক্তার</option>
+              <option value="E003">করিম শেখ</option>
+              <option value="E004">নাসরিন বেগম</option>
+              <option value="E005">আরিফ হোসেন</option>
+            </select>
+          </div>
+          <div class="card-body">
+            <div class="att-calendar" id="att-calendar">
+              <!-- Filled by JS -->
+            </div>
+            <div class="flex gap-8 mt-16" style="flex-wrap:wrap">
+              <span class="badge badge-success">✅ উপস্থিত</span>
+              <span class="badge badge-danger">❌ অনুপস্থিত</span>
+              <span class="badge badge-warning">🏖️ ছুটি</span>
+              <span class="badge badge-purple">🎉 ছুটির দিন</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📊 জুন মাসের সারসংক্ষেপ</div>
+          </div>
+          <div class="card-body">
+            <div class="payroll-row"><span>মোট কার্যদিবস</span><strong>26 দিন</strong></div>
+            <div class="payroll-row"><span>✅ উপস্থিত</span><strong style="color:var(--secondary)">22 দিন</strong></div>
+            <div class="payroll-row"><span>❌ অনুপস্থিত</span><strong style="color:var(--danger)">1 দিন</strong></div>
+            <div class="payroll-row"><span>🏖️ ছুটি</span><strong style="color:var(--warning)">2 দিন</strong></div>
+            <div class="payroll-row"><span>⏰ মোট ওভারটাইম</span><strong style="color:var(--purple)">14 ঘণ্টা</strong></div>
+            <div class="payroll-row"><span>🕐 দেরিতে আসা</span><strong>3 দিন</strong></div>
+            <div class="payroll-row"><span>উপস্থিতি হার</span><strong style="color:var(--secondary)">88%</strong></div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width:88%;background:var(--secondary)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">দৈনিক হাজিরা লগ</div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>তারিখ</th>
+                <th>কর্মী</th>
+                <th>ইন টাইম</th>
+                <th>আউট টাইম</th>
+                <th>মোট ঘণ্টা</th>
+                <th>ওভারটাইম</th>
+                <th>দেরি</th>
+                <th>অবস্থা</th>
+              </tr>
+            </thead>
+            <tbody id="att-log-table">
+              <!-- Filled by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CSV IMPORT ===== -->
+    <div class="page" id="page-import">
+      <div class="notice notice-info mb-16">
+        💡 ZKTeco হাজিরা মেশিন থেকে CSV বা Excel ফাইল ডাউনলোড করে এখানে আপলোড করুন। সিস্টেম অটোমেটিক পার্স করবে।
+      </div>
+
+      <div class="grid-2 mb-16">
+        <div class="card">
+          <div class="card-header"><div class="card-title">📂 ফাইল আপলোড</div></div>
+          <div class="card-body">
+            <div class="upload-area" id="upload-area" onclick="document.getElementById('csv-file').click()"
+              ondragover="event.preventDefault();this.classList.add('drag-over')"
+              ondrop="handleDrop(event)" ondragleave="this.classList.remove('drag-over')">
+              <div class="upload-icon">📁</div>
+              <div class="upload-text">CSV বা Excel ফাইল টেনে আনুন</div>
+              <div class="upload-sub">অথবা ক্লিক করে ফাইল বেছে নিন</div>
+              <div class="upload-sub mt-16">সমর্থিত: .csv, .xls, .xlsx</div>
+            </div>
+            <input type="file" id="csv-file" accept=".csv,.xls,.xlsx" style="display:none" onchange="handleFileUpload(this)">
+            <div class="mt-16">
+              <div class="form-group mb-16">
+                <label class="form-label">মেশিনের ধরন</label>
+                <select class="form-control">
+                  <option>ZKTeco (সাধারণ CSV)</option>
+                  <option>ZKTeco (Excel Report)</option>
+                  <option>Suprema</option>
+                  <option>কাস্টম ফরম্যাট</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">মাস নির্বাচন</label>
+                <input type="month" class="form-control" value="2025-06">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">⚙️ কলাম ম্যাপিং</div></div>
+          <div class="card-body">
+            <div class="notice notice-warning mb-16">ফাইল আপলোড করলে কলাম অটো ডিটেক্ট হবে</div>
+            <div class="form-group mb-16">
+              <label class="form-label">কর্মী আইডি কলাম</label>
+              <select class="form-control"><option>Emp ID</option><option>Employee ID</option><option>ID</option></select>
+            </div>
+            <div class="form-group mb-16">
+              <label class="form-label">তারিখ কলাম</label>
+              <select class="form-control"><option>Date</option><option>Att Date</option></select>
+            </div>
+            <div class="form-group mb-16">
+              <label class="form-label">ইন-টাইম কলাম</label>
+              <select class="form-control"><option>CheckIn</option><option>Time In</option><option>In</option></select>
+            </div>
+            <div class="form-group mb-16">
+              <label class="form-label">আউট-টাইম কলাম</label>
+              <select class="form-control"><option>CheckOut</option><option>Time Out</option><option>Out</option></select>
+            </div>
+            <button class="btn btn-primary" style="width:100%" onclick="processImport()">✅ ইমপোর্ট প্রক্রিয়া শুরু</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="import-preview" style="display:none">
+        <div class="card-header">
+          <div class="card-title">👁️ প্রিভিউ (প্রথম ১০ সারি)</div>
+          <div class="flex gap-8">
+            <button class="btn btn-success" onclick="confirmImport()">✅ কনফার্ম ইমপোর্ট</button>
+            <button class="btn btn-outline">❌ বাতিল</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table id="preview-table">
+            <thead id="preview-head"></thead>
+            <tbody id="preview-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PAYROLL ===== -->
+    <div class="page" id="page-payroll">
+      <div class="filter-bar">
+        <input type="month" class="form-control" style="width:auto" value="2025-06">
+        <select class="form-control" style="width:auto">
+          <option>সব বিভাগ</option>
+          <option>উৎপাদন</option>
+          <option>অ্যাকাউন্টস</option>
+        </select>
+        <button class="btn btn-primary" onclick="generatePayroll()">💰 পেরোল তৈরি করুন</button>
+        <button class="btn btn-outline">📥 Excel ডাউনলোড</button>
+        <button class="btn btn-outline">🖨️ প্রিন্ট</button>
+      </div>
+
+      <div class="payroll-summary mb-16">
+        <div class="payroll-box earning">
+          <div class="payroll-box-label">মোট আয়</div>
+          <div class="payroll-box-value">৳৫,৮৪,০০০</div>
+        </div>
+        <div class="payroll-box deduction">
+          <div class="payroll-box-label">মোট কাটা</div>
+          <div class="payroll-box-value">৳৪২,৫০০</div>
+        </div>
+        <div class="payroll-box net">
+          <div class="payroll-box-label">নেট বেতন</div>
+          <div class="payroll-box-value">৳৫,৪১,৫০০</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">জুন ২০২৫ — পেরোল তালিকা</div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>কর্মী</th>
+                <th>মূল বেতন</th>
+                <th>হাজিরা ভাতা</th>
+                <th>ওভারটাইম</th>
+                <th>বোনাস</th>
+                <th>কাটা</th>
+                <th>নেট বেতন</th>
+                <th>অবস্থা</th>
+                <th>পে-স্লিপ</th>
+              </tr>
+            </thead>
+            <tbody id="payroll-table">
+              <!-- Filled by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== OVERTIME ===== -->
+    <div class="page" id="page-overtime">
+      <div class="filter-bar">
+        <input type="month" class="form-control" style="width:auto" value="2025-06">
+        <select class="form-control" style="width:auto"><option>সব বিভাগ</option></select>
+        <button class="btn btn-primary">✅ সব অনুমোদন</button>
+        <button class="btn btn-outline">📥 রিপোর্ট</button>
+      </div>
+
+      <div class="stat-grid mb-16">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#edebfe">⏰</div>
+          <div><div class="stat-value">284</div><div class="stat-label">মোট ওভারটাইম ঘণ্টা</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#def7ec">✅</div>
+          <div><div class="stat-value">156</div><div class="stat-label">অনুমোদিত</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#fff3e0">⌛</div>
+          <div><div class="stat-value">98</div><div class="stat-label">পেন্ডিং</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#edebfe">💰</div>
+          <div><div class="stat-value">৳৩২,৪০০</div><div class="stat-label">মোট ওভারটাইম পে</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">ওভারটাইম তালিকা</div></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>কর্মী</th>
+                <th>তারিখ</th>
+                <th>সাধারণ ঘণ্টা</th>
+                <th>ওভারটাইম ঘণ্টা</th>
+                <th>হার (×)</th>
+                <th>ওভারটাইম টাকা</th>
+                <th>অবস্থা</th>
+                <th>অ্যাকশন</th>
+              </tr>
+            </thead>
+            <tbody id="ot-table">
+              <!-- Filled by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== BONUS & DEDUCTIONS ===== -->
+    <div class="page" id="page-bonus">
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab(this,'bonus-tab')">🎁 বোনাস</div>
+        <div class="tab" onclick="switchTab(this,'deduct-tab')">✂️ কাটা</div>
+        <div class="tab" onclick="switchTab(this,'allowance-tab')">💼 ভাতা</div>
+      </div>
+
+      <div class="tab-content active" id="bonus-tab">
+        <div class="filter-bar">
+          <select class="form-control" style="width:auto">
+            <option>বোনাসের ধরন</option>
+            <option>ঈদ বোনাস</option>
+            <option>পারফরম্যান্স</option>
+            <option>উপস্থিতি</option>
+          </select>
+          <button class="btn btn-primary" onclick="openModal('addBonus')">+ বোনাস যোগ</button>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>কর্মী</th><th>বোনাসের ধরন</th><th>পরিমাণ</th><th>মাস</th><th>মন্তব্য</th><th>অ্যাকশন</th></tr></thead>
+              <tbody>
+                <tr><td><div class="emp-cell"><div class="emp-avatar" style="background:#1a56db">র</div><div><div class="emp-name-text">রফিকুল ইসলাম</div><div class="emp-id-text">E001</div></div></div></td><td>ঈদ বোনাস</td><td><strong>৳১২,০০০</strong></td><td>জুন ২০২৫</td><td>ঈদুল আযহা</td><td><button class="btn btn-outline btn-sm">মুছুন</button></td></tr>
+                <tr><td><div class="emp-cell"><div class="emp-avatar" style="background:#0e9f6e">স</div><div><div class="emp-name-text">সুমাইয়া আক্তার</div><div class="emp-id-text">E002</div></div></div></td><td>পারফরম্যান্স</td><td><strong>৳৫,০০০</strong></td><td>জুন ২০২৫</td><td>সেরা কর্মী</td><td><button class="btn btn-outline btn-sm">মুছুন</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="deduct-tab">
+        <div class="filter-bar">
+          <button class="btn btn-primary" onclick="openModal('addDeduct')">+ কাটা যোগ</button>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>কর্মী</th><th>কাটার কারণ</th><th>পরিমাণ</th><th>মাস</th><th>মন্তব্য</th><th>অ্যাকশন</th></tr></thead>
+              <tbody>
+                <tr><td><div class="emp-cell"><div class="emp-avatar" style="background:#e02424">ক</div><div><div class="emp-name-text">করিম শেখ</div><div class="emp-id-text">E003</div></div></div></td><td>অনুপস্থিত কাটা</td><td><strong style="color:var(--danger)">৳২,৫০০</strong></td><td>জুন ২০২৫</td><td>৩ দিন অনুপস্থিত</td><td><button class="btn btn-outline btn-sm">মুছুন</button></td></tr>
+                <tr><td><div class="emp-cell"><div class="emp-avatar" style="background:#7e3af2">ন</div><div><div class="emp-name-text">নাসরিন বেগম</div><div class="emp-id-text">E004</div></div></div></td><td>দেরি কাটা</td><td><strong style="color:var(--danger)">৳৫০০</strong></td><td>জুন ২০২৫</td><td>৫ দিন দেরি</td><td><button class="btn btn-outline btn-sm">মুছুন</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="allowance-tab">
+        <div class="card">
+          <div class="card-body">
+            <div class="grid-3">
+              <div class="form-group"><label class="form-label">বাড়ি ভাড়া ভাতা (%)</label><input type="number" class="form-control" value="50"></div>
+              <div class="form-group"><label class="form-label">চিকিৎসা ভাতা (৳)</label><input type="number" class="form-control" value="1500"></div>
+              <div class="form-group"><label class="form-label">যাতায়াত ভাতা (৳)</label><input type="number" class="form-control" value="1000"></div>
+              <div class="form-group"><label class="form-label">খাবার ভাতা (৳)</label><input type="number" class="form-control" value="800"></div>
+              <div class="form-group"><label class="form-label">মোবাইল ভাতা (৳)</label><input type="number" class="form-control" value="500"></div>
+              <div class="form-group"><label class="form-label">ওভারটাইম হার (×)</label><input type="number" class="form-control" value="1.5" step="0.5"></div>
+            </div>
+            <div class="mt-16">
+              <button class="btn btn-primary">✅ সেভ করুন</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== LEAVE ===== -->
+    <div class="page" id="page-leave">
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab(this,'leave-pending-tab')">⌛ পেন্ডিং (5)</div>
+        <div class="tab" onclick="switchTab(this,'leave-all-tab')">📋 সব আবেদন</div>
+        <div class="tab" onclick="switchTab(this,'leave-balance-tab')">📊 ব্যালেন্স</div>
+        <div class="tab" onclick="switchTab(this,'leave-type-tab')">⚙️ ছুটির ধরন</div>
+      </div>
+
+      <div class="tab-content active" id="leave-pending-tab">
+        <div class="notice notice-warning mb-16">⏳ ৫টি ছুটির আবেদন অনুমোদনের অপেক্ষায় আছে।</div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>কর্মী</th><th>ছুটির ধরন</th><th>শুরু</th><th>শেষ</th><th>দিন</th><th>কারণ</th><th>অ্যাকশন</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><div class="emp-cell"><div class="emp-avatar" style="background:#1a56db">র</div><div><div class="emp-name-text">রফিকুল ইসলাম</div></div></div></td>
+                  <td><span class="badge badge-info">অসুস্থতা</span></td>
+                  <td>২০ জুন</td><td>২২ জুন</td><td>৩ দিন</td>
+                  <td>জ্বর ও ঠান্ডা</td>
+                  <td class="flex gap-8">
+                    <button class="btn btn-success btn-sm" onclick="approveLeave(this)">✅ অনুমোদন</button>
+                    <button class="btn btn-danger btn-sm" onclick="rejectLeave(this)">❌ বাতিল</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><div class="emp-cell"><div class="emp-avatar" style="background:#0e9f6e">স</div><div><div class="emp-name-text">সুমাইয়া আক্তার</div></div></div></td>
+                  <td><span class="badge badge-warning">বার্ষিক</span></td>
+                  <td>২৫ জুন</td><td>২৭ জুন</td><td>৩ দিন</td>
+                  <td>পারিবারিক অনুষ্ঠান</td>
+                  <td class="flex gap-8">
+                    <button class="btn btn-success btn-sm" onclick="approveLeave(this)">✅ অনুমোদন</button>
+                    <button class="btn btn-danger btn-sm" onclick="rejectLeave(this)">❌ বাতিল</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="mt-16 text-right">
+          <button class="btn btn-primary" onclick="openModal('applyLeave')">+ ছুটির আবেদন</button>
+        </div>
+      </div>
+
+      <div class="tab-content" id="leave-all-tab">
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>কর্মী</th><th>ধরন</th><th>তারিখ</th><th>দিন</th><th>অবস্থা</th><th>অনুমোদনকারী</th></tr></thead>
+              <tbody>
+                <tr><td>রফিকুল ইসলাম</td><td>অসুস্থতা</td><td>২০-২২ জুন</td><td>৩</td><td><span class="badge badge-warning">পেন্ডিং</span></td><td>—</td></tr>
+                <tr><td>করিম শেখ</td><td>বার্ষিক</td><td>০৫-০৭ জুন</td><td>৩</td><td><span class="badge badge-success">অনুমোদিত</span></td><td>Admin</td></tr>
+                <tr><td>নাসরিন বেগম</td><td>মাতৃত্ব</td><td>০১-৩০ মে</td><td>৩০</td><td><span class="badge badge-success">অনুমোদিত</span></td><td>Admin</td></tr>
+                <tr><td>আরিফ হোসেন</td><td>বার্ষিক</td><td>১৫-১৬ জুন</td><td>২</td><td><span class="badge badge-danger">বাতিল</span></td><td>Admin</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="leave-balance-tab">
+        <div class="filter-bar">
+          <div class="search-input">
+            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="কর্মী খুঁজুন...">
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>কর্মী</th><th>বার্ষিক</th><th>অসুস্থতা</th><th>উৎসব</th><th>মাতৃত্ব/পিতৃত্ব</th><th>মোট ব্যবহৃত</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><div class="emp-cell"><div class="emp-avatar" style="background:#1a56db">র</div><div><div class="emp-name-text">রফিকুল ইসলাম</div></div></div></td>
+                  <td><span class="badge badge-info">১৮/২০</span></td>
+                  <td><span class="badge badge-success">১২/১৪</span></td>
+                  <td><span class="badge badge-warning">৮/১০</span></td>
+                  <td><span class="badge badge-purple">—</span></td>
+                  <td><strong>১১ দিন</strong></td>
+                </tr>
+                <tr>
+                  <td><div class="emp-cell"><div class="emp-avatar" style="background:#0e9f6e">স</div><div><div class="emp-name-text">সুমাইয়া আক্তার</div></div></div></td>
+                  <td><span class="badge badge-warning">১৫/২০</span></td>
+                  <td><span class="badge badge-success">১৩/১৪</span></td>
+                  <td><span class="badge badge-success">১০/১০</span></td>
+                  <td><span class="badge badge-info">৯০/১৮০</span></td>
+                  <td><strong>৬ দিন</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="leave-type-tab">
+        <div class="card">
+          <div class="card-body">
+            <div class="notice notice-info mb-16">বাংলাদেশের শ্রম আইন অনুযায়ী ডিফল্ট ছুটির নিয়ম সেট করা আছে।</div>
+            <table>
+              <thead><tr><th>ছুটির ধরন</th><th>বার্ষিক দিন</th><th>বেতন সহ</th><th>ক্যারি ফরওয়ার্ড</th></tr></thead>
+              <tbody>
+                <tr><td>বার্ষিক ছুটি</td><td><input type="number" class="form-control" value="20" style="width:70px"></td><td><span class="badge badge-success">হ্যাঁ</span></td><td><span class="badge badge-success">হ্যাঁ</span></td></tr>
+                <tr><td>অসুস্থতার ছুটি</td><td><input type="number" class="form-control" value="14" style="width:70px"></td><td><span class="badge badge-success">হ্যাঁ</span></td><td><span class="badge badge-danger">না</span></td></tr>
+                <tr><td>উৎসব ছুটি</td><td><input type="number" class="form-control" value="10" style="width:70px"></td><td><span class="badge badge-success">হ্যাঁ</span></td><td><span class="badge badge-danger">না</span></td></tr>
+                <tr><td>মাতৃত্বকালীন ছুটি</td><td><input type="number" class="form-control" value="180" style="width:70px"></td><td><span class="badge badge-success">হ্যাঁ</span></td><td><span class="badge badge-danger">না</span></td></tr>
+                <tr><td>পিতৃত্বকালীন ছুটি</td><td><input type="number" class="form-control" value="7" style="width:70px"></td><td><span class="badge badge-success">হ্যাঁ</span></td><td><span class="badge badge-danger">না</span></td></tr>
+              </tbody>
+            </table>
+            <div class="mt-16"><button class="btn btn-primary">✅ সেভ করুন</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ROSTER ===== -->
+    <div class="page" id="page-roster">
+      <div class="filter-bar">
+        <input type="week" class="form-control" style="width:auto">
+        <select class="form-control" style="width:auto"><option>সব বিভাগ</option><option>উৎপাদন</option></select>
+        <button class="btn btn-primary" onclick="openModal('addShift')">+ শিফট সেট করুন</button>
+        <button class="btn btn-outline">📥 রোস্টার ডাউনলোড</button>
+      </div>
+
+      <div class="grid-2 mb-16">
+        <div class="card">
+          <div class="card-header"><div class="card-title">শিফটের ধরন</div><button class="btn btn-primary btn-sm" onclick="openModal('addShiftType')">+ যোগ</button></div>
+          <div class="card-body">
+            <div class="payroll-row"><span><span class="shift-badge shift-d">D</span> দিনের শিফট</span><strong>সকাল ৮টা — বিকাল ৫টা</strong></div>
+            <div class="payroll-row"><span><span class="shift-badge shift-e">E</span> সন্ধ্যা শিফট</span><strong>বিকাল ২টা — রাত ১০টা</strong></div>
+            <div class="payroll-row"><span><span class="shift-badge shift-n">N</span> রাতের শিফট</span><strong>রাত ১০টা — সকাল ৬টা</strong></div>
+            <div class="payroll-row"><span><span class="shift-badge shift-off">OFF</span> ছুটির দিন</span><strong>—</strong></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">এই সপ্তাহের সারসংক্ষেপ</div></div>
+          <div class="card-body">
+            <div class="payroll-row"><span>দিনের শিফট</span><strong>22 জন</strong></div>
+            <div class="payroll-row"><span>সন্ধ্যা শিফট</span><strong>12 জন</strong></div>
+            <div class="payroll-row"><span>রাতের শিফট</span><strong>8 জন</strong></div>
+            <div class="payroll-row"><span>ছুটিতে</span><strong>5 জন</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">সাপ্তাহিক রোস্টার</div></div>
+        <div class="card-body">
+          <div class="roster-grid" id="roster-grid">
+            <!-- Filled by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== REPORTS ===== -->
+    <div class="page" id="page-reports">
+      <div class="grid-2 mb-16">
+        <div class="card">
+          <div class="card-header"><div class="card-title">📋 রিপোর্ট তৈরি করুন</div></div>
+          <div class="card-body">
+            <div class="form-group mb-16">
+              <label class="form-label">রিপোর্টের ধরন</label>
+              <select class="form-control">
+                <option>মাসিক হাজিরা রিপোর্ট</option>
+                <option>পেরোল সারসংক্ষেপ</option>
+                <option>ওভারটাইম রিপোর্ট</option>
+                <option>ছুটির রিপোর্ট</option>
+                <option>কর্মী তালিকা</option>
+                <option>বিভাগ ভিত্তিক রিপোর্ট</option>
+              </select>
+            </div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">শুরুর তারিখ</label>
+                <input type="date" class="form-control" value="2025-06-01">
+              </div>
+              <div class="form-group">
+                <label class="form-label">শেষের তারিখ</label>
+                <input type="date" class="form-control" value="2025-06-30">
+              </div>
+            </div>
+            <div class="form-group mt-16">
+              <label class="form-label">বিভাগ</label>
+              <select class="form-control"><option>সব বিভাগ</option><option>উৎপাদন</option></select>
+            </div>
+            <div class="flex gap-8 mt-16">
+              <button class="btn btn-primary">📊 রিপোর্ট দেখুন</button>
+              <button class="btn btn-success">📥 Excel</button>
+              <button class="btn btn-outline">📄 PDF</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">📊 দ্রুত রিপোর্ট</div></div>
+          <div class="card-body">
+            <div class="payroll-row" style="cursor:pointer" onclick="navigate('payroll')">
+              <span>💰 জুন মাসের পেরোল</span><span class="badge badge-info">দেখুন →</span>
+            </div>
+            <div class="payroll-row" style="cursor:pointer" onclick="navigate('attendance')">
+              <span>🕐 আজকের হাজিরা</span><span class="badge badge-success">দেখুন →</span>
+            </div>
+            <div class="payroll-row" style="cursor:pointer" onclick="navigate('overtime')">
+              <span>⏰ ওভারটাইম রিপোর্ট</span><span class="badge badge-warning">দেখুন →</span>
+            </div>
+            <div class="payroll-row" style="cursor:pointer" onclick="navigate('leave')">
+              <span>🏖️ ছুটির রিপোর্ট</span><span class="badge badge-purple">দেখুন →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SETTINGS ===== -->
+    <div class="page" id="page-settings">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-title">🏢 প্রতিষ্ঠানের তথ্য</div></div>
+          <div class="card-body">
+            <div class="form-group mb-16">
+              <label class="form-label">প্রতিষ্ঠানের নাম</label>
+              <input type="text" class="form-control" placeholder="আপনার প্রতিষ্ঠানের নাম">
+            </div>
+            <div class="form-group mb-16">
+              <label class="form-label">ঠিকানা</label>
+              <input type="text" class="form-control" placeholder="ঠিকানা">
+            </div>
+            <div class="form-group mb-16">
+              <label class="form-label">ফোন</label>
+              <input type="text" class="form-control" placeholder="+880...">
+            </div>
+            <div class="form-group mb-16">
+              <label class="form-label">পে-ডে (মাসের কত তারিখ)</label>
+              <input type="number" class="form-control" value="25" min="1" max="31">
+            </div>
+            <button class="btn btn-primary">✅ সেভ করুন</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">⚙️ বেতন নীতি</div></div>
+          <div class="card-body">
+            <div class="form-group mb-16">
+              <label class="form-label">কার্যদিবস (সপ্তাহে)</label>
+              <select class="form-control"><option>৬ দিন (শুক্র বন্ধ)</option><option>৫ দিন (শুক্র-শনি বন্ধ)</option></select>
+            </div>
+            <div class="form-group mb-16">
+              <label class="form-label">অফিস শুরু</label>
+              <input type="time" class="form-control" value="08:00">
+            </div>
+            <div class="form-group mb-16">
+              <label class="form-label">অফিস শেষ</label>
+              <input type="time" class="form-control" value="17:00">
+            </div>
+            <div class="form-group mb-16">
+              <label class="form-label">দেরির গ্রেস পিরিয়ড (মিনিট)</label>
+              <input type="number" class="form-control" value="15">
+            </div>
+            <div class="form-group mb-16">
+              <label class="form-label">অনুপস্থিত কাটা পদ্ধতি</label>
+              <select class="form-control"><option>দৈনিক বেতন × অনুপস্থিত দিন</option><option>মাসিক বেতন ÷ ৩০</option></select>
+            </div>
+            <button class="btn btn-primary">✅ সেভ করুন</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ===== MODALS ===== -->
+
+<!-- Add Employee Modal -->
+<div class="modal-overlay" id="modal-addEmployee">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">👤 নতুন কর্মী যোগ</div>
+      <button class="modal-close" onclick="closeModal('addEmployee')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">পূর্ণ নাম *</label><input type="text" class="form-control" placeholder="কর্মীর পূর্ণ নাম"></div>
+        <div class="form-group"><label class="form-label">কর্মী আইডি *</label><input type="text" class="form-control" placeholder="E001"></div>
+        <div class="form-group"><label class="form-label">পদ</label><select class="form-control"><option>অপারেটর</option><option>সিনিয়র অফিসার</option><option>ম্যানেজার</option></select></div>
+        <div class="form-group"><label class="form-label">বিভাগ</label><select class="form-control"><option>উৎপাদন</option><option>অ্যাকাউন্টস</option><option>HR</option><option>IT</option></select></div>
+        <div class="form-group"><label class="form-label">মূল বেতন (৳)</label><input type="number" class="form-control" placeholder="20000"></div>
+        <div class="form-group"><label class="form-label">যোগদান তারিখ</label><input type="date" class="form-control"></div>
+        <div class="form-group"><label class="form-label">ফোন নম্বর</label><input type="text" class="form-control" placeholder="01XXXXXXXXX"></div>
+        <div class="form-group"><label class="form-label">এনআইডি নম্বর</label><input type="text" class="form-control"></div>
+        <div class="form-group"><label class="form-label">ডিফল্ট শিফট</label><select class="form-control"><option>দিনের শিফট (D)</option><option>সন্ধ্যা শিফট (E)</option><option>রাতের শিফট (N)</option></select></div>
+        <div class="form-group"><label class="form-label">ব্যাংক অ্যাকাউন্ট</label><input type="text" class="form-control" placeholder="অ্যাকাউন্ট নম্বর"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('addEmployee')">বাতিল</button>
+      <button class="btn btn-primary" onclick="addEmployee()">✅ কর্মী যোগ করুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- Apply Leave Modal -->
+<div class="modal-overlay" id="modal-applyLeave">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🏖️ ছুটির আবেদন</div>
+      <button class="modal-close" onclick="closeModal('applyLeave')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group form-full"><label class="form-label">কর্মী</label><select class="form-control"><option>রফিকুল ইসলাম (E001)</option><option>সুমাইয়া আক্তার (E002)</option></select></div>
+        <div class="form-group"><label class="form-label">ছুটির ধরন</label><select class="form-control"><option>বার্ষিক ছুটি</option><option>অসুস্থতার ছুটি</option><option>উৎসব ছুটি</option><option>জরুরি ছুটি</option></select></div>
+        <div class="form-group"><label class="form-label">শুরুর তারিখ</label><input type="date" class="form-control"></div>
+        <div class="form-group"><label class="form-label">শেষের তারিখ</label><input type="date" class="form-control"></div>
+        <div class="form-group form-full"><label class="form-label">কারণ</label><textarea class="form-control" rows="3" placeholder="ছুটির কারণ লিখুন..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('applyLeave')">বাতিল</button>
+      <button class="btn btn-primary">✅ আবেদন জমা দিন</button>
+    </div>
+  </div>
+</div>
+
+<!-- Payslip Modal -->
+<div class="modal-overlay" id="modal-payslip">
+  <div class="modal" style="max-width:750px">
+    <div class="modal-header">
+      <div class="modal-title">📄 পে-স্লিপ</div>
+      <button class="modal-close" onclick="closeModal('payslip')">✕</button>
+    </div>
+    <div class="modal-body" id="payslip-content">
+      <!-- Filled by JS -->
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('payslip')">বন্ধ করুন</button>
+      <button class="btn btn-primary" onclick="window.print()">🖨️ প্রিন্ট</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+// ===== APPS SCRIPT URL =====
+const SURL = 'https://script.google.com/macros/s/AKfycbyJExQ3PsUJCqzHGhM28e4Sp2xdUtiXNYL5fn7BhdXZy0TeVIel7c0_ws0XfG11MYI/exec';
+
+// ===== LOCAL STATE =====
+let employees   = [];
+let attLogs     = [];
+let payrollData = [];
+let otData      = [];
+let rosterData  = [];
+let importedData= [];
+const weekDays  = ['সোম','মঙ্গল','বুধ','বৃহঃ','শুক্র','শনি','রবি'];
+const COLORS    = ['#1a56db','#0e9f6e','#e02424','#7e3af2','#ff8a00','#0891b2','#be185d','#065f46'];
+function empColor(i){ return COLORS[i%COLORS.length]; }
+
+// ===== ANIMATIONS =====
+const _s = document.createElement('style');
+_s.textContent = `
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes slideIn{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
+`;
+document.head.appendChild(_s);
+
+// ===== TOAST =====
+function showToast(msg, type='success'){
+  let c=document.getElementById('_toasts');
+  if(!c){c=document.createElement('div');c.id='_toasts';c.style.cssText='position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;';document.body.appendChild(c);}
+  const t=document.createElement('div');
+  const clr={success:'#0e9f6e',danger:'#e02424',info:'#1a56db',warning:'#ff8a00'};
+  t.style.cssText=`background:${clr[type]||clr.info};color:#fff;padding:12px 18px;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 4px 12px rgba(0,0,0,.2);min-width:220px;animation:slideIn .3s ease;`;
+  t.textContent=msg; c.appendChild(t); setTimeout(()=>t.remove(),3500);
+}
+
+// ===== API CALL =====
+async function api(action, params={}){
+  const qs = Object.entries({action,...params}).map(([k,v])=>k+'='+encodeURIComponent(v)).join('&');
+  try{
+    const r = await fetch(SURL+'?'+qs);
+    const j = await r.json();
+    if(j.error){showToast('⚠️ '+j.error,'danger');return null;}
+    return j;
+  }catch(e){
+    showToast('❌ সার্ভার সংযোগ ব্যর্থ','danger');
+    return null;
+  }
+}
+
+// ===== NAVIGATION =====
+function navigate(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  const titles={dashboard:'ড্যাশবোর্ড',employees:'কর্মী তালিকা',departments:'বিভাগ ও পদ',
+    attendance:'হাজিরা রেকর্ড',import:'CSV/XLS ইমপোর্ট',payroll:'পেরোল',
+    overtime:'ওভারটাইম',bonus:'বোনাস ও কাটা',leave:'ছুটি ব্যবস্থাপনা',
+    roster:'রোস্টার / শিফট',reports:'রিপোর্ট',settings:'সেটিংস'};
+  document.getElementById('page-title').textContent=titles[page]||page;
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    if(n.textContent.trim().includes((titles[page]||'').substring(0,4))) n.classList.add('active');
+  });
+  // page-specific load
+  if(page==='employees') loadEmployees();
+  if(page==='attendance') loadAttendance();
+  if(page==='payroll') loadPayroll();
+  if(page==='overtime') loadOvertime();
+  if(page==='leave') loadLeave();
+  if(page==='roster') loadRoster();
+  if(page==='dashboard') loadDashboard();
+}
+
+// ===== MODAL =====
+function openModal(name){ document.getElementById('modal-'+name).classList.add('open'); }
+function closeModal(name){ document.getElementById('modal-'+name).classList.remove('open'); }
+document.addEventListener('click',e=>{ if(e.target.classList.contains('modal-overlay')) e.target.classList.remove('open'); });
+
+// ===== TABS =====
+function switchTab(el,tabId){
+  const p=el.closest('.page')||document;
+  p.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  p.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+
+// ===== DATE =====
+function setDate(){
+  const d=new Date();
+  document.getElementById('current-date').textContent=d.toLocaleDateString('bn-BD',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+}
+
+// ===== DASHBOARD =====
+async function loadDashboard(){
+  const res = await api('getDashboard');
+  if(!res) return;
+  const d = res.data;
+  // Stats
+  document.querySelectorAll('.stat-value')[0].textContent = d.totalEmployees||'—';
+  document.querySelectorAll('.stat-value')[1].textContent = d.todayPresent||'—';
+  document.querySelectorAll('.stat-value')[2].textContent = d.todayAbsent||'—';
+
+  // Pending
+  if(d.pendingLeaves){
+    document.querySelectorAll('.badge-warning')[0].textContent = d.pendingLeaves+'টি';
+  }
+
+  // Today log
+  if(d.todayLog && d.todayLog.length){
+    attLogs = d.todayLog.map(r=>({
+      date: r['তারিখ'], name: r['নাম'], id: r['কর্মী আইডি'],
+      in: r['ইন টাইম'], out: r['আউট টাইম'],
+      hours: r['মোট ঘণ্টা'], ot: r['ওভারটাইম'],
+      late: r['দেরি'], status: mapStatus(r['অবস্থা'])
+    }));
+    renderDashAttTable();
+  }
+}
+
+function mapStatus(s){
+  if(!s) return 'present';
+  if(s.includes('অনুপস্থিত')) return 'absent';
+  if(s.includes('দেরি')) return 'late';
+  if(s.includes('ছুটি')) return 'leave';
+  return 'present';
+}
+
+// ===== EMPLOYEES =====
+async function loadEmployees(){
+  const tbody = document.getElementById('emp-table');
+  tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-muted)">⏳ লোড হচ্ছে...</td></tr>';
+  const res = await api('getEmployees');
+  if(!res || !res.data){ tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--danger)">❌ ডাটা লোড হয়নি</td></tr>'; return; }
+  employees = res.data.map((e,i)=>({
+    id: e['ID'], name: e['নাম'], post: e['পদ'], dept: e['বিভাগ'],
+    join: e['যোগদান তারিখ'], salary: parseFloat(e['মূল বেতন'])||0,
+    shift: e['শিফট']||'D', color: empColor(i), status: e['অবস্থা']
+  }));
+  renderEmployeeTable(employees);
+}
+
+function renderDashAttTable(){
+  const tbody=document.getElementById('dash-att-table');
+  if(!tbody) return;
+  if(!attLogs.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-muted)">আজকের হাজিরা ডাটা নেই</td></tr>';return;}
+  const statusMap={present:'badge-success',leave:'badge-warning',late:'badge-purple',absent:'badge-danger'};
+  const statusLabel={present:'উপস্থিত',leave:'ছুটি',late:'দেরি',absent:'অনুপস্থিত'};
+  tbody.innerHTML=attLogs.map(r=>`<tr>
+    <td><div class="emp-cell">
+      <div class="emp-avatar" style="background:${empColor(0)}">${(r.name||'?')[0]}</div>
+      <div><div class="emp-name-text">${r.name||'—'}</div><div class="emp-id-text">${r.id||''}</div></div>
+    </div></td>
+    <td>${r.in||'—'}</td><td>${r.out||'—'}</td><td>${r.hours||'—'}</td>
+    <td>${r.ot&&r.ot!=='—'?r.ot+' ঘণ্টা':'—'}</td>
+    <td><span class="badge ${statusMap[r.status]||'badge-info'}">${statusLabel[r.status]||r.status}</span></td>
+  </tr>`).join('');
+}
+
+function renderEmployeeTable(data){
+  const tbody=document.getElementById('emp-table');
+  if(!tbody) return;
+  if(!data||!data.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-muted)">কোনো কর্মী নেই</td></tr>';return;}
+  const shiftLabel={D:'দিন',E:'সন্ধ্যা',N:'রাত'};
+  tbody.innerHTML=data.map((e,i)=>`<tr>
+    <td><div class="emp-cell">
+      <div class="emp-avatar" style="background:${e.color||empColor(i)}">${(e.name||'?')[0]}</div>
+      <div><div class="emp-name-text">${e.name||'—'}</div><div class="emp-id-text">${e.id||''}</div></div>
+    </div></td>
+    <td>${e.post||'—'}</td>
+    <td><span class="badge badge-info">${e.dept||'—'}</span></td>
+    <td>${e.join||'—'}</td>
+    <td>৳${(e.salary||0).toLocaleString()}</td>
+    <td><span class="shift-badge shift-${(e.shift||'D').toLowerCase()}">${shiftLabel[e.shift||'D']}</span></td>
+    <td><span class="badge ${e.status==='সক্রিয়'||e.status==='active'?'badge-success':'badge-danger'}">${e.status||'সক্রিয়'}</span></td>
+    <td class="flex gap-8">
+      <button class="btn btn-outline btn-sm">এডিট</button>
+      <button class="btn btn-primary btn-sm" onclick="showPayslip('${e.id}')">পে-স্লিপ</button>
+    </td>
+  </tr>`).join('');
+}
+
+function filterEmployees(q){
+  const f=employees.filter(e=>(e.name||'').includes(q)||(e.id||'').includes(q)||(e.dept||'').includes(q));
+  renderEmployeeTable(f);
+}
+function filterByDept(dept){
+  renderEmployeeTable(dept?employees.filter(e=>e.dept===dept):employees);
+}
+
+async function addEmployee(){
+  const modal=document.getElementById('modal-addEmployee');
+  const inputs=modal.querySelectorAll('input,select');
+  const name=inputs[0].value.trim();
+  const id=inputs[1].value.trim();
+  const post=inputs[2].value;
+  const dept=inputs[3].value;
+  const salary=inputs[4].value;
+  const joinDate=inputs[5].value;
+  const phone=inputs[6].value;
+  const nid=inputs[7].value;
+  const shift=inputs[8].value.includes('D')?'D':inputs[8].value.includes('E')?'E':'N';
+  const bank=inputs[9].value;
+
+  if(!name){showToast('নাম দিন!','warning');return;}
+
+  const res=await api('addEmployee',{name,id,post,dept,salary,joinDate,phone,nid,shift,bank});
+  if(res){
+    showToast('✅ '+name+' যোগ হয়েছে');
+    closeModal('addEmployee');
+    loadEmployees();
+  }
+}
+
+// ===== ATTENDANCE =====
+async function loadAttendance(){
+  const month=document.querySelector('#page-attendance input[type=month]')?.value||new Date().toISOString().slice(0,7);
+  const res=await api('getAttendance',{month});
+  if(!res) return;
+  attLogs=(res.data||[]).map(r=>({
+    date:r['তারিখ'],name:r['নাম'],id:r['কর্মী আইডি'],
+    in:r['ইন টাইম'],out:r['আউট টাইম'],
+    hours:r['মোট ঘণ্টা'],ot:r['ওভারটাইম'],
+    late:r['দেরি'],status:mapStatus(r['অবস্থা'])
+  }));
+  renderAttLogTable();
+  drawCalendar();
+}
+
+function renderAttLogTable(){
+  const tbody=document.getElementById('att-log-table');
+  if(!tbody) return;
+  if(!attLogs.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-muted)">কোনো ডাটা নেই — XLS ইমপোর্ট করুন</td></tr>';return;}
+  const statusMap={present:'badge-success',absent:'badge-danger',late:'badge-purple',leave:'badge-warning'};
+  const statusLabel={present:'উপস্থিত',absent:'অনুপস্থিত',late:'দেরি',leave:'ছুটি'};
+  tbody.innerHTML=attLogs.map(r=>`<tr>
+    <td>${r.date||'—'}</td>
+    <td><strong>${r.name||'—'}</strong></td>
+    <td>${r.in||'—'}</td><td>${r.out||'—'}</td>
+    <td>${r.hours||'—'}</td><td>${r.ot||'—'}</td>
+    <td>${r.late||'—'}</td>
+    <td><span class="badge ${statusMap[r.status]||'badge-info'}">${statusLabel[r.status]||r.status}</span></td>
+  </tr>`).join('');
+}
+
+// ===== XLS/XLSX/CSV IMPORT =====
+function handleFileUpload(input){
+  const file=input.files?.[0]||input;
+  if(!file) return;
+  document.querySelector('.upload-text').textContent='⏳ লোড হচ্ছে...';
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=new Uint8Array(e.target.result);
+      const wb=XLSX.read(data,{type:'array',cellDates:true});
+      const ws=wb.Sheets[wb.SheetNames[0]];
+      const rows=XLSX.utils.sheet_to_json(ws,{defval:''});
+      if(!rows.length){showToast('ফাইলে ডাটা নেই','warning');return;}
+      importedData=rows;
+      renderImportPreview(rows);
+      document.querySelector('.upload-text').textContent='✅ '+file.name+' ('+rows.length+' সারি)';
+      showToast('✅ ফাইল পড়া হয়েছে: '+rows.length+' সারি');
+    }catch(err){
+      showToast('❌ ফাইল পড়া যায়নি: '+err.message,'danger');
+      document.querySelector('.upload-text').textContent='❌ ফাইল পড়া যায়নি';
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function renderImportPreview(rows){
+  if(!rows||!rows.length) return;
+  const headers=Object.keys(rows[0]);
+  const preview=document.getElementById('import-preview');
+  document.getElementById('preview-head').innerHTML='<tr>'+headers.map(h=>`<th>${h}</th>`).join('')+'</tr>';
+  document.getElementById('preview-body').innerHTML=rows.slice(0,10).map(row=>'<tr>'+headers.map(h=>{
+    let v=row[h];
+    if(v instanceof Date) v=v.toLocaleDateString('bn-BD');
+    return `<td>${v!==undefined?v:'—'}</td>`;
+  }).join('')+'</tr>').join('');
+  preview.style.display='block';
+}
+
+function handleDrop(e){
+  e.preventDefault();
+  document.getElementById('upload-area').classList.remove('drag-over');
+  if(e.dataTransfer.files[0]) handleFileUpload(e.dataTransfer.files[0]);
+}
+
+function processImport(){
+  if(!importedData.length){showToast('আগে ফাইল আপলোড করুন','warning');return;}
+  renderImportPreview(importedData);
+}
+
+async function confirmImport(){
+  if(!importedData.length){showToast('কোনো ডাটা নেই','warning');return;}
+  const month=document.querySelector('#page-import input[type=month]')?.value||new Date().toISOString().slice(0,7);
+
+  // ZKTeco ফরম্যাট পার্স
+  const parsed=importedData.map(row=>{
+    const name=row['Name']||row['নাম']||row['Emp ID']||row['ID']||'—';
+    const rawDate=row['Date']||row['তারিখ']||'';
+    let date='—';
+    if(rawDate instanceof Date) date=rawDate.toISOString().slice(0,10);
+    else if(rawDate) date=String(rawDate);
+    const inn=row['Clock In']||row['ইন টাইম']||row['CheckIn']||'';
+    const out=row['Clock Out']||row['আউট টাইম']||row['CheckOut']||'';
+    const late=row['Late']===true||row['Late']==='True'||row['Late']==='YES';
+    const absent=row['Absent']===true||row['Absent']==='True'||row['Absent']==='YES';
+    return {name,date,in:String(inn)||'—',out:String(out)||'—',late,absent};
+  });
+
+  // Google Sheets এ পাঠাও
+  const res=await api('importAttendance',{month,rows:JSON.stringify(parsed)});
+  if(res){
+    showToast(`✅ ${res.total} সারি ইমপোর্ট হয়েছে! উপস্থিত:${res.present} অনুপস্থিত:${res.absent}`);
+    document.getElementById('import-preview').style.display='none';
+    importedData=[];
+
+    // locally update attLogs for instant display
+    attLogs=parsed.map(r=>({
+      date:r.date,name:r.name,id:r.name,
+      in:r.in==='true'||r.in==='True'?'—':r.in,
+      out:r.out==='true'||r.out==='True'?'—':r.out,
+      hours:'—',ot:'—',
+      late:r.late?'হ্যাঁ':'না',
+      status:r.absent?'absent':r.late?'late':'present'
+    }));
+    renderDashAttTable();
+
+    // Show results card
+    let card=document.getElementById('imported-log-card');
+    if(!card){card=document.createElement('div');card.id='imported-log-card';card.className='card mt-16';document.getElementById('page-import').appendChild(card);}
+    const statusMap={present:'badge-success',absent:'badge-danger',late:'badge-purple'};
+    const statusLabel={present:'উপস্থিত',absent:'অনুপস্থিত',late:'দেরি'};
+    card.innerHTML=`<div class="card-header"><div class="card-title">📋 ইমপোর্ট হয়েছে (${parsed.length} সারি)</div></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>নাম/আইডি</th><th>তারিখ</th><th>ইন</th><th>আউট</th><th>দেরি</th><th>অবস্থা</th></tr></thead>
+      <tbody>${parsed.map(r=>{const s=r.absent?'absent':r.late?'late':'present';return`<tr>
+        <td><strong>${r.name}</strong></td><td>${r.date}</td>
+        <td>${r.in}</td><td>${r.out}</td>
+        <td>${r.late?'হ্যাঁ':'না'}</td>
+        <td><span class="badge ${statusMap[s]}">${statusLabel[s]}</span></td>
+      </tr>`;}).join('')}</tbody>
+    </table></div>`;
+  }
+}
+
+// ===== PAYROLL =====
+async function loadPayroll(){
+  const month=document.querySelector('#page-payroll input[type=month]')?.value||new Date().toISOString().slice(0,7);
+  const res=await api('getPayroll',{month});
+  if(!res) return;
+  payrollData=(res.data||[]).map((r,i)=>({
+    id:r['কর্মী আইডি'],name:r['নাম'],
+    basic:parseFloat(r['মূল বেতন'])||0,
+    att:parseFloat(r['হাজিরা ভাতা'])||0,
+    ot:parseFloat(r['ওভারটাইম পে'])||0,
+    bonus:parseFloat(r['বোনাস'])||0,
+    deduct:parseFloat(r['কাটা'])||0,
+    net:parseFloat(r['নেট বেতন'])||0,
+    status:r['অবস্থা']||'পেন্ডিং',
+    color:empColor(i)
+  }));
+  renderPayrollTable();
+}
+
+async function generatePayroll(){
+  const month=document.querySelector('#page-payroll input[type=month]')?.value||new Date().toISOString().slice(0,7);
+  const res=await api('generatePayroll',{month});
+  if(res){showToast('✅ '+res.message);loadPayroll();}
+}
+
+function renderPayrollTable(){
+  const tbody=document.getElementById('payroll-table');
+  if(!tbody) return;
+  if(!payrollData.length){
+    tbody.innerHTML='<tr><td colspan="9" style="text-align:center;padding:30px;color:var(--text-muted)">পেরোল তৈরি হয়নি — "পেরোল তৈরি করুন" ক্লিক করুন</td></tr>';
+    return;
+  }
+  const statusMap={'পেন্ডিং':'badge-warning','অনুমোদিত':'badge-success'};
+  tbody.innerHTML=payrollData.map(e=>`<tr>
+    <td><div class="emp-cell">
+      <div class="emp-avatar" style="background:${e.color}">${(e.name||'?')[0]}</div>
+      <div><div class="emp-name-text">${e.name}</div><div class="emp-id-text">${e.id}</div></div>
+    </div></td>
+    <td>৳${(e.basic||0).toLocaleString()}</td>
+    <td>৳${(e.att||0).toLocaleString()}</td>
+    <td style="color:var(--purple)">৳${(e.ot||0).toLocaleString()}</td>
+    <td style="color:var(--secondary)">৳${(e.bonus||0).toLocaleString()}</td>
+    <td style="color:var(--danger)">৳${(e.deduct||0).toLocaleString()}</td>
+    <td><strong>৳${(e.net||0).toLocaleString()}</strong></td>
+    <td><span class="badge ${statusMap[e.status]||'badge-warning'}">${e.status||'পেন্ডিং'}</span></td>
+    <td><button class="btn btn-outline btn-sm" onclick="showPayslip('${e.id}')">📄 দেখুন</button></td>
+  </tr>`).join('');
+}
+
+// ===== OVERTIME =====
+async function loadOvertime(){
+  const month=document.querySelector('#page-overtime input[type=month]')?.value||new Date().toISOString().slice(0,7);
+  const res=await api('getOvertime',{month});
+  if(!res) return;
+  otData=(res.data||[]).map(r=>({
+    name:r['নাম'],id:r['কর্মী আইডি'],
+    date:r['তারিখ'],normal:r['সাধারণ ঘণ্টা'],
+    ot:r['ওভারটাইম ঘণ্টা'],rate:r['হার'],
+    pay:r['পরিমাণ'],status:r['অবস্থা']==='অনুমোদিত'?'approved':'pending'
+  }));
+  renderOTTable();
+}
+
+async function approveAllOT(){
+  const month=document.querySelector('#page-overtime input[type=month]')?.value||new Date().toISOString().slice(0,7);
+  const res=await api('approveOvertime',{month});
+  if(res){showToast('✅ '+res.message);loadOvertime();}
+}
+
+function renderOTTable(){
+  const tbody=document.getElementById('ot-table');
+  if(!tbody) return;
+  if(!otData.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-muted)">ওভারটাইম ডাটা নেই</td></tr>';return;}
+  tbody.innerHTML=otData.map(r=>{
+    const st=r.status==='approved'?'badge-success':'badge-warning';
+    const sl=r.status==='approved'?'✅ অনুমোদিত':'⌛ পেন্ডিং';
+    return`<tr>
+      <td>${r.name||'—'}<br><span class="emp-id-text">${r.id||''}</span></td>
+      <td>${r.date||'—'}</td><td>${r.normal||'৮'}</td>
+      <td><strong style="color:var(--purple)">${r.ot||'—'}</strong></td>
+      <td>${r.rate||'১.৫'}×</td>
+      <td><strong>৳${r.pay||'—'}</strong></td>
+      <td><span class="badge ${st}">${sl}</span></td>
+      <td class="flex gap-8">
+        ${r.status==='pending'?`<button class="btn btn-success btn-sm">✅</button><button class="btn btn-danger btn-sm">❌</button>`:'<span class="text-muted">—</span>'}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ===== LEAVE =====
+async function loadLeave(){
+  const res=await api('getLeave',{status:'পেন্ডিং'});
+  if(!res) return;
+  const tbody=document.querySelector('#leave-pending-tab table tbody');
+  if(!tbody) return;
+  const data=res.data||[];
+  if(!data.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted)">কোনো পেন্ডিং আবেদন নেই</td></tr>';return;}
+  tbody.innerHTML=data.map(r=>`<tr>
+    <td><div class="emp-cell"><div class="emp-avatar" style="background:${empColor(0)}">${(r['নাম']||'?')[0]}</div><div><div class="emp-name-text">${r['নাম']||'—'}</div></div></div></td>
+    <td><span class="badge badge-info">${r['ছুটির ধরন']||'—'}</span></td>
+    <td>${r['শুরু তারিখ']||'—'}</td><td>${r['শেষ তারিখ']||'—'}</td>
+    <td>${r['দিন']||'—'} দিন</td>
+    <td>${r['কারণ']||'—'}</td>
+    <td class="flex gap-8">
+      <button class="btn btn-success btn-sm" onclick="approveLeaveRow('${r['আবেদন আইডি']}',this)">✅ অনুমোদন</button>
+      <button class="btn btn-danger btn-sm" onclick="rejectLeaveRow('${r['আবেদন আইডি']}',this)">❌ বাতিল</button>
+    </td>
+  </tr>`).join('');
+}
+
+async function approveLeaveRow(id, btn){
+  const res=await api('approveLeave',{id});
+  if(res){showToast('✅ ছুটি অনুমোদিত');btn.closest('tr').querySelector('td:last-child').innerHTML='<span class="badge badge-success">✅ অনুমোদিত</span>';}
+}
+
+async function rejectLeaveRow(id, btn){
+  const res=await api('rejectLeave',{id});
+  if(res){showToast('❌ ছুটি বাতিল','warning');btn.closest('tr').querySelector('td:last-child').innerHTML='<span class="badge badge-danger">❌ বাতিল</span>';}
+}
+
+function approveLeave(btn){ btn.closest('tr').querySelector('td:last-child').innerHTML='<span class="badge badge-success">✅ অনুমোদিত</span>'; }
+function rejectLeave(btn){ btn.closest('tr').querySelector('td:last-child').innerHTML='<span class="badge badge-danger">❌ বাতিল</span>'; }
+
+async function submitLeaveApplication(){
+  const modal=document.getElementById('modal-applyLeave');
+  const sel=modal.querySelector('select').value;
+  const leaveType=modal.querySelectorAll('select')[1].value;
+  const startDate=modal.querySelectorAll('input[type=date]')[0].value;
+  const endDate=modal.querySelectorAll('input[type=date]')[1].value;
+  const reason=modal.querySelector('textarea').value;
+  if(!startDate||!endDate){showToast('তারিখ দিন','warning');return;}
+  const res=await api('applyLeave',{empId:'',empName:sel,leaveType,startDate,endDate,reason});
+  if(res){showToast('✅ ছুটির আবেদন জমা হয়েছে');closeModal('applyLeave');loadLeave();}
+}
+
+// ===== ROSTER =====
+async function loadRoster(){
+  const res=await api('getRoster');
+  if(!res||!res.data||!res.data.length){
+    renderRosterFallback();
+    return;
+  }
+  rosterData=res.data.map(r=>({
+    name:r['নাম'],
+    shifts:[r['সোম'],r['মঙ্গল'],r['বুধ'],r['বৃহঃ'],r['শুক্র'],r['শনি'],r['রবি']]
+  }));
+  renderRoster();
+}
+
+function renderRosterFallback(){
+  rosterData=[
+    {name:'— (রোস্টার ডাটা নেই)',shifts:['—','—','—','—','—','—','—']}
+  ];
+  renderRoster();
+}
+
+function renderRoster(){
+  const grid=document.getElementById('roster-grid');
+  if(!grid) return;
+  const shiftClass={D:'shift-d',E:'shift-e',N:'shift-n',OFF:'shift-off'};
+  let html=`<div class="roster-cell header">কর্মী</div>`;
+  weekDays.forEach(d=>html+=`<div class="roster-cell header">${d}</div>`);
+  rosterData.forEach(emp=>{
+    html+=`<div class="roster-cell emp-name">${emp.name}</div>`;
+    (emp.shifts||[]).forEach(s=>{
+      html+=`<div class="roster-cell"><span class="shift-badge ${shiftClass[s]||'shift-off'}">${s||'—'}</span></div>`;
+    });
+  });
+  grid.innerHTML=html;
+}
+
+// ===== CALENDAR =====
+function drawCalendar(){
+  const cal=document.getElementById('att-calendar');
+  if(!cal) return;
+  const statuses=['present','present','present','present','weekend','present','present',
+    'present','late','present','present','weekend','leave','present',
+    'present','present','present','present','weekend','present','absent',
+    'present','present','present','leave','weekend'];
+  const statusLabel={present:'✓',absent:'✗',leave:'ছ',holiday:'ছু',weekend:'বন্ধ',late:'দেরি'};
+  let html=weekDays.map(d=>`<div class="att-day-header">${d}</div>`).join('');
+  for(let i=0;i<6;i++) html+=`<div class="att-day empty"></div>`;
+  statuses.forEach((s,i)=>{
+    html+=`<div class="att-day ${s}"><div class="day-num">${i+1}</div><div class="day-status">${statusLabel[s]||''}</div></div>`;
+  });
+  cal.innerHTML=html;
+}
+
+// ===== PAYSLIP =====
+function showPayslip(empId){
+  const pr=payrollData.find(e=>e.id===empId)||{};
+  const emp=employees.find(e=>e.id===empId)||{};
+  const basic=pr.basic||emp.salary||0;
+  const houseRent=Math.round(basic*0.5);
+  const medical=1500, transport=1000;
+  const net=(pr.net||0)+houseRent+medical+transport;
+  document.getElementById('payslip-content').innerHTML=`
+  <div class="payslip">
+    <div class="payslip-header">
+      <div class="payslip-company">আপনার প্রতিষ্ঠানের নাম</div>
+      <div class="payslip-title">বেতন বিবরণী — ${new Date().toLocaleDateString('bn-BD',{year:'numeric',month:'long'})}</div>
+    </div>
+    <div class="payslip-info">
+      <div>
+        <div class="payslip-info-row"><span class="pir-label">কর্মী নাম:</span> ${emp.name||pr.name||'—'}</div>
+        <div class="payslip-info-row"><span class="pir-label">আইডি:</span> ${empId}</div>
+        <div class="payslip-info-row"><span class="pir-label">পদ:</span> ${emp.post||'—'}</div>
+        <div class="payslip-info-row"><span class="pir-label">বিভাগ:</span> ${emp.dept||'—'}</div>
+      </div>
+      <div>
+        <div class="payslip-info-row"><span class="pir-label">কার্যদিবস:</span> ২৬ দিন</div>
+        <div class="payslip-info-row"><span class="pir-label">ওভারটাইম:</span> ${pr.ot||0} টাকা</div>
+      </div>
+    </div>
+    <table class="payslip-table">
+      <thead><tr><th>আয়</th><th>৳</th><th>কাটা</th><th>৳</th></tr></thead>
+      <tbody>
+        <tr><td>মূল বেতন</td><td>${basic.toLocaleString()}</td><td>অনুপস্থিত কাটা</td><td>${(pr.deduct||0).toLocaleString()}</td></tr>
+        <tr><td>বাড়ি ভাড়া ভাতা</td><td>${houseRent.toLocaleString()}</td><td>অন্যান্য কাটা</td><td>০</td></tr>
+        <tr><td>চিকিৎসা ভাতা</td><td>${medical.toLocaleString()}</td><td></td><td></td></tr>
+        <tr><td>যাতায়াত ভাতা</td><td>${transport.toLocaleString()}</td><td></td><td></td></tr>
+        <tr><td>হাজিরা ভাতা</td><td>${(pr.att||0).toLocaleString()}</td><td></td><td></td></tr>
+        <tr><td>ওভারটাইম</td><td>${(pr.ot||0).toLocaleString()}</td><td></td><td></td></tr>
+        <tr><td>বোনাস</td><td>${(pr.bonus||0).toLocaleString()}</td><td></td><td></td></tr>
+        <tr style="font-weight:700;background:#f8fafc"><td>মোট আয়</td><td>${(basic+houseRent+medical+transport+(pr.att||0)+(pr.ot||0)+(pr.bonus||0)).toLocaleString()}</td><td>মোট কাটা</td><td>${(pr.deduct||0).toLocaleString()}</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:16px;padding:14px;background:var(--primary-light);border-radius:8px;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-weight:600;font-size:15px">নেট বেতন</span>
+      <span style="font-weight:700;font-size:22px;color:var(--primary)">৳${net.toLocaleString()}</span>
+    </div>
+    <div style="margin-top:24px;display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted)">
+      <div>কর্মীর স্বাক্ষর: _______________</div>
+      <div>কর্তৃপক্ষের স্বাক্ষর: _______________</div>
+    </div>
+  </div>`;
+  openModal('payslip');
+}
+
+// ===== SETTINGS =====
+async function loadSettings(){
+  const res=await api('getSettings');
+  if(!res) return;
+  const d=res.data||{};
+  const fields=document.querySelectorAll('#page-settings input,#page-settings select');
+  if(d.company_name && fields[0]) fields[0].value=d.company_name;
+  if(d.office_start && fields[2]) fields[2].value=d.office_start;
+  if(d.office_end && fields[3]) fields[3].value=d.office_end;
+  if(d.grace_minutes && fields[4]) fields[4].value=d.grace_minutes;
+}
+
+// ===== INIT =====
+async function init(){
+  setDate();
+  drawCalendar();
+  await loadDashboard();
+}
+
+init();
+</script>
+</body>
+</html>
