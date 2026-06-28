@@ -2003,45 +2003,53 @@ function filterByDept(dept){
   renderEmployeeTable(dept?employees.filter(e=>e.dept===dept):employees);
 }
 
+let _addingEmployee = false; // ডাবল ক্লিক প্রতিরোধ
+
 async function addEmployee(){
-  const modal=document.getElementById('modal-addEmployee');
-  // লেবেল ধরে ভ্যালু নিই — index নির্ভর না
-  const get = (ph) => {
-    const el = modal.querySelector('input[placeholder="'+ph+'"],input[type="date"],input[type="number"]');
-    return el ? el.value.trim() : '';
-  };
-  const getAll = () => {
-    const inputs = [...modal.querySelectorAll('input')];
-    const selects = [...modal.querySelectorAll('select')];
-    return {inputs, selects};
-  };
+  if(_addingEmployee) return; // আগে থেকে চলছে হলে বের হও
 
-  const allInputs = modal.querySelectorAll('input');
+  const modal = document.getElementById('modal-addEmployee');
+  const name     = modal.querySelector('input[placeholder="কর্মীর পূর্ণ নাম"]')?.value?.trim()||'';
+  const empId    = modal.querySelector('input[placeholder="E001"]')?.value?.trim()||('E'+String(Date.now()).slice(-4));
   const allSelects = modal.querySelectorAll('select');
+  const post     = allSelects[0]?.value||'অপারেটর';
+  const dept     = allSelects[1]?.value||'উৎপাদন';
+  const salary   = modal.querySelector('input[placeholder="20000"]')?.value||'0';
+  const joinRaw  = modal.querySelector('input[type="date"]')?.value||'';
+  const joinDate = joinRaw; // YYYY-MM-DD ফরম্যাটে রাখি
+  const phone    = modal.querySelector('input[placeholder="01XXXXXXXXX"]')?.value||'';
+  const allInputs= modal.querySelectorAll('input');
+  const nid      = allInputs[7]?.value||'';
+  const shiftRaw = allSelects[2]?.value||'';
+  const shift    = shiftRaw.includes('সন্ধ্যা')||shiftRaw.includes('(E)') ? 'E'
+                 : shiftRaw.includes('রাত')||shiftRaw.includes('(N)') ? 'N' : 'D';
+  const bank     = allInputs[9]?.value||'';
 
-  const name = modal.querySelector('input[placeholder="কর্মীর পূর্ণ নাম"]')?.value?.trim()||'';
-  const empId = modal.querySelector('input[placeholder="E001"]')?.value?.trim()||('E'+String(Date.now()).slice(-4));
-  const post = allSelects[0]?.value||'অপারেটর';
-  const dept = allSelects[1]?.value||'উৎপাদন';
-  const salary = modal.querySelector('input[placeholder="20000"]')?.value||'0';
-  const joinDate = modal.querySelector('input[type="date"]')?.value||'';
-  const phone = modal.querySelector('input[placeholder="01XXXXXXXXX"]')?.value||'';
-  const nid = allInputs[7]?.value||'';
-  const shiftRaw = allSelects[2]?.value||'দিনের শিফট (D)';
-  const shift = shiftRaw.includes('E')||shiftRaw.includes('সন্ধ্যা') ? 'E' : shiftRaw.includes('N')||shiftRaw.includes('রাত') ? 'N' : 'D';
-  const bank = allInputs[9]?.value||'';
+  if(!name){ showToast('নাম দিন!','warning'); return; }
 
-  if(!name){showToast('নাম দিন!','warning');return;}
+  // বাটন লক করো
+  _addingEmployee = true;
+  const btn = modal.querySelector('.btn-primary');
+  const origText = btn ? btn.textContent : '';
+  if(btn){ btn.textContent = '⏳ যোগ হচ্ছে...'; btn.disabled = true; }
 
   const res = await api('addEmployee',{
     name, id:empId, post, dept, salary, joinDate, phone, nid, shift, bank
   });
+
+  // বাটন আনলক করো
+  _addingEmployee = false;
+  if(btn){ btn.textContent = origText; btn.disabled = false; }
+
   if(res && res.success){
-    showToast('✅ '+name+' যোগ হয়েছে');
+    showToast('✅ '+name+' সফলভাবে যোগ হয়েছে');
+    // মডাল বন্ধ করো
     closeModal('addEmployee');
-    // modal clear
-    modal.querySelectorAll('input').forEach(i=>i.value='');
-    setTimeout(()=>loadEmployees(), 1500);
+    // সব ঘর ফাঁকা করো
+    modal.querySelectorAll('input').forEach(i => i.value = '');
+    modal.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+    // ১.৫ সেকেন্ড পরে তালিকা রিলোড
+    setTimeout(()=> loadEmployees(), 1500);
   }
 }
 
