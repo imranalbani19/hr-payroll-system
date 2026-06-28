@@ -1555,39 +1555,47 @@
     <!-- ===== ROSTER ===== -->
     <div class="page" id="page-roster">
       <div class="filter-bar">
-        <input type="week" class="form-control" style="width:auto">
-        <select class="form-control" style="width:auto"><option>সব বিভাগ</option><option>উৎপাদন</option></select>
-        <button class="btn btn-primary" onclick="openModal('addShift')">+ শিফট সেট করুন</button>
-        <button class="btn btn-outline">📥 রোস্টার ডাউনলোড</button>
+        <input type="week" id="roster-week" class="form-control" style="width:auto" onchange="renderRoster()">
+        <select id="roster-dept-filter" class="form-control" style="width:auto" onchange="renderRoster()">
+          <option value="">সব বিভাগ</option>
+          <option>উৎপাদন</option><option>অ্যাকাউন্টস</option>
+          <option>HR</option><option>IT</option><option>মার্কেটিং</option><option>অপারেশন</option>
+        </select>
+        <button class="btn btn-primary" onclick="openModal('setShift')">✏️ শিফট সেট করুন</button>
+        <button class="btn btn-outline" onclick="openRotationModal()" style="background:#edebfe;color:#5521b5;border-color:#c4b5fd">🔄 রোটেশন শিফট</button>
+        <button class="btn btn-success" onclick="saveRosterToSheet()">💾 সেভ করুন</button>
+        <button class="btn btn-outline" onclick="printRoster()">🖨️ প্রিন্ট</button>
       </div>
 
       <div class="grid-2 mb-16">
         <div class="card">
-          <div class="card-header"><div class="card-title">শিফটের ধরন</div><button class="btn btn-primary btn-sm" onclick="openModal('addShiftType')">+ যোগ</button></div>
+          <div class="card-header"><div class="card-title">শিফটের ধরন</div></div>
           <div class="card-body">
             <div class="payroll-row"><span><span class="shift-badge shift-d">D</span> দিনের শিফট</span><strong>সকাল ৮টা — বিকাল ৫টা</strong></div>
             <div class="payroll-row"><span><span class="shift-badge shift-e">E</span> সন্ধ্যা শিফট</span><strong>বিকাল ২টা — রাত ১০টা</strong></div>
             <div class="payroll-row"><span><span class="shift-badge shift-n">N</span> রাতের শিফট</span><strong>রাত ১০টা — সকাল ৬টা</strong></div>
             <div class="payroll-row"><span><span class="shift-badge shift-off">OFF</span> ছুটির দিন</span><strong>—</strong></div>
+            <div class="mt-16" style="font-size:12px;color:var(--text-muted)">💡 যেকোনো ঘরে ক্লিক করে শিফট পরিবর্তন করুন</div>
           </div>
         </div>
         <div class="card">
           <div class="card-header"><div class="card-title">এই সপ্তাহের সারসংক্ষেপ</div></div>
-          <div class="card-body">
-            <div class="payroll-row"><span>দিনের শিফট</span><strong>22 জন</strong></div>
-            <div class="payroll-row"><span>সন্ধ্যা শিফট</span><strong>12 জন</strong></div>
-            <div class="payroll-row"><span>রাতের শিফট</span><strong>8 জন</strong></div>
-            <div class="payroll-row"><span>ছুটিতে</span><strong>5 জন</strong></div>
+          <div class="card-body" id="roster-summary">
+            <div class="payroll-row"><span>দিনের শিফট (D)</span><strong id="rs-d">—</strong></div>
+            <div class="payroll-row"><span>সন্ধ্যা শিফট (E)</span><strong id="rs-e">—</strong></div>
+            <div class="payroll-row"><span>রাতের শিফট (N)</span><strong id="rs-n">—</strong></div>
+            <div class="payroll-row"><span>ছুটি (OFF)</span><strong id="rs-off">—</strong></div>
           </div>
         </div>
       </div>
 
       <div class="card">
-        <div class="card-header"><div class="card-title">সাপ্তাহিক রোস্টার</div></div>
-        <div class="card-body">
-          <div class="roster-grid" id="roster-grid">
-            <!-- Filled by JS -->
-          </div>
+        <div class="card-header">
+          <div class="card-title">📅 সাপ্তাহিক রোস্টার</div>
+          <div style="font-size:12px;color:var(--text-muted)">ঘরে ক্লিক করে শিফট বদলান → সেভ করুন</div>
+        </div>
+        <div class="card-body" style="padding:0;overflow-x:auto">
+          <div class="roster-grid" id="roster-grid"></div>
         </div>
       </div>
     </div>
@@ -2441,39 +2449,151 @@ async function submitLeaveApplication(){
 }
 
 // ===== ROSTER =====
-async function loadRoster(){
-  const res=await api('getRoster');
-  if(!res||!res.data||!res.data.length){
-    renderRosterFallback();
-    return;
-  }
-  rosterData=res.data.map(r=>({
-    name:r['নাম'],
-    shifts:[r['সোম'],r['মঙ্গল'],r['বুধ'],r['বৃহঃ'],r['শুক্র'],r['শনি'],r['রবি']]
-  }));
-  renderRoster();
-}
+let selectedShiftPick = 'D';
 
-function renderRosterFallback(){
-  rosterData=[
-    {name:'— (রোস্টার ডাটা নেই)',shifts:['—','—','—','—','—','—','—']}
-  ];
+async function loadRoster(){
+  // কর্মী তালিকা না থাকলে লোড করি
+  if(!employees.length){
+    const res = await api('getEmployees');
+    if(res && res.data){
+      employees = res.data.map((e,i)=>({
+        id:e['ID'], name:e['নাম'], dept:e['বিভাগ'],
+        shift:e['শিফট']||'D', color:empColor(i), status:e['অবস্থা']
+      }));
+    }
+  }
+
+  // Sheets থেকে রোস্টার আনি
+  const res = await api('getRoster');
+  if(res && res.data && res.data.length){
+    rosterData = res.data.map(r=>({
+      id: r['কর্মী আইডি'], name:r['নাম'],
+      shifts:[r['সোম']||'D',r['মঙ্গল']||'D',r['বুধ']||'D',
+              r['বৃহঃ']||'D',r['শুক্র']||'D',r['শনি']||'OFF',r['রবি']||'OFF']
+    }));
+  } else {
+    // কর্মী লিস্ট থেকে ডিফল্ট রোস্টার বানাই
+    rosterData = employees
+      .filter(e=>e.status==='সক্রিয়'||e.status==='active'||!e.status)
+      .map(e=>({
+        id:e.id, name:e.name,
+        shifts:[e.shift||'D',e.shift||'D',e.shift||'D',e.shift||'D',e.shift||'D','OFF','OFF']
+      }));
+  }
+
   renderRoster();
+  updateShiftEmpDropdown();
 }
 
 function renderRoster(){
-  const grid=document.getElementById('roster-grid');
+  const grid = document.getElementById('roster-grid');
   if(!grid) return;
-  const shiftClass={D:'shift-d',E:'shift-e',N:'shift-n',OFF:'shift-off'};
-  let html=`<div class="roster-cell header">কর্মী</div>`;
-  weekDays.forEach(d=>html+=`<div class="roster-cell header">${d}</div>`);
-  rosterData.forEach(emp=>{
-    html+=`<div class="roster-cell emp-name">${emp.name}</div>`;
-    (emp.shifts||[]).forEach(s=>{
-      html+=`<div class="roster-cell"><span class="shift-badge ${shiftClass[s]||'shift-off'}">${s||'—'}</span></div>`;
+
+  // বিভাগ ফিল্টার
+  const deptFilter = document.getElementById('roster-dept-filter')?.value || '';
+  let data = rosterData;
+  if(deptFilter){
+    const deptEmps = employees.filter(e=>e.dept===deptFilter).map(e=>e.name);
+    data = data.filter(r => deptEmps.includes(r.name));
+  }
+
+  if(!data.length){
+    grid.innerHTML = '<div style="padding:30px;text-align:center;color:var(--text-muted);grid-column:1/-1">কোনো কর্মী নেই — আগে কর্মী যোগ করুন</div>';
+    return;
+  }
+
+  const shiftClass = {D:'shift-d',E:'shift-e',N:'shift-n',OFF:'shift-off'};
+  grid.style.gridTemplateColumns = '150px repeat(7,1fr)';
+
+  let html = `<div class="roster-cell header">কর্মী</div>`;
+  weekDays.forEach(d => html += `<div class="roster-cell header">${d}</div>`);
+
+  data.forEach((emp, ei) => {
+    const empIdx = rosterData.findIndex(r=>r.name===emp.name);
+    html += `<div class="roster-cell emp-name" style="font-size:12px">${emp.name}</div>`;
+    (emp.shifts||['D','D','D','D','D','OFF','OFF']).forEach((s,di) => {
+      const shift = s||'OFF';
+      html += `<div class="roster-cell" style="cursor:pointer" onclick="cycleShift(${empIdx},${di})" title="ক্লিক করে শিফট বদলান">
+        <span class="shift-badge ${shiftClass[shift]||'shift-off'}">${shift}</span>
+      </div>`;
     });
   });
-  grid.innerHTML=html;
+
+  grid.innerHTML = html;
+  updateRosterSummary(data);
+}
+
+// ক্লিক করলে শিফট সাইকেল: D → E → N → OFF → D
+function cycleShift(empIdx, dayIdx){
+  const cycle = ['D','E','N','OFF'];
+  const current = rosterData[empIdx]?.shifts[dayIdx] || 'D';
+  const nextIdx = (cycle.indexOf(current) + 1) % cycle.length;
+  rosterData[empIdx].shifts[dayIdx] = cycle[nextIdx];
+  renderRoster();
+}
+
+function updateRosterSummary(data){
+  const count = {D:0,E:0,N:0,OFF:0};
+  data.forEach(emp => {
+    (emp.shifts||[]).forEach(s => { if(count[s]!==undefined) count[s]++; });
+  });
+  const sv=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v+' জন×দিন';};
+  sv('rs-d', count.D);
+  sv('rs-e', count.E);
+  sv('rs-n', count.N);
+  sv('rs-off', count.OFF);
+}
+
+// শিফট মডাল — কর্মী ড্রপডাউন
+function updateShiftEmpDropdown(){
+  const sel = document.getElementById('shift-emp-select');
+  if(!sel) return;
+  sel.innerHTML = '<option value="all">— সব কর্মী —</option>' +
+    rosterData.map((r,i)=>`<option value="${i}">${r.name}</option>`).join('');
+}
+
+function selectShiftPick(shift){
+  selectedShiftPick = shift;
+  ['D','E','N','OFF'].forEach(s=>{
+    const el = document.getElementById('shift-pick-'+s);
+    if(el) el.style.borderColor = s===shift ? 'var(--primary)' : 'var(--border)';
+  });
+}
+
+function applyShiftSetting(){
+  const empVal = document.getElementById('shift-emp-select')?.value;
+  const checkedDays = [...document.querySelectorAll('#shift-day-checkboxes input:checked')].map(c=>parseInt(c.value));
+  if(!checkedDays.length){ showToast('অন্তত একটি দিন সিলেক্ট করুন','warning'); return; }
+  if(!selectedShiftPick){ showToast('শিফট সিলেক্ট করুন','warning'); return; }
+
+  if(empVal==='all'){
+    rosterData.forEach(emp=>{
+      checkedDays.forEach(d=>{ emp.shifts[d] = selectedShiftPick; });
+    });
+    showToast('✅ সব কর্মীর শিফট আপডেট হয়েছে');
+  } else {
+    const idx = parseInt(empVal);
+    checkedDays.forEach(d=>{ rosterData[idx].shifts[d] = selectedShiftPick; });
+    showToast('✅ ' + rosterData[idx].name + ' এর শিফট আপডেট হয়েছে');
+  }
+  closeModal('setShift');
+  renderRoster();
+}
+
+async function saveRosterToSheet(){
+  if(!rosterData.length){ showToast('রোস্টার খালি!','warning'); return; }
+  const week = document.getElementById('roster-week')?.value || '';
+  const res = await api('saveRoster', {
+    rows: JSON.stringify(rosterData.map(r=>({
+      empId: r.id||r.name, name: r.name,
+      shifts: r.shifts, week
+    })))
+  });
+  if(res) showToast('✅ রোস্টার সেভ হয়েছে!');
+}
+
+function printRoster(){
+  window.print();
 }
 
 // ===== CALENDAR =====
@@ -2858,6 +2978,206 @@ async function deleteEmployee(){
   renderEmployeeTable(employees);
 }
 
+
+// ===== ROTATION SHIFT =====
+
+function openRotationModal(){
+  // মাস ডিফল্ট
+  const now = new Date();
+  document.getElementById('rot-month').value = now.toISOString().slice(0,7);
+
+  // কর্মী ড্রপডাউন
+  const sel = document.getElementById('rot-emp-select');
+  sel.innerHTML = rosterData.map((r,i) =>
+    `<option value="${i}">${r.name}</option>`
+  ).join('');
+
+  // সব সিলেক্ট করি ডিফল্টে
+  [...sel.options].forEach(o => o.selected = true);
+
+  document.getElementById('rot-preview').innerHTML = '<span style="color:var(--text-muted)">প্রিভিউ দেখতে "প্রিভিউ" বাটন চাপুন</span>';
+  openModal('rotationShift');
+}
+
+function getRotationConfig(){
+  return {
+    w1: document.getElementById('rot-w1').value,
+    w2: document.getElementById('rot-w2').value,
+    w3: document.getElementById('rot-w3').value,
+    w4: document.getElementById('rot-w4').value,
+    offFri: document.getElementById('rot-off-fri').checked,
+    offSat: document.getElementById('rot-off-sat').checked,
+    offSun: document.getElementById('rot-off-sun').checked,
+    month: document.getElementById('rot-month').value,
+  };
+}
+
+// একটি মাসের জন্য রোটেশন শিফট ক্যালকুলেট করে
+function calcMonthlyRotation(cfg){
+  const [year, month] = cfg.month.split('-').map(Number);
+  const firstDay = new Date(year, month-1, 1);
+  const lastDay  = new Date(year, month, 0).getDate();
+  const rotation = [cfg.w1, cfg.w2, cfg.w3, cfg.w4];
+
+  // সপ্তাহ ০ = মাসের ১ম সপ্তাহ
+  const days = [];
+  for(let d=1; d<=lastDay; d++){
+    const date   = new Date(year, month-1, d);
+    const dow    = date.getDay(); // 0=রবি, 1=সোম, ..., 6=শনি
+    const isFri  = dow===5;
+    const isSat  = dow===6;
+    const isSun  = dow===0;
+
+    // ছুটির দিন চেক
+    if((cfg.offFri && isFri)||(cfg.offSat && isSat)||(cfg.offSun && isSun)){
+      days.push({date:d, day:dow, shift:'OFF'});
+      continue;
+    }
+
+    // কোন সপ্তাহ — মাসের শুরু থেকে কত সপ্তাহ গেছে
+    const weekOfMonth = Math.floor((d + firstDay.getDay() - 1) / 7);
+    const shift = rotation[weekOfMonth % 4] || 'D';
+    days.push({date:d, day:dow, shift});
+  }
+  return days;
+}
+
+function previewRotation(){
+  const cfg = getRotationConfig();
+  if(!cfg.month){ showToast('মাস সিলেক্ট করুন','warning'); return; }
+
+  const days = calcMonthlyRotation(cfg);
+  const dayNames = ['রবি','সোম','মঙ্গল','বুধ','বৃহঃ','শুক্র','শনি'];
+  const shiftClass = {D:'shift-d',E:'shift-e',N:'shift-n',OFF:'shift-off'};
+  const shiftLabel = {D:'সকাল',E:'দুপুর',N:'রাত',OFF:'ছুটি'};
+
+  // সপ্তাহ ভাগ করে দেখাই
+  let html = '<div style="display:flex;flex-direction:column;gap:6px">';
+  let week = [];
+  days.forEach((d,i) => {
+    week.push(d);
+    if(d.day===0 || i===days.length-1){ // রবিবার বা শেষ দিন
+      const weekNum = Math.ceil((d.date)/7);
+      html += `<div style="display:flex;align-items:center;gap:4px">
+        <span style="font-size:10px;color:var(--text-muted);min-width:40px">সপ্তাহ ${weekNum}</span>`;
+      week.forEach(wd => {
+        html += `<div style="text-align:center;min-width:36px">
+          <div style="font-size:9px;color:var(--text-muted)">${dayNames[wd.day]}</div>
+          <div style="font-size:10px">${wd.date}</div>
+          <span class="shift-badge ${shiftClass[wd.shift]}" style="font-size:9px;padding:1px 4px">${wd.shift}</span>
+        </div>`;
+      });
+      html += '</div>';
+      week = [];
+    }
+  });
+  html += '</div>';
+
+  // সারসংক্ষেপ
+  const count = {D:0,E:0,N:0,OFF:0};
+  days.forEach(d => { if(count[d.shift]!==undefined) count[d.shift]++; });
+  html += `<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+    <span class="badge badge-info">সকাল: ${count.D} দিন</span>
+    <span class="badge badge-success">দুপুর: ${count.E} দিন</span>
+    <span class="badge badge-purple">রাত: ${count.N} দিন</span>
+    <span class="badge badge-warning">ছুটি: ${count.OFF} দিন</span>
+  </div>`;
+
+  document.getElementById('rot-preview').innerHTML = html;
+}
+
+function applyRotation(){
+  const cfg = getRotationConfig();
+  if(!cfg.month){ showToast('মাস সিলেক্ট করুন','warning'); return; }
+
+  const selEmp = [...document.querySelectorAll('#rot-emp-select option:checked')].map(o=>parseInt(o.value));
+  if(!selEmp.length){ showToast('কর্মী সিলেক্ট করুন','warning'); return; }
+
+  const days = calcMonthlyRotation(cfg);
+
+  // রোস্টার ডাটা আপডেট — ৭ দিনের সাপ্তাহিক ভিউতে (প্রথম সপ্তাহ দেখাই)
+  // সোম=1, মঙ্গল=2, বুধ=3, বৃহঃ=4, শুক্র=5, শনি=6, রবি=0
+  const dowMap = {1:0,2:1,3:2,4:3,5:4,6:5,0:6}; // সাইডবার ইনডেক্স
+
+  selEmp.forEach(idx => {
+    if(!rosterData[idx]) return;
+    // সব সপ্তাহের শিফট আলাদা রাখি
+    rosterData[idx].monthlySchedule = days;
+    rosterData[idx].rotationConfig  = cfg;
+
+    // ১ম সপ্তাহ রোস্টার গ্রিডে দেখাই
+    const week1 = [cfg.w1,cfg.w1,cfg.w1,cfg.w1,cfg.w1, cfg.offSat?'OFF':cfg.w1, cfg.offSun?'OFF':cfg.w1];
+    if(cfg.offFri) week1[4] = 'OFF';
+    rosterData[idx].shifts = week1;
+
+    // মাসিক শিফট সংরক্ষণের জন্য রোস্টার গ্রিড সপ্তাহ দেখানো
+    rosterData[idx].weeklyShifts = {
+      w1: [cfg.w1,cfg.w1,cfg.w1,cfg.w1, cfg.offFri?'OFF':cfg.w1, cfg.offSat?'OFF':cfg.w1, cfg.offSun?'OFF':cfg.w1],
+      w2: [cfg.w2,cfg.w2,cfg.w2,cfg.w2, cfg.offFri?'OFF':cfg.w2, cfg.offSat?'OFF':cfg.w2, cfg.offSun?'OFF':cfg.w2],
+      w3: [cfg.w3,cfg.w3,cfg.w3,cfg.w3, cfg.offFri?'OFF':cfg.w3, cfg.offSat?'OFF':cfg.w3, cfg.offSun?'OFF':cfg.w3],
+      w4: [cfg.w4,cfg.w4,cfg.w4,cfg.w4, cfg.offFri?'OFF':cfg.w4, cfg.offSat?'OFF':cfg.w4, cfg.offSun?'OFF':cfg.w4],
+    };
+  });
+
+  closeModal('rotationShift');
+  renderRotationRoster();
+  showToast('✅ '+selEmp.length+' জনের রোটেশন শিফট সেট হয়েছে!');
+}
+
+// রোটেশন মোডে রোস্টার গ্রিড — ৪ সপ্তাহ দেখাই
+function renderRotationRoster(){
+  const grid = document.getElementById('roster-grid');
+  if(!grid) return;
+
+  const rotEmp = rosterData.filter(r => r.weeklyShifts);
+  const normalEmp = rosterData.filter(r => !r.weeklyShifts);
+
+  if(!rotEmp.length){ renderRoster(); return; }
+
+  const shiftClass = {D:'shift-d',E:'shift-e',N:'shift-n',OFF:'shift-off'};
+  const shiftLabel = {D:'সকাল',E:'দুপুর',N:'রাত',OFF:'ছুটি'};
+  const weeks = ['সপ্তাহ ১','সপ্তাহ ২','সপ্তাহ ৩','সপ্তাহ ৪'];
+  const wKeys = ['w1','w2','w3','w4'];
+
+  grid.style.gridTemplateColumns = '150px repeat(4,1fr)';
+
+  let html = `<div class="roster-cell header">কর্মী</div>`;
+  weeks.forEach(w => html += `<div class="roster-cell header">${w}</div>`);
+
+  rotEmp.forEach((emp, ei) => {
+    html += `<div class="roster-cell emp-name" style="font-size:12px">${emp.name}<div style="font-size:10px;color:var(--text-muted)">🔄 রোটেশন</div></div>`;
+    wKeys.forEach(wk => {
+      const wShifts = emp.weeklyShifts[wk];
+      const mainShift = wShifts ? wShifts[0] : 'D';
+      const offDays = wShifts ? wShifts.filter(s=>s==='OFF').length : 0;
+      html += `<div class="roster-cell" style="cursor:pointer">
+        <span class="shift-badge ${shiftClass[mainShift]}">${mainShift}</span>
+        <div style="font-size:9px;color:var(--text-muted);margin-top:2px">${shiftLabel[mainShift]}</div>
+        ${offDays?`<div style="font-size:9px;color:var(--text-muted)">${offDays}দিন ছুটি</div>`:''}
+      </div>`;
+    });
+  });
+
+  // সাধারণ কর্মী
+  if(normalEmp.length){
+    html += `<div class="roster-cell header" style="grid-column:1/-1;background:#f0f4f8;font-size:11px">সাধারণ শিফট কর্মী</div>`;
+    html += `<div class="roster-cell header">কর্মী</div>`;
+    weekDays.forEach(d => html += `<div class="roster-cell header">${d}</div>`);
+    grid.style.gridTemplateColumns = '150px repeat(7,1fr)';
+    normalEmp.forEach((emp,ei) => {
+      const idx = rosterData.findIndex(r=>r.name===emp.name);
+      html += `<div class="roster-cell emp-name" style="font-size:12px">${emp.name}</div>`;
+      (emp.shifts||['D','D','D','D','D','OFF','OFF']).forEach((s,di) => {
+        html += `<div class="roster-cell" style="cursor:pointer" onclick="cycleShift(${idx},${di})">
+          <span class="shift-badge ${shiftClass[s]||'shift-off'}">${s}</span>
+        </div>`;
+      });
+    });
+  }
+
+  grid.innerHTML = html;
+}
+
 </script>
 
 <!-- Edit Department Modal -->
@@ -2971,6 +3291,148 @@ async function deleteEmployee(){
       <button class="btn btn-danger btn-sm" onclick="deleteEmployee()" style="margin-right:auto">🗑️ নিষ্ক্রিয় করুন</button>
       <button class="btn btn-outline" onclick="closeModal('editEmployee')">বাতিল</button>
       <button class="btn btn-primary" onclick="saveEditEmployee()">✅ সেভ করুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- Set Shift Modal -->
+<div class="modal-overlay" id="modal-setShift">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header">
+      <div class="modal-title">✏️ শিফট সেট করুন</div>
+      <button class="modal-close" onclick="closeModal('setShift')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group mb-16">
+        <label class="form-label">কর্মী নির্বাচন</label>
+        <select id="shift-emp-select" class="form-control">
+          <option value="all">— সব কর্মী —</option>
+        </select>
+      </div>
+      <div class="form-group mb-16">
+        <label class="form-label">দিন নির্বাচন</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap" id="shift-day-checkboxes">
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" value="0" checked> সোম</label>
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" value="1" checked> মঙ্গল</label>
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" value="2" checked> বুধ</label>
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" value="3" checked> বৃহঃ</label>
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" value="4" checked> শুক্র</label>
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" value="5"> শনি</label>
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" value="6"> রবি</label>
+        </div>
+      </div>
+      <div class="form-group mb-16">
+        <label class="form-label">শিফট</label>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+          <div id="shift-pick-D" onclick="selectShiftPick('D')" style="border:2px solid var(--border);border-radius:8px;padding:10px;text-align:center;cursor:pointer">
+            <span class="shift-badge shift-d">D</span><div style="font-size:11px;margin-top:4px">দিন</div>
+          </div>
+          <div id="shift-pick-E" onclick="selectShiftPick('E')" style="border:2px solid var(--border);border-radius:8px;padding:10px;text-align:center;cursor:pointer">
+            <span class="shift-badge shift-e">E</span><div style="font-size:11px;margin-top:4px">সন্ধ্যা</div>
+          </div>
+          <div id="shift-pick-N" onclick="selectShiftPick('N')" style="border:2px solid var(--border);border-radius:8px;padding:10px;text-align:center;cursor:pointer">
+            <span class="shift-badge shift-n">N</span><div style="font-size:11px;margin-top:4px">রাত</div>
+          </div>
+          <div id="shift-pick-OFF" onclick="selectShiftPick('OFF')" style="border:2px solid var(--border);border-radius:8px;padding:10px;text-align:center;cursor:pointer">
+            <span class="shift-badge shift-off">OFF</span><div style="font-size:11px;margin-top:4px">ছুটি</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('setShift')">বাতিল</button>
+      <button class="btn btn-primary" onclick="applyShiftSetting()">✅ প্রয়োগ করুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- Rotation Shift Modal -->
+<div class="modal-overlay" id="modal-rotationShift">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header">
+      <div class="modal-title">🔄 রোটেশন শিফট সেটআপ</div>
+      <button class="modal-close" onclick="closeModal('rotationShift')">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="notice notice-info mb-16">
+        💡 প্রতি সপ্তাহে শিফট অটো পরিবর্তন হবে: সকাল → দুপুর → রাত → সকাল...
+      </div>
+
+      <div class="form-group mb-16">
+        <label class="form-label">কর্মী নির্বাচন</label>
+        <select id="rot-emp-select" class="form-control" multiple style="height:120px">
+        </select>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">Ctrl চেপে একাধিক কর্মী সিলেক্ট করুন</div>
+      </div>
+
+      <div class="form-group mb-16">
+        <label class="form-label">মাস নির্বাচন</label>
+        <input type="month" id="rot-month" class="form-control" value="">
+      </div>
+
+      <div class="form-group mb-16">
+        <label class="form-label">রোটেশন ক্রম (সপ্তাহ ১ → ২ → ৩ → ৪)</label>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+          <div>
+            <div style="font-size:11px;font-weight:600;color:var(--text-muted);margin-bottom:4px;text-align:center">সপ্তাহ ১</div>
+            <select id="rot-w1" class="form-control">
+              <option value="D">D — সকাল</option>
+              <option value="E">E — দুপুর</option>
+              <option value="N">N — রাত</option>
+              <option value="OFF">OFF — ছুটি</option>
+            </select>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:600;color:var(--text-muted);margin-bottom:4px;text-align:center">সপ্তাহ ২</div>
+            <select id="rot-w2" class="form-control">
+              <option value="D">D — সকাল</option>
+              <option value="E" selected>E — দুপুর</option>
+              <option value="N">N — রাত</option>
+              <option value="OFF">OFF — ছুটি</option>
+            </select>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:600;color:var(--text-muted);margin-bottom:4px;text-align:center">সপ্তাহ ৩</div>
+            <select id="rot-w3" class="form-control">
+              <option value="D">D — সকাল</option>
+              <option value="E">E — দুপুর</option>
+              <option value="N" selected>N — রাত</option>
+              <option value="OFF">OFF — ছুটি</option>
+            </select>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:600;color:var(--text-muted);margin-bottom:4px;text-align:center">সপ্তাহ ৪</div>
+            <select id="rot-w4" class="form-control">
+              <option value="D" selected>D — সকাল</option>
+              <option value="E">E — দুপুর</option>
+              <option value="N">N — রাত</option>
+              <option value="OFF">OFF — ছুটি</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group mb-16">
+        <label class="form-label">সাপ্তাহিক ছুটির দিন</label>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" id="rot-off-fri" checked> শুক্রবার</label>
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" id="rot-off-sat"> শনিবার</label>
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" id="rot-off-sun"> রবিবার</label>
+        </div>
+      </div>
+
+      <!-- প্রিভিউ -->
+      <div class="form-group">
+        <label class="form-label">প্রিভিউ (প্রথম কর্মী)</label>
+        <div id="rot-preview" style="background:var(--bg);border-radius:8px;padding:12px;font-size:12px;overflow-x:auto"></div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="previewRotation()">👁️ প্রিভিউ</button>
+      <button class="btn btn-outline" onclick="closeModal('rotationShift')">বাতিল</button>
+      <button class="btn btn-primary" onclick="applyRotation()">✅ রোটেশন প্রয়োগ করুন</button>
     </div>
   </div>
 </div>
