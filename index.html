@@ -1078,18 +1078,13 @@
         <div class="card">
           <div class="card-header">
             <div class="card-title">বিভাগ সমূহ</div>
-            <button class="btn btn-primary btn-sm" onclick="openModal('addDept')">+ বিভাগ যোগ</button>
+            <button class="btn btn-primary btn-sm" onclick="openAddDeptModal()">+ বিভাগ যোগ</button>
           </div>
           <div class="card-body">
             <table>
               <thead><tr><th>বিভাগের নাম</th><th>কর্মী</th><th>প্রধান</th><th>অ্যাকশন</th></tr></thead>
-              <tbody>
-                <tr><td>উৎপাদন</td><td><span class="badge badge-info">18 জন</span></td><td>রাহেলা বেগম</td><td><button class="btn btn-outline btn-sm">এডিট</button></td></tr>
-                <tr><td>অ্যাকাউন্টস</td><td><span class="badge badge-info">6 জন</span></td><td>করিম সাহেব</td><td><button class="btn btn-outline btn-sm">এডিট</button></td></tr>
-                <tr><td>HR</td><td><span class="badge badge-info">4 জন</span></td><td>নাসরিন</td><td><button class="btn btn-outline btn-sm">এডিট</button></td></tr>
-                <tr><td>IT</td><td><span class="badge badge-info">5 জন</span></td><td>রাফি</td><td><button class="btn btn-outline btn-sm">এডিট</button></td></tr>
-                <tr><td>মার্কেটিং</td><td><span class="badge badge-info">8 জন</span></td><td>সুমাইয়া</td><td><button class="btn btn-outline btn-sm">এডিট</button></td></tr>
-                <tr><td>অপারেশন</td><td><span class="badge badge-info">6 জন</span></td><td>ইমরান</td><td><button class="btn btn-outline btn-sm">এডিট</button></td></tr>
+              <tbody id="dept-tbody">
+                <tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-muted)">⏳ লোড হচ্ছে...</td></tr>
               </tbody>
             </table>
           </div>
@@ -1097,18 +1092,13 @@
         <div class="card">
           <div class="card-header">
             <div class="card-title">পদ সমূহ</div>
-            <button class="btn btn-primary btn-sm">+ পদ যোগ</button>
+            <button class="btn btn-primary btn-sm" onclick="openAddDesigModal()">+ পদ যোগ</button>
           </div>
           <div class="card-body">
             <table>
-              <thead><tr><th>পদের নাম</th><th>বিভাগ</th><th>গ্রেড</th></tr></thead>
-              <tbody>
-                <tr><td>ম্যানেজার</td><td>সব</td><td><span class="badge badge-purple">A</span></td></tr>
-                <tr><td>সিনিয়র অফিসার</td><td>সব</td><td><span class="badge badge-info">B</span></td></tr>
-                <tr><td>অফিসার</td><td>সব</td><td><span class="badge badge-success">C</span></td></tr>
-                <tr><td>সহকারী</td><td>সব</td><td><span class="badge badge-warning">D</span></td></tr>
-                <tr><td>অপারেটর</td><td>উৎপাদন</td><td><span class="badge badge-warning">E</span></td></tr>
-                <tr><td>হেলপার</td><td>উৎপাদন</td><td><span class="badge badge-danger">F</span></td></tr>
+              <thead><tr><th>পদের নাম</th><th>বিভাগ</th><th>গ্রেড</th><th>অ্যাকশন</th></tr></thead>
+              <tbody id="desig-tbody">
+                <tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-muted)">⏳ লোড হচ্ছে...</td></tr>
               </tbody>
             </table>
           </div>
@@ -1878,6 +1868,7 @@ function navigate(page){
   });
   // page-specific load
   if(page==='employees') loadEmployees();
+  if(page==='departments') loadDepartments();
   if(page==='attendance') loadAttendance();
   if(page==='payroll') loadPayroll();
   if(page==='overtime') loadOvertime();
@@ -2447,6 +2438,266 @@ async function init(){
 }
 
 init();
+
+// ===== DEPARTMENTS & DESIGNATIONS =====
+
+// লোকাল স্টেট
+let departments = [
+  {name:'উৎপাদন', head:'রাহেলা বেগম'},
+  {name:'অ্যাকাউন্টস', head:'করিম সাহেব'},
+  {name:'HR', head:'নাসরিন'},
+  {name:'IT', head:'রাফি'},
+  {name:'মার্কেটিং', head:'সুমাইয়া'},
+  {name:'অপারেশন', head:'ইমরান'},
+];
+
+let designations = [
+  {name:'ম্যানেজার', dept:'সব', grade:'A'},
+  {name:'সিনিয়র অফিসার', dept:'সব', grade:'B'},
+  {name:'অফিসার', dept:'সব', grade:'C'},
+  {name:'সহকারী', dept:'সব', grade:'D'},
+  {name:'অপারেটর', dept:'উৎপাদন', grade:'E'},
+  {name:'হেলপার', dept:'উৎপাদন', grade:'F'},
+];
+
+function loadDepartments(){
+  renderDeptTable();
+  renderDesigTable();
+}
+
+function renderDeptTable(){
+  const tbody = document.getElementById('dept-tbody');
+  if(!tbody) return;
+  if(!departments.length){
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-muted)">কোনো বিভাগ নেই</td></tr>';
+    return;
+  }
+  // কর্মী সংখ্যা গণনা
+  const countByDept = {};
+  employees.forEach(e => {
+    countByDept[e.dept] = (countByDept[e.dept]||0) + 1;
+  });
+
+  tbody.innerHTML = departments.map((d,i) => `<tr>
+    <td><strong>${d.name}</strong></td>
+    <td><span class="badge badge-info">${countByDept[d.name]||0} জন</span></td>
+    <td>${d.head||'—'}</td>
+    <td>
+      <button class="btn btn-outline btn-sm" onclick="openEditDeptModal(${i})">✏️ এডিট</button>
+    </td>
+  </tr>`).join('');
+}
+
+function renderDesigTable(){
+  const tbody = document.getElementById('desig-tbody');
+  if(!tbody) return;
+  const gradeBadge = {A:'badge-purple',B:'badge-info',C:'badge-success',D:'badge-warning',E:'badge-warning',F:'badge-danger'};
+  tbody.innerHTML = designations.map((d,i) => `<tr>
+    <td><strong>${d.name}</strong></td>
+    <td>${d.dept}</td>
+    <td><span class="badge ${gradeBadge[d.grade]||'badge-info'}">${d.grade}</span></td>
+    <td>
+      <button class="btn btn-outline btn-sm" onclick="openEditDesigModal(${i})">✏️ এডিট</button>
+    </td>
+  </tr>`).join('');
+}
+
+// ===== DEPT MODAL =====
+function openAddDeptModal(){
+  document.getElementById('editDeptModalTitle').textContent = '🏢 নতুন বিভাগ যোগ';
+  document.getElementById('editDeptOldName').value = '';
+  document.getElementById('editDeptName').value = '';
+  document.getElementById('editDeptHead').value = '';
+  openModal('editDept');
+}
+
+function openEditDeptModal(idx){
+  const d = departments[idx];
+  document.getElementById('editDeptModalTitle').textContent = '🏢 বিভাগ এডিট — ' + d.name;
+  document.getElementById('editDeptOldName').value = d.name;
+  document.getElementById('editDeptName').value = d.name;
+  document.getElementById('editDeptHead').value = d.head||'';
+  openModal('editDept');
+}
+
+function saveDept(){
+  const oldName = document.getElementById('editDeptOldName').value;
+  const newName = document.getElementById('editDeptName').value.trim();
+  const head    = document.getElementById('editDeptHead').value.trim();
+  if(!newName){showToast('বিভাগের নাম দিন!','warning');return;}
+
+  if(oldName){
+    // এডিট
+    const idx = departments.findIndex(d=>d.name===oldName);
+    if(idx>=0) departments[idx] = {name:newName, head};
+    showToast('✅ বিভাগ আপডেট হয়েছে');
+  } else {
+    // নতুন
+    if(departments.find(d=>d.name===newName)){showToast('এই নামে বিভাগ আছে!','warning');return;}
+    departments.push({name:newName, head});
+    showToast('✅ নতুন বিভাগ যোগ হয়েছে');
+  }
+  closeModal('editDept');
+  renderDeptTable();
+  updateDeptDropdowns();
+}
+
+function deleteDept(){
+  const name = document.getElementById('editDeptOldName').value;
+  if(!name){closeModal('editDept');return;}
+  const empCount = employees.filter(e=>e.dept===name).length;
+  if(empCount>0){showToast('এই বিভাগে '+empCount+' জন কর্মী আছে! আগে তাদের সরান।','danger');return;}
+  departments = departments.filter(d=>d.name!==name);
+  showToast('🗑️ বিভাগ মুছে গেছে','warning');
+  closeModal('editDept');
+  renderDeptTable();
+  updateDeptDropdowns();
+}
+
+// ===== DESIG MODAL =====
+function openAddDesigModal(){
+  document.getElementById('editDesigModalTitle').textContent = '💼 নতুন পদ যোগ';
+  document.getElementById('editDesigOldName').value = '';
+  document.getElementById('editDesigName').value = '';
+  document.getElementById('editDesigGrade').value = 'C';
+  updateDesigDeptDropdown();
+  openModal('editDesig');
+}
+
+function openEditDesigModal(idx){
+  const d = designations[idx];
+  document.getElementById('editDesigModalTitle').textContent = '💼 পদ এডিট — ' + d.name;
+  document.getElementById('editDesigOldName').value = d.name;
+  document.getElementById('editDesigName').value = d.name;
+  document.getElementById('editDesigGrade').value = d.grade||'C';
+  updateDesigDeptDropdown(d.dept);
+  openModal('editDesig');
+}
+
+function updateDesigDeptDropdown(selected='সব'){
+  const sel = document.getElementById('editDesigDept');
+  if(!sel) return;
+  sel.innerHTML = '<option value="সব">সব</option>' +
+    departments.map(d=>`<option value="${d.name}" ${d.name===selected?'selected':''}>${d.name}</option>`).join('');
+}
+
+function saveDesig(){
+  const oldName = document.getElementById('editDesigOldName').value;
+  const newName = document.getElementById('editDesigName').value.trim();
+  const dept    = document.getElementById('editDesigDept').value;
+  const grade   = document.getElementById('editDesigGrade').value;
+  if(!newName){showToast('পদের নাম দিন!','warning');return;}
+
+  if(oldName){
+    const idx = designations.findIndex(d=>d.name===oldName);
+    if(idx>=0) designations[idx] = {name:newName, dept, grade};
+    showToast('✅ পদ আপডেট হয়েছে');
+  } else {
+    designations.push({name:newName, dept, grade});
+    showToast('✅ নতুন পদ যোগ হয়েছে');
+  }
+  closeModal('editDesig');
+  renderDesigTable();
+  updatePostDropdowns();
+}
+
+function deleteDesig(){
+  const name = document.getElementById('editDesigOldName').value;
+  if(!name){closeModal('editDesig');return;}
+  designations = designations.filter(d=>d.name!==name);
+  showToast('🗑️ পদ মুছে গেছে','warning');
+  closeModal('editDesig');
+  renderDesigTable();
+  updatePostDropdowns();
+}
+
+// কর্মী যোগের ফর্মে বিভাগ ও পদ আপডেট
+function updateDeptDropdowns(){
+  const sels = document.querySelectorAll('#modal-addEmployee select');
+  if(sels[1]){
+    sels[1].innerHTML = departments.map(d=>`<option value="${d.name}">${d.name}</option>`).join('');
+  }
+  // filter bar
+  document.querySelectorAll('select').forEach(sel=>{
+    if(sel.innerHTML.includes('সব বিভাগ')&&!sel.id){
+      sel.innerHTML = '<option value="">সব বিভাগ</option>'+
+        departments.map(d=>`<option value="${d.name}">${d.name}</option>`).join('');
+    }
+  });
+}
+
+function updatePostDropdowns(){
+  const sels = document.querySelectorAll('#modal-addEmployee select');
+  if(sels[0]){
+    sels[0].innerHTML = designations.map(d=>`<option value="${d.name}">${d.name}</option>`).join('');
+  }
+}
+
 </script>
+
+<!-- Edit Department Modal -->
+<div class="modal-overlay" id="modal-editDept">
+  <div class="modal" style="max-width:460px">
+    <div class="modal-header">
+      <div class="modal-title" id="editDeptModalTitle">🏢 বিভাগ এডিট</div>
+      <button class="modal-close" onclick="closeModal('editDept')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editDeptOldName">
+      <div class="form-group mb-16">
+        <label class="form-label">বিভাগের নাম *</label>
+        <input type="text" id="editDeptName" class="form-control" placeholder="বিভাগের নাম">
+      </div>
+      <div class="form-group mb-16">
+        <label class="form-label">বিভাগ প্রধান</label>
+        <input type="text" id="editDeptHead" class="form-control" placeholder="প্রধানের নাম">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" onclick="deleteDept()" style="margin-right:auto">🗑️ মুছুন</button>
+      <button class="btn btn-outline" onclick="closeModal('editDept')">বাতিল</button>
+      <button class="btn btn-primary" onclick="saveDept()">✅ সেভ করুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Designation Modal -->
+<div class="modal-overlay" id="modal-editDesig">
+  <div class="modal" style="max-width:460px">
+    <div class="modal-header">
+      <div class="modal-title" id="editDesigModalTitle">💼 পদ এডিট</div>
+      <button class="modal-close" onclick="closeModal('editDesig')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editDesigOldName">
+      <div class="form-group mb-16">
+        <label class="form-label">পদের নাম *</label>
+        <input type="text" id="editDesigName" class="form-control" placeholder="পদের নাম">
+      </div>
+      <div class="form-group mb-16">
+        <label class="form-label">বিভাগ</label>
+        <select id="editDesigDept" class="form-control">
+          <option value="সব">সব</option>
+        </select>
+      </div>
+      <div class="form-group mb-16">
+        <label class="form-label">গ্রেড</label>
+        <select id="editDesigGrade" class="form-control">
+          <option value="A">A — সর্বোচ্চ</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+          <option value="E">E</option>
+          <option value="F">F — সর্বনিম্ন</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" onclick="deleteDesig()" style="margin-right:auto">🗑️ মুছুন</button>
+      <button class="btn btn-outline" onclick="closeModal('editDesig')">বাতিল</button>
+      <button class="btn btn-primary" onclick="saveDesig()">✅ সেভ করুন</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
