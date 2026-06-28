@@ -2180,27 +2180,134 @@ async function confirmImport(){
 
 // ===== PAYROLL =====
 async function loadPayroll(){
-  const month=document.querySelector('#page-payroll input[type=month]')?.value||new Date().toISOString().slice(0,7);
-  const res=await api('getPayroll',{month});
+  const month = document.querySelector('#page-payroll input[type=month]')?.value || new Date().toISOString().slice(0,7);
+  const res = await api('getPayroll', {month});
   if(!res) return;
-  payrollData=(res.data||[]).map((r,i)=>({
-    id:r['কর্মী আইডি'],name:r['নাম'],
-    basic:parseFloat(r['মূল বেতন'])||0,
-    att:parseFloat(r['হাজিরা ভাতা'])||0,
-    ot:parseFloat(r['ওভারটাইম পে'])||0,
-    bonus:parseFloat(r['বোনাস'])||0,
-    deduct:parseFloat(r['কাটা'])||0,
-    net:parseFloat(r['নেট বেতন'])||0,
-    status:r['অবস্থা']||'পেন্ডিং',
-    color:empColor(i)
-  }));
+  const data = res.data || [];
+  if(data.length){
+    payrollData = data.map((r,i) => ({
+      id:r['কর্মী আইডি'], name:r['নাম'],
+      basic:parseFloat(r['মূল বেতন'])||0,
+      att:parseFloat(r['হাজিরা ভাতা'])||0,
+      ot:parseFloat(r['ওভারটাইম পে'])||0,
+      bonus:parseFloat(r['বোনাস'])||0,
+      deduct:parseFloat(r['কাটা'])||0,
+      net:parseFloat(r['নেট বেতন'])||0,
+      status:r['অবস্থা']||'পেন্ডিং',
+      color:empColor(i)
+    }));
+    updatePayrollSummary();
+  }
   renderPayrollTable();
 }
 
 async function generatePayroll(){
-  const month=document.querySelector('#page-payroll input[type=month]')?.value||new Date().toISOString().slice(0,7);
-  const res=await api('generatePayroll',{month});
-  if(res){showToast('✅ '+res.message);loadPayroll();}
+  const month = document.querySelector('#page-payroll input[type=month]')?.value || new Date().toISOString().slice(0,7);
+
+  // বাটন লক
+  const btn = document.querySelector('#page-payroll .btn-primary');
+  if(btn){ btn.textContent='⏳ তৈরি হচ্ছে...'; btn.disabled=true; }
+
+  // প্রথমে Sheets থেকে হাজিরা ডাটা আনি
+  const attRes = await api('getAttendance', {month});
+  const attData = (attRes?.data || []);
+
+  // কর্মী তালিকা — লোকাল না থাকলে Sheets থেকে আনি
+  let empList = employees.filter(e => e.status==='সক্রিয়' || e.status==='active');
+  if(!empList.length){
+    const empRes = await api('getEmployees');
+    empList = (empRes?.data || []).map((e,i) => ({
+      id: e['ID'], name: e['নাম'], post: e['পদ'], dept: e['বিভাগ'],
+      salary: parseFloat(e['মূল বেতন'])||0, shift: e['শিফট']||'D',
+      status: e['অবস্থা'], color: empColor(i)
+    }));
+    employees = empList;
+  }
+
+  // হাজিরা ডাটা থেকে অনন্য কর্মী বের করি (Sheets এ কর্মী না থাকলেও)
+  const empFromAtt = {};
+  attData.forEach(r => {
+    const key = r['কর্মী আইডি'] || r['নাম'] || '';
+    if(key && !empFromAtt[key]){
+      empFromAtt[key] = { id:key, name:r['নাম']||key };
+    }
+  });
+
+  // মার্জ — Sheets কর্মী + হাজিরা থেকে পাওয়া কর্মী
+  const allEmp = [...empList];
+  Object.values(empFromAtt).forEach(ea => {
+    if(!allEmp.find(e => e.id===ea.id || e.name===ea.name)){
+      allEmp.push({ id:ea.id, name:ea.name, salary:0, color:empColor(allEmp.length) });
+    }
+  });
+
+  if(!allEmp.length){
+    showToast('⚠️ কোনো কর্মী বা হাজিরা ডাটা নেই! আগে XLS ইমপোর্ট করুন।','warning');
+    if(btn){ btn.textContent='💰 পেরোল তৈরি করুন'; btn.disabled=false; }
+    return;
+  }
+
+  // পেরোল ক্যালকুলেশন
+  const totalDays = 26;
+  payrollData = allEmp.map((emp, i) => {
+    const basic = parseFloat(emp.salary)||0;
+
+    // হাজিরা ফিল্টার
+    const empAtt = attData.filter(a =>
+      a['কর্মী আইডি']===emp.id || a['নাম']===emp.name || a['কর্মী আইডি']===emp.name
+    );
+    const presentDays = empAtt.filter(a =>
+      a['অবস্থা']==='উপস্থিত' || a['অবস্থা']==='দেরি'
+    ).length;
+    const leaveDays = empAtt.filter(a => a['অবস্থা']==='ছুটি').length;
+    const absentDays = Math.max(0, totalDays - presentDays - leaveDays);
+
+    // ভাতা
+    const houseRent  = Math.round(basic * 0.5);
+    const medical    = basic > 0 ? 1500 : 0;
+    const transport  = basic > 0 ? 1000 : 0;
+    const att        = presentDays >= totalDays ? 500 : 0;
+
+    // ওভারটাইম — হাজিরা থেকে সরাসরি
+    let otHours = 0;
+    empAtt.forEach(a => {
+      const ot = parseFloat(a['ওভারটাইম'])||0;
+      otHours += ot;
+    });
+    const hourlyRate = basic > 0 ? (basic / 208) * 1.5 : 0;
+    const otPay = Math.round(otHours * hourlyRate);
+
+    // কাটা
+    const dailyRate = basic > 0 ? basic / 30 : 0;
+    const deduct = Math.round(absentDays * dailyRate);
+    const net = basic + houseRent + medical + transport + att + otPay - deduct;
+
+    return {
+      id: emp.id, name: emp.name, color: emp.color||empColor(i),
+      basic, att, ot: otPay, bonus: 0, deduct, net: Math.max(0, net),
+      status: 'পেন্ডিং',
+      _presentDays: presentDays, _absentDays: absentDays, _otHours: otHours
+    };
+  });
+
+  // Sheets এ পাঠাও (ব্যাকগ্রাউন্ডে)
+  api('generatePayroll', {month}).catch(()=>{});
+
+  renderPayrollTable();
+  updatePayrollSummary();
+
+  if(btn){ btn.textContent='💰 পেরোল তৈরি করুন'; btn.disabled=false; }
+  showToast('✅ ' + payrollData.length + ' জনের পেরোল তৈরি হয়েছে!');
+}
+
+function updatePayrollSummary(){
+  const totalEarning = payrollData.reduce((s,e) => s+(e.basic||0)+(e.att||0)+(e.ot||0)+(e.bonus||0), 0);
+  const totalDeduct  = payrollData.reduce((s,e) => s+(e.deduct||0), 0);
+  const totalNet     = payrollData.reduce((s,e) => s+(e.net||0), 0);
+  const boxes = document.querySelectorAll('.payroll-box-value');
+  if(boxes[0]) boxes[0].textContent = '৳' + totalEarning.toLocaleString('bn-BD');
+  if(boxes[1]) boxes[1].textContent = '৳' + totalDeduct.toLocaleString('bn-BD');
+  if(boxes[2]) boxes[2].textContent = '৳' + totalNet.toLocaleString('bn-BD');
 }
 
 function renderPayrollTable(){
