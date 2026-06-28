@@ -891,33 +891,33 @@
         <div class="stat-card">
           <div class="stat-icon" style="background:#e8f0fe">👥</div>
           <div>
-            <div class="stat-value">47</div>
+            <div class="stat-value" id="stat-total">—</div>
             <div class="stat-label">মোট কর্মী</div>
-            <div class="stat-change up">↑ ৩ জন এই মাসে</div>
+            <div class="stat-change" id="stat-total-sub"></div>
           </div>
         </div>
         <div class="stat-card">
           <div class="stat-icon" style="background:#def7ec">✅</div>
           <div>
-            <div class="stat-value">41</div>
+            <div class="stat-value" id="stat-present">—</div>
             <div class="stat-label">আজ উপস্থিত</div>
-            <div class="stat-change up">৮৭.২% হাজিরা</div>
+            <div class="stat-change" id="stat-present-sub"></div>
           </div>
         </div>
         <div class="stat-card">
           <div class="stat-icon" style="background:#fde8e8">❌</div>
           <div>
-            <div class="stat-value">6</div>
+            <div class="stat-value" id="stat-absent">—</div>
             <div class="stat-label">আজ অনুপস্থিত</div>
-            <div class="stat-change down">৩ জন ছুটিতে</div>
+            <div class="stat-change" id="stat-absent-sub"></div>
           </div>
         </div>
         <div class="stat-card">
           <div class="stat-icon" style="background:#edebfe">💰</div>
           <div>
-            <div class="stat-value">৳৪.২L</div>
+            <div class="stat-value" id="stat-payroll">—</div>
             <div class="stat-label">এই মাসের বেতন</div>
-            <div class="stat-change">জুন ২০২৫</div>
+            <div class="stat-change" id="stat-payroll-sub"></div>
           </div>
         </div>
       </div>
@@ -948,25 +948,15 @@
             <span class="badge badge-success">লাইভ</span>
           </div>
           <div class="card-body">
-            <div class="payroll-row">
-              <span>✅ উপস্থিত</span><strong style="color:var(--secondary)">41 জন</strong>
-            </div>
-            <div class="payroll-row">
-              <span>❌ অনুপস্থিত</span><strong style="color:var(--danger)">3 জন</strong>
-            </div>
-            <div class="payroll-row">
-              <span>🏖️ ছুটিতে</span><strong style="color:var(--warning)">3 জন</strong>
-            </div>
-            <div class="payroll-row">
-              <span>⏰ দেরিতে এসেছে</span><strong style="color:var(--purple)">5 জন</strong>
-            </div>
-            <div class="payroll-row">
-              <span>🌙 নাইট শিফট</span><strong>8 জন</strong>
-            </div>
+            <div class="payroll-row"><span>✅ উপস্থিত</span><strong style="color:var(--secondary)" id="d-present">—</strong></div>
+            <div class="payroll-row"><span>❌ অনুপস্থিত</span><strong style="color:var(--danger)" id="d-absent">—</strong></div>
+            <div class="payroll-row"><span>🏖️ ছুটিতে</span><strong style="color:var(--warning)" id="d-leave">—</strong></div>
+            <div class="payroll-row"><span>⏰ দেরিতে এসেছে</span><strong style="color:var(--purple)" id="d-late">—</strong></div>
+            <div class="payroll-row"><span>🌙 নাইট শিফট</span><strong id="d-night">—</strong></div>
             <div class="progress-bar mt-16">
               <div class="progress-fill" style="width:87%;background:var(--secondary)"></div>
             </div>
-            <div class="text-muted mt-16">৮৭% উপস্থিতি হার</div>
+            <div class="text-muted mt-16" id="d-att-rate">— উপস্থিতি হার</div>
           </div>
         </div>
 
@@ -977,11 +967,11 @@
           <div class="card-body">
             <div class="payroll-row">
               <span>📋 ছুটির আবেদন</span>
-              <span class="badge badge-warning">5টি</span>
+              <span class="badge badge-warning" id="d-pending-leave">—</span>
             </div>
             <div class="payroll-row">
               <span>⏰ ওভারটাইম অনুমোদন</span>
-              <span class="badge badge-info">8টি</span>
+              <span class="badge badge-info" id="d-pending-ot">—</span>
             </div>
             <div class="payroll-row">
               <span>💰 পেরোল অনুমোদন</span>
@@ -1153,15 +1143,15 @@
             <div class="card-title">📊 জুন মাসের সারসংক্ষেপ</div>
           </div>
           <div class="card-body">
-            <div class="payroll-row"><span>মোট কার্যদিবস</span><strong>26 দিন</strong></div>
-            <div class="payroll-row"><span>✅ উপস্থিত</span><strong style="color:var(--secondary)">22 দিন</strong></div>
-            <div class="payroll-row"><span>❌ অনুপস্থিত</span><strong style="color:var(--danger)">1 দিন</strong></div>
-            <div class="payroll-row"><span>🏖️ ছুটি</span><strong style="color:var(--warning)">2 দিন</strong></div>
-            <div class="payroll-row"><span>⏰ মোট ওভারটাইম</span><strong style="color:var(--purple)">14 ঘণ্টা</strong></div>
-            <div class="payroll-row"><span>🕐 দেরিতে আসা</span><strong>3 দিন</strong></div>
-            <div class="payroll-row"><span>উপস্থিতি হার</span><strong style="color:var(--secondary)">88%</strong></div>
+            <div class="payroll-row"><span>মোট কার্যদিবস</span><strong id="att-total-days">—</strong></div>
+            <div class="payroll-row"><span>✅ উপস্থিত</span><strong style="color:var(--secondary)" id="att-present-days">—</strong></div>
+            <div class="payroll-row"><span>❌ অনুপস্থিত</span><strong style="color:var(--danger)" id="att-absent-days">—</strong></div>
+            <div class="payroll-row"><span>🏖️ ছুটি</span><strong style="color:var(--warning)" id="att-leave-days">—</strong></div>
+            <div class="payroll-row"><span>⏰ মোট ওভারটাইম</span><strong style="color:var(--purple)" id="att-ot-hours">—</strong></div>
+            <div class="payroll-row"><span>🕐 দেরিতে আসা</span><strong id="att-late-days">—</strong></div>
+            <div class="payroll-row"><span>উপস্থিতি হার</span><strong style="color:var(--secondary)" id="att-rate">—</strong></div>
             <div class="progress-bar">
-              <div class="progress-fill" style="width:88%;background:var(--secondary)"></div>
+              <div class="progress-fill" id="att-progress" style="width:0%;background:var(--secondary)"></div>
             </div>
           </div>
         </div>
@@ -1289,15 +1279,15 @@
       <div class="payroll-summary mb-16">
         <div class="payroll-box earning">
           <div class="payroll-box-label">মোট আয়</div>
-          <div class="payroll-box-value">৳৫,৮৪,০০০</div>
+          <div class="payroll-box-value" id="pay-total-earn">৳০</div>
         </div>
         <div class="payroll-box deduction">
           <div class="payroll-box-label">মোট কাটা</div>
-          <div class="payroll-box-value">৳৪২,৫০০</div>
+          <div class="payroll-box-value" id="pay-total-deduct">৳০</div>
         </div>
         <div class="payroll-box net">
           <div class="payroll-box-label">নেট বেতন</div>
-          <div class="payroll-box-value">৳৫,৪১,৫০০</div>
+          <div class="payroll-box-value" id="pay-total-net">৳০</div>
         </div>
       </div>
 
@@ -1340,19 +1330,19 @@
       <div class="stat-grid mb-16">
         <div class="stat-card">
           <div class="stat-icon" style="background:#edebfe">⏰</div>
-          <div><div class="stat-value">284</div><div class="stat-label">মোট ওভারটাইম ঘণ্টা</div></div>
+          <div><div class="stat-value" id="ot-total-hours">—</div><div class="stat-label">মোট ওভারটাইম ঘণ্টা</div></div>
         </div>
         <div class="stat-card">
           <div class="stat-icon" style="background:#def7ec">✅</div>
-          <div><div class="stat-value">156</div><div class="stat-label">অনুমোদিত</div></div>
+          <div><div class="stat-value" id="ot-approved">—</div><div class="stat-label">অনুমোদিত</div></div>
         </div>
         <div class="stat-card">
           <div class="stat-icon" style="background:#fff3e0">⌛</div>
-          <div><div class="stat-value">98</div><div class="stat-label">পেন্ডিং</div></div>
+          <div><div class="stat-value" id="ot-pending">—</div><div class="stat-label">পেন্ডিং</div></div>
         </div>
         <div class="stat-card">
           <div class="stat-icon" style="background:#edebfe">💰</div>
-          <div><div class="stat-value">৳৩২,৪০০</div><div class="stat-label">মোট ওভারটাইম পে</div></div>
+          <div><div class="stat-value" id="ot-total-pay">—</div><div class="stat-label">মোট ওভারটাইম পে</div></div>
         </div>
       </div>
 
@@ -1522,19 +1512,19 @@
               <tbody>
                 <tr>
                   <td><div class="emp-cell"><div class="emp-avatar" style="background:#1a56db">র</div><div><div class="emp-name-text">রফিকুল ইসলাম</div></div></div></td>
-                  <td><span class="badge badge-info">১৮/২০</span></td>
-                  <td><span class="badge badge-success">১২/১৪</span></td>
-                  <td><span class="badge badge-warning">৮/১০</span></td>
+                  <td><span class="badge badge-info">—</span></td>
+                  <td><span class="badge badge-success">—</span></td>
+                  <td><span class="badge badge-warning">—</span></td>
                   <td><span class="badge badge-purple">—</span></td>
-                  <td><strong>১১ দিন</strong></td>
+                  <td><strong>—</strong></td>
                 </tr>
                 <tr>
                   <td><div class="emp-cell"><div class="emp-avatar" style="background:#0e9f6e">স</div><div><div class="emp-name-text">সুমাইয়া আক্তার</div></div></div></td>
                   <td><span class="badge badge-warning">১৫/২০</span></td>
-                  <td><span class="badge badge-success">১৩/১৪</span></td>
-                  <td><span class="badge badge-success">১০/১০</span></td>
-                  <td><span class="badge badge-info">৯০/১৮০</span></td>
-                  <td><strong>৬ দিন</strong></td>
+                  <td><span class="badge badge-success">—</span></td>
+                  <td><span class="badge badge-success">—</span></td>
+                  <td><span class="badge badge-info">—</span></td>
+                  <td><strong>—</strong></td>
                 </tr>
               </tbody>
             </table>
@@ -1902,17 +1892,36 @@ async function loadDashboard(){
   const res = await api('getDashboard');
   if(!res) return;
   const d = res.data;
-  // Stats
-  document.querySelectorAll('.stat-value')[0].textContent = d.totalEmployees||'—';
-  document.querySelectorAll('.stat-value')[1].textContent = d.todayPresent||'—';
-  document.querySelectorAll('.stat-value')[2].textContent = d.todayAbsent||'—';
 
-  // Pending
-  if(d.pendingLeaves){
-    document.querySelectorAll('.badge-warning')[0].textContent = d.pendingLeaves+'টি';
-  }
+  // Stat কার্ড
+  const sv = (id, val) => { const el=document.getElementById(id); if(el) el.textContent=val; };
+  sv('stat-total',   d.totalEmployees || '০');
+  sv('stat-present', d.todayPresent   || '০');
+  sv('stat-absent',  d.todayAbsent    || '০');
+  sv('stat-total-sub',   (d.totalEmployees||0) + ' জন সক্রিয়');
+  sv('stat-present-sub', (d.todayPresent && d.totalEmployees) ? Math.round(d.todayPresent/d.totalEmployees*100)+'% হাজিরা' : '');
+  sv('stat-absent-sub',  d.todayLate ? d.todayLate+' জন দেরিতে' : '');
 
-  // Today log
+  // হাজিরা সামারি বক্স
+  sv('d-present', (d.todayPresent||0) + ' জন');
+  sv('d-absent',  (d.todayAbsent||0)  + ' জন');
+  sv('d-leave',   (d.todayLeave||0)   + ' জন');
+  sv('d-late',    (d.todayLate||0)    + ' জন');
+  sv('d-night',   (d.nightShift||0)   + ' জন');
+
+  // উপস্থিতি হার
+  const total = d.totalEmployees || 1;
+  const rate  = d.todayPresent ? Math.round(d.todayPresent/total*100) : 0;
+  sv('d-att-rate', rate + '% উপস্থিতি হার');
+  const prog = document.getElementById('d-att-rate');
+  const bar  = document.querySelector('#page-dashboard .progress-fill');
+  if(bar) bar.style.width = rate + '%';
+
+  // পেন্ডিং
+  sv('d-pending-leave', (d.pendingLeaves||0) + 'টি');
+  sv('d-pending-ot',    (d.pendingOT||0)     + 'টি');
+
+  // আজকের লগ
   if(d.todayLog && d.todayLog.length){
     attLogs = d.todayLog.map(r=>({
       date: r['তারিখ'], name: r['নাম'], id: r['কর্মী আইডি'],
@@ -1920,8 +1929,8 @@ async function loadDashboard(){
       hours: r['মোট ঘণ্টা'], ot: r['ওভারটাইম'],
       late: r['দেরি'], status: mapStatus(r['অবস্থা'])
     }));
-    renderDashAttTable();
   }
+  renderDashAttTable();
 }
 
 function mapStatus(s){
@@ -2345,6 +2354,16 @@ async function loadOvertime(){
     ot:r['ওভারটাইম ঘণ্টা'],rate:r['হার'],
     pay:r['পরিমাণ'],status:r['অবস্থা']==='অনুমোদিত'?'approved':'pending'
   }));
+  // ওভারটাইম stat আপডেট
+  const totalHrs = otData.reduce((s,r)=>s+parseFloat(r.ot||0),0);
+  const approved = otData.filter(r=>r.status==='approved').length;
+  const pending  = otData.filter(r=>r.status==='pending').length;
+  const totalPay = otData.reduce((s,r)=>s+parseFloat(r.pay||0),0);
+  const sv=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  sv('ot-total-hours', totalHrs.toFixed(1));
+  sv('ot-approved',    approved);
+  sv('ot-pending',     pending);
+  sv('ot-total-pay',   '৳'+Math.round(totalPay).toLocaleString());
   renderOTTable();
 }
 
