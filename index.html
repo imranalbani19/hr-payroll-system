@@ -1980,7 +1980,7 @@ function renderEmployeeTable(data){
     <td><span class="shift-badge shift-${(e.shift||'D').toLowerCase()}">${shiftLabel[e.shift||'D']}</span></td>
     <td><span class="badge ${e.status==='সক্রিয়'||e.status==='active'?'badge-success':'badge-danger'}">${e.status||'সক্রিয়'}</span></td>
     <td class="flex gap-8">
-      <button class="btn btn-outline btn-sm">এডিট</button>
+      <button class="btn btn-outline btn-sm" onclick="openEditEmpModal('${e.id}')">✏️ এডিট</button>
       <button class="btn btn-primary btn-sm" onclick="showPayslip('${e.id}')">পে-স্লিপ</button>
     </td>
   </tr>`).join('');
@@ -2633,6 +2633,105 @@ function updatePostDropdowns(){
   }
 }
 
+
+// ===== EMPLOYEE EDIT =====
+function openEditEmpModal(empId){
+  const emp = employees.find(e => e.id === empId);
+  if(!emp){ showToast('কর্মী পাওয়া যায়নি','danger'); return; }
+
+  document.getElementById('editEmpId').value       = emp.id || '';
+  document.getElementById('editEmpIdField').value  = emp.id || '';
+  document.getElementById('editEmpName').value     = emp.name || '';
+  document.getElementById('editEmpSalary').value   = emp.salary || '';
+  document.getElementById('editEmpPhone').value    = emp.phone || '';
+  document.getElementById('editEmpNid').value      = emp.nid || '';
+  document.getElementById('editEmpBank').value     = emp.bank || '';
+  document.getElementById('editEmpStatus').value   = emp.status === 'active' ? 'সক্রিয়' : (emp.status || 'সক্রিয়');
+  document.getElementById('editEmpShift').value    = emp.shift || 'D';
+
+  // যোগদান তারিখ — YYYY-MM-DD ফরম্যাটে সেট
+  const joinVal = emp.join || '';
+  if(joinVal && joinVal.includes('-') && joinVal.length >= 10){
+    document.getElementById('editEmpJoin').value = joinVal.slice(0,10);
+  } else {
+    document.getElementById('editEmpJoin').value = '';
+  }
+
+  // পদ সিলেক্ট
+  const postSel = document.getElementById('editEmpPost');
+  [...postSel.options].forEach(o => { o.selected = o.value === emp.post; });
+  if(![...postSel.options].find(o=>o.selected) && emp.post){
+    const opt = document.createElement('option');
+    opt.value = emp.post; opt.textContent = emp.post; opt.selected = true;
+    postSel.appendChild(opt);
+  }
+
+  // বিভাগ সিলেক্ট
+  const deptSel = document.getElementById('editEmpDept');
+  [...deptSel.options].forEach(o => { o.selected = o.value === emp.dept; });
+  if(![...deptSel.options].find(o=>o.selected) && emp.dept){
+    const opt = document.createElement('option');
+    opt.value = emp.dept; opt.textContent = emp.dept; opt.selected = true;
+    deptSel.appendChild(opt);
+  }
+
+  openModal('editEmployee');
+}
+
+let _savingEmployee = false;
+
+async function saveEditEmployee(){
+  if(_savingEmployee) return;
+
+  const id     = document.getElementById('editEmpId').value;
+  const name   = document.getElementById('editEmpName').value.trim();
+  const post   = document.getElementById('editEmpPost').value;
+  const dept   = document.getElementById('editEmpDept').value;
+  const salary = document.getElementById('editEmpSalary').value;
+  const join   = document.getElementById('editEmpJoin').value;
+  const phone  = document.getElementById('editEmpPhone').value;
+  const nid    = document.getElementById('editEmpNid').value;
+  const shift  = document.getElementById('editEmpShift').value;
+  const bank   = document.getElementById('editEmpBank').value;
+  const status = document.getElementById('editEmpStatus').value;
+
+  if(!name){ showToast('নাম দিন!','warning'); return; }
+
+  _savingEmployee = true;
+  const btn = document.querySelector('#modal-editEmployee .btn-primary');
+  if(btn){ btn.textContent = '⏳ সেভ হচ্ছে...'; btn.disabled = true; }
+
+  // লোকাল স্টেট আপডেট
+  const idx = employees.findIndex(e => e.id === id);
+  if(idx >= 0){
+    employees[idx] = { ...employees[idx], name, post, dept, salary: parseFloat(salary)||0, join, phone, nid, shift, bank, status };
+  }
+
+  // Google Sheets আপডেট
+  const res = await api('updateEmployee', { id, নাম:name, পদ:post, বিভাগ:dept, 'মূল বেতন':salary, 'যোগদান তারিখ':join, ফোন:phone, এনআইডি:nid, শিফট:shift, 'ব্যাংক অ্যাকাউন্ট':bank, অবস্থা:status });
+
+  _savingEmployee = false;
+  if(btn){ btn.textContent = '✅ সেভ করুন'; btn.disabled = false; }
+
+  showToast('✅ ' + name + ' এর তথ্য আপডেট হয়েছে');
+  closeModal('editEmployee');
+  renderEmployeeTable(employees);
+}
+
+async function deleteEmployee(){
+  const id   = document.getElementById('editEmpId').value;
+  const name = document.getElementById('editEmpName').value;
+  if(!confirm(name + ' কে নিষ্ক্রিয় করবেন?')) return;
+
+  const idx = employees.findIndex(e => e.id === id);
+  if(idx >= 0) employees[idx].status = 'নিষ্ক্রিয়';
+
+  await api('deleteEmployee', { id });
+  showToast('⚠️ ' + name + ' নিষ্ক্রিয় করা হয়েছে', 'warning');
+  closeModal('editEmployee');
+  renderEmployeeTable(employees);
+}
+
 </script>
 
 <!-- Edit Department Modal -->
@@ -2696,6 +2795,56 @@ function updatePostDropdowns(){
       <button class="btn btn-danger btn-sm" onclick="deleteDesig()" style="margin-right:auto">🗑️ মুছুন</button>
       <button class="btn btn-outline" onclick="closeModal('editDesig')">বাতিল</button>
       <button class="btn btn-primary" onclick="saveDesig()">✅ সেভ করুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Employee Modal -->
+<div class="modal-overlay" id="modal-editEmployee">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">✏️ কর্মী এডিট</div>
+      <button class="modal-close" onclick="closeModal('editEmployee')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editEmpId">
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">পূর্ণ নাম *</label><input type="text" id="editEmpName" class="form-control" placeholder="কর্মীর পূর্ণ নাম"></div>
+        <div class="form-group"><label class="form-label">কর্মী আইডি</label><input type="text" id="editEmpIdField" class="form-control" disabled style="background:#f8fafc;color:var(--text-muted)"></div>
+        <div class="form-group"><label class="form-label">পদ</label>
+          <select id="editEmpPost" class="form-control">
+            <option>অপারেটর</option><option>সিনিয়র অপারেটর</option><option>সিনিয়র অফিসার</option><option>অফিসার</option><option>সহকারী</option><option>ম্যানেজার</option><option>হেলপার</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">বিভাগ</label>
+          <select id="editEmpDept" class="form-control">
+            <option>উৎপাদন</option><option>অ্যাকাউন্টস</option><option>HR</option><option>IT</option><option>মার্কেটিং</option><option>অপারেশন</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">মূল বেতন (৳)</label><input type="number" id="editEmpSalary" class="form-control" placeholder="20000"></div>
+        <div class="form-group"><label class="form-label">যোগদান তারিখ</label><input type="date" id="editEmpJoin" class="form-control"></div>
+        <div class="form-group"><label class="form-label">ফোন নম্বর</label><input type="text" id="editEmpPhone" class="form-control" placeholder="01XXXXXXXXX"></div>
+        <div class="form-group"><label class="form-label">এনআইডি নম্বর</label><input type="text" id="editEmpNid" class="form-control"></div>
+        <div class="form-group"><label class="form-label">ডিফল্ট শিফট</label>
+          <select id="editEmpShift" class="form-control">
+            <option value="D">দিনের শিফট (D)</option>
+            <option value="E">সন্ধ্যা শিফট (E)</option>
+            <option value="N">রাতের শিফট (N)</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">ব্যাংক অ্যাকাউন্ট</label><input type="text" id="editEmpBank" class="form-control" placeholder="অ্যাকাউন্ট নম্বর"></div>
+        <div class="form-group form-full"><label class="form-label">অবস্থা</label>
+          <select id="editEmpStatus" class="form-control">
+            <option value="সক্রিয়">সক্রিয়</option>
+            <option value="নিষ্ক্রিয়">নিষ্ক্রিয়</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" onclick="deleteEmployee()" style="margin-right:auto">🗑️ নিষ্ক্রিয় করুন</button>
+      <button class="btn btn-outline" onclick="closeModal('editEmployee')">বাতিল</button>
+      <button class="btn btn-primary" onclick="saveEditEmployee()">✅ সেভ করুন</button>
     </div>
   </div>
 </div>
