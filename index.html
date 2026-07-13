@@ -1362,8 +1362,7 @@ tr:hover td { background: #fafbfc; }
 
 
 /* ===== WRAPPER ISOLATION ===== */
-#admin-wrapper { all: initial; display: none; font-family: 'Hind Siliguri','Inter',sans-serif; }
-#admin-wrapper * { box-sizing: border-box; }
+#admin-wrapper { display: none; font-family: 'Hind Siliguri','Inter',sans-serif; background:#f4f7fa; }
 #app-wrapper { display: none; }
 
 #admin-wrapper .layout {
@@ -1460,6 +1459,119 @@ tr:hover td { background: #fafbfc; }
   padding: 13px 14px !important;
   border-bottom: 1px solid #e2e8f0 !important;
   font-size: 13.5px !important;
+}
+
+
+/* ===== ADMIN FORM FIX ===== */
+#admin-wrapper .form-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 16px !important;
+}
+#admin-wrapper .form-control {
+  width: 100% !important;
+  padding: 9px 12px !important;
+  border: 1.5px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  font-family: inherit !important;
+  font-size: 13px !important;
+  color: #0f1923 !important;
+  background: white !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+  display: block !important;
+}
+#admin-wrapper .form-control:focus {
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.08) !important;
+}
+#admin-wrapper .form-group {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+}
+#admin-wrapper .form-label {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #3a4a5a !important;
+  display: block !important;
+}
+#admin-wrapper .modal {
+  background: white !important;
+  border-radius: 12px !important;
+  width: 100% !important;
+  max-width: 580px !important;
+}
+#admin-wrapper .modal-body {
+  padding: 24px !important;
+}
+#admin-wrapper .wizard-step { display: none !important; }
+#admin-wrapper .wizard-step.active { display: block !important; }
+#admin-wrapper .steps {
+  display: flex !important;
+  margin-bottom: 24px !important;
+}
+#admin-wrapper .step {
+  flex: 1 !important;
+  display: flex !important;
+}
+#admin-wrapper .step-content {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 12px 16px !important;
+  background: white !important;
+  border: 1px solid #e2e8f0 !important;
+  flex: 1 !important;
+}
+#admin-wrapper .btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 9px 16px !important;
+  border-radius: 8px !important;
+  border: none !important;
+  cursor: pointer !important;
+  font-family: inherit !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+}
+#admin-wrapper .btn-primary { background: #2563eb !important; color: white !important; }
+#admin-wrapper .btn-primary:hover { background: #1d4ed8 !important; }
+#admin-wrapper .btn-outline { background: white !important; color: #0f1923 !important; border: 1px solid #e2e8f0 !important; }
+#admin-wrapper .btn-lg { padding: 12px 24px !important; font-size: 15px !important; }
+#admin-wrapper .btn-sm { padding: 6px 12px !important; font-size: 12px !important; }
+#admin-wrapper .stat-card {
+  background: white !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  padding: 20px !important;
+}
+#admin-wrapper .customer-card {
+  background: white !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  padding: 20px !important;
+  cursor: pointer !important;
+  position: relative !important;
+}
+#admin-wrapper .badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 3px 10px !important;
+  border-radius: 20px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+#admin-wrapper .badge-green { background: #ecfdf5 !important; color: #065f46 !important; }
+#admin-wrapper .badge-blue  { background: #eff6ff !important; color: #1e40af !important; }
+#admin-wrapper .badge-amber { background: #fffbeb !important; color: #92400e !important; }
+#admin-wrapper .badge-red   { background: #fef2f2 !important; color: #991b1b !important; }
+#admin-wrapper .notice {
+  padding: 14px 16px !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
 }
 
 </style>
@@ -1880,7 +1992,7 @@ tr:hover td { background: #fafbfc; }
 
 <script>
 // ===== STATE =====
-const COLORS = ['#2563eb','#059669','#7c3aed','#d97706','#dc2626','#0891b2','#be185d','#065f46'];
+const ADMIN_COLORS = ['#2563eb','#059669','#7c3aed','#d97706','#dc2626','#0891b2','#be185d','#065f46'];
 const GITHUB_BASE = 'https://imranalbani19.github.io/hr-payroll-system/';
 
 let customers = JSON.parse(localStorage.getItem('hrp_customers') || '[]');
@@ -2126,7 +2238,7 @@ async function wizardNext2(){
     status: 'active',
     paymentStatus: 'paid',
     joinDate: new Date().toISOString().slice(0,10),
-    color: COLORS[customers.length % COLORS.length],
+    color: ADMIN_COLORS[customers.length % ADMIN_COLORS.length],
     softwareUrl: GITHUB_BASE,
   };
 
@@ -7322,7 +7434,7 @@ async function wizardNext2(){
     status: 'active',
     paymentStatus: 'paid',
     joinDate: new Date().toISOString().slice(0,10),
-    color: COLORS[customers.length % COLORS.length],
+    color: ADMIN_COLORS[customers.length % ADMIN_COLORS.length],
     softwareUrl: GITHUB_BASE,
   };
 
