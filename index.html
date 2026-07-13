@@ -1360,6 +1360,108 @@ tr:hover td { background: #fafbfc; }
 #app-wrapper{display:none;}
 #admin-wrapper{display:none;}
 
+
+/* ===== WRAPPER ISOLATION ===== */
+#admin-wrapper { all: initial; display: none; font-family: 'Hind Siliguri','Inter',sans-serif; }
+#admin-wrapper * { box-sizing: border-box; }
+#app-wrapper { display: none; }
+
+#admin-wrapper .layout {
+  display: grid !important;
+  grid-template-columns: 220px 1fr !important;
+  min-height: calc(100vh - 60px) !important;
+}
+
+#admin-wrapper .header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: #0f1923 !important;
+  padding: 0 32px !important;
+  height: 60px !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+}
+
+#admin-wrapper .sidebar {
+  display: block !important;
+  background: white !important;
+  border-right: 1px solid #e2e8f0 !important;
+  padding: 20px 0 !important;
+  width: 220px !important;
+}
+
+#admin-wrapper .main {
+  display: block !important;
+  padding: 28px 32px !important;
+  background: #f4f7fa !important;
+}
+
+#admin-wrapper .stat-row {
+  display: grid !important;
+  grid-template-columns: repeat(4,1fr) !important;
+  gap: 16px !important;
+  margin-bottom: 28px !important;
+}
+
+#admin-wrapper .customer-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3,1fr) !important;
+  gap: 16px !important;
+}
+
+#admin-wrapper .nav-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 9px 12px !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  color: #3a4a5a !important;
+  font-size: 13.5px !important;
+  font-weight: 500 !important;
+  margin-bottom: 2px !important;
+}
+
+#admin-wrapper .nav-item:hover { background: #f4f7fa !important; }
+#admin-wrapper .nav-item.active { background: #eff6ff !important; color: #2563eb !important; }
+
+#admin-wrapper .card {
+  background: white !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07) !important;
+  margin-bottom: 20px !important;
+}
+
+#admin-wrapper .card-header {
+  padding: 16px 20px !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+#admin-wrapper .page { display: none !important; }
+#admin-wrapper .page.active { display: block !important; }
+
+#admin-wrapper table { width: 100% !important; border-collapse: collapse !important; }
+#admin-wrapper th {
+  background: #f4f7fa !important;
+  padding: 10px 14px !important;
+  text-align: left !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: #7a8a9a !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+#admin-wrapper td {
+  padding: 13px 14px !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  font-size: 13.5px !important;
+}
+
 </style>
 </head>
 <body>
@@ -1397,7 +1499,7 @@ tr:hover td { background: #fafbfc; }
     </div>
   </div>
 </div>
-<div id="admin-wrapper">
+<div id="admin-wrapper" style="position:relative;z-index:1;width:100%;min-height:100vh;">
 
 <!-- HEADER -->
 <header class="header">
@@ -2098,7 +2200,7 @@ function resetWizard(){
 renderDashboard();
 </script>
 </div>
-<div id="app-wrapper">
+<div id="app-wrapper" style="position:relative;z-index:1;width:100%;min-height:100vh;">
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
