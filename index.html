@@ -6,39 +6,77 @@
 <title>HR পেরোল সিস্টেম</title>
 <style>
 
-  @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
   :root {
-    --primary: #1a56db;
-    --primary-dark: #1e429f;
-    --primary-light: #e8f0fe;
-    --secondary: #0e9f6e;
-    --secondary-light: #def7ec;
-    --danger: #e02424;
-    --danger-light: #fde8e8;
-    --warning: #ff8a00;
-    --warning-light: #fff3e0;
-    --purple: #7e3af2;
-    --purple-light: #edebfe;
-    --bg: #f0f4f8;
-    --sidebar-bg: #0f172a;
-    --sidebar-text: #94a3b8;
-    --sidebar-active: #1a56db;
-    --card: #ffffff;
-    --text: #1e293b;
-    --text-muted: #64748b;
-    --border: #e2e8f0;
-    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
-    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-    --radius: 12px;
-    --radius-sm: 8px;
+    /* প্রাইমারি — গভীর ইন্ডিগো-ব্লু */
+    --primary: #4F46E5;
+    --primary-dark: #3730A3;
+    --primary-light: #EEF2FF;
+    --primary-mid: #6366F1;
+
+    /* সেকেন্ডারি — এমারেল্ড */
+    --secondary: #059669;
+    --secondary-light: #ECFDF5;
+    --secondary-mid: #10B981;
+
+    /* বিপদ — রোজ */
+    --danger: #E11D48;
+    --danger-light: #FFF1F2;
+    --danger-mid: #F43F5E;
+
+    /* সতর্কতা — অ্যাম্বার */
+    --warning: #D97706;
+    --warning-light: #FFFBEB;
+    --warning-mid: #F59E0B;
+
+    /* পার্পেল — ভায়োলেট */
+    --purple: #7C3AED;
+    --purple-light: #F5F3FF;
+    --purple-mid: #8B5CF6;
+
+    /* ব্যাকগ্রাউন্ড */
+    --bg: #F8FAFC;
+    --bg-2: #F1F5F9;
+
+    /* সাইডবার — স্লেট ডার্ক */
+    --sidebar-bg: #0F172A;
+    --sidebar-bg2: #1E293B;
+    --sidebar-text: #94A3B8;
+    --sidebar-active: #4F46E5;
+
+    /* কার্ড */
+    --card: #FFFFFF;
+    --card-hover: #FAFBFF;
+
+    /* টেক্সট */
+    --text: #0F172A;
+    --text-muted: #64748B;
+    --text-light: #94A3B8;
+
+    /* বর্ডার */
+    --border: #E2E8F0;
+    --border-strong: #CBD5E1;
+
+    /* শ্যাডো */
+    --shadow: 0 1px 2px rgba(15,23,42,0.06), 0 1px 3px rgba(15,23,42,0.04);
+    --shadow-md: 0 4px 12px rgba(15,23,42,0.08), 0 2px 4px rgba(15,23,42,0.04);
+    --shadow-lg: 0 12px 32px rgba(15,23,42,0.12), 0 4px 8px rgba(15,23,42,0.06);
+
+    /* রেডিয়াস */
+    --radius: 14px;
+    --radius-sm: 10px;
+    --radius-xs: 6px;
+
+    /* ফন্ট */
+    --font-main: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    font-family: 'Hind Siliguri', 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
     background: var(--bg);
     color: var(--text);
     display: flex;
@@ -50,7 +88,8 @@
   .sidebar {
     width: 250px;
     min-height: 100vh;
-    background: var(--sidebar-bg);
+    background: linear-gradient(180deg, #0F172A 0%, #1E293B 100%);
+    border-right: 1px solid rgba(99,102,241,0.15);
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -65,15 +104,16 @@
   }
 
   .logo-badge {
-    background: var(--primary);
+    background: linear-gradient(135deg, #4F46E5, #7C3AED);
     color: white;
     font-size: 11px;
     font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 4px;
+    padding: 3px 10px;
+    border-radius: 6px;
     letter-spacing: 1px;
     display: inline-block;
     margin-bottom: 8px;
+    box-shadow: 0 2px 8px rgba(79,70,229,0.4);
   }
 
   .logo-title {
@@ -122,9 +162,10 @@
   }
 
   .nav-item.active {
-    background: rgba(26,86,219,0.15);
+    background: linear-gradient(90deg, rgba(79,70,229,0.2), rgba(79,70,229,0.05));
     color: white;
-    border-left-color: var(--primary);
+    border-left-color: #818CF8;
+    box-shadow: inset 0 0 0 1px rgba(129,140,248,0.1);
   }
 
   .nav-icon { font-size: 16px; width: 20px; text-align: center; }
@@ -161,7 +202,8 @@
   }
 
   .topbar {
-    background: var(--card);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
     padding: 0 24px;
     height: 60px;
@@ -207,10 +249,10 @@
     transition: all 0.2s;
   }
 
-  .btn-primary { background: var(--primary); color: white; }
-  .btn-primary:hover { background: var(--primary-dark); }
-  .btn-success { background: var(--secondary); color: white; }
-  .btn-success:hover { background: #057a55; }
+  .btn-primary { background: linear-gradient(135deg, #4F46E5, #6366F1); color: white; box-shadow: 0 2px 8px rgba(79,70,229,0.3); }
+  .btn-primary:hover { background: linear-gradient(135deg, #3730A3, #4F46E5); box-shadow: 0 4px 12px rgba(79,70,229,0.4); transform: translateY(-1px); }
+  .btn-success { background: linear-gradient(135deg, #059669, #10B981); color: white; box-shadow: 0 2px 8px rgba(5,150,105,0.3); }
+  .btn-success:hover { background: linear-gradient(135deg, #047857, #059669); box-shadow: 0 4px 12px rgba(5,150,105,0.4); transform: translateY(-1px); }
   .btn-danger { background: var(--danger); color: white; }
   .btn-outline {
     background: white;
@@ -235,6 +277,7 @@
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     border: 1px solid var(--border);
+    transition: box-shadow 0.2s;
   }
 
   .card-header {
@@ -270,6 +313,12 @@
     display: flex;
     align-items: flex-start;
     gap: 14px;
+    transition: all 0.2s;
+  }
+  .stat-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+    border-color: var(--border-strong);
   }
 
   .stat-icon {
@@ -316,7 +365,7 @@
   }
 
   th {
-    background: var(--bg);
+    background: #F8FAFC;
     padding: 11px 14px;
     text-align: left;
     font-size: 12px;
@@ -346,11 +395,11 @@
     font-weight: 600;
   }
 
-  .badge-success { background: var(--secondary-light); color: #065f46; }
-  .badge-danger { background: var(--danger-light); color: #9b1c1c; }
-  .badge-warning { background: var(--warning-light); color: #92400e; }
-  .badge-info { background: var(--primary-light); color: #1e429f; }
-  .badge-purple { background: var(--purple-light); color: #5521b5; }
+  .badge-success { background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
+  .badge-danger { background: #FFF1F2; color: #9F1239; border: 1px solid #FECDD3; }
+  .badge-warning { background: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; }
+  .badge-info { background: #EEF2FF; color: #3730A3; border: 1px solid #C7D2FE; }
+  .badge-purple { background: #F5F3FF; color: #5B21B6; border: 1px solid #DDD6FE; }
 
   /* ===== FORM ===== */
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -373,7 +422,7 @@
     outline: none;
   }
 
-  .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,86,219,0.08); }
+  .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79,70,229,0.12); outline: none; }
   select.form-control { cursor: pointer; }
 
   /* ===== MODAL ===== */
@@ -559,10 +608,10 @@
     font-weight: 700;
   }
 
-  .shift-d { background: #fef3c7; color: #92400e; }
-  .shift-n { background: #ede9fe; color: #5521b5; }
-  .shift-e { background: #d1fae5; color: #065f46; }
-  .shift-off { background: #f1f5f9; color: #94a3b8; }
+  .shift-d { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; font-weight: 700; }
+  .shift-n { background: #EDE9FE; color: #5B21B6; border: 1px solid #DDD6FE; font-weight: 700; }
+  .shift-e { background: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; font-weight: 700; }
+  .shift-off { background: #F8FAFC; color: #94A3B8; border: 1px solid #E2E8F0; font-weight: 600; }
 
   /* ===== LEAVE ===== */
   .leave-balance-grid {
@@ -829,7 +878,7 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 
 body {
-  font-family: 'Hind Siliguri', 'Inter', sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
   background: var(--bg);
   color: var(--ink);
   min-height: 100vh;
@@ -1574,6 +1623,23 @@ tr:hover td { background: #fafbfc; }
   font-size: 13px !important;
 }
 
+
+/* ===== BACK BUTTON ===== */
+.modal-back {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 20px;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 6px;
+  margin-right: 4px;
+  transition: all 0.15s;
+}
+.modal-back:hover { background: var(--bg); color: var(--text); }
+.modal-header-left { display: flex; align-items: center; gap: 4px; }
+
 </style>
 </head>
 <body>
@@ -1976,7 +2042,7 @@ tr:hover td { background: #fafbfc; }
 <div class="modal-overlay" id="modal-customer">
   <div class="modal" style="max-width:640px">
     <div class="modal-header">
-      <div class="modal-title" id="modal-customer-title">কাস্টমার বিস্তারিত</div>
+      <div class="modal-header-left"><button class="modal-back" onclick="goBack()" style="display:none" title="পেছনে যান">←</button><div class="modal-title" id="modal-customer-title">কাস্টমার বিস্তারিত</div></div>
       <button class="modal-close" onclick="closeModal('customer')">✕</button>
     </div>
     <div class="modal-body" id="modal-customer-body"></div>
@@ -3075,7 +3141,7 @@ renderDashboard();
           <option>HR</option><option>IT</option><option>মার্কেটিং</option><option>অপারেশন</option>
         </select>
         <button class="btn btn-primary" onclick="openModal('setShift')">✏️ শিফট সেট করুন</button>
-        <button class="btn btn-outline" onclick="openRotationModal()" style="background:#edebfe;color:#5521b5;border-color:#c4b5fd">🔄 রোটেশন শিফট</button>
+        <button class="btn btn-outline" onclick="openModalWithBack('rotationShift', null)" style="background:#edebfe;color:#5521b5;border-color:#c4b5fd">🔄 রোটেশন শিফট</button>
         <button class="btn btn-success" onclick="saveRosterToSheet()">💾 সেভ করুন</button>
         <button class="btn btn-outline" onclick="printRoster()">🖨️ প্রিন্ট</button>
       </div>
@@ -3234,7 +3300,7 @@ renderDashboard();
 <div class="modal-overlay" id="modal-addEmployee">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">👤 নতুন কর্মী যোগ</div>
+      <div class="modal-header-left"><button class="modal-back" onclick="goBack()" style="display:none" title="পেছনে যান">←</button><div class="modal-title">👤 নতুন কর্মী যোগ</div></div>
       <button class="modal-close" onclick="closeModal('addEmployee')">✕</button>
     </div>
     <div class="modal-body">
@@ -3262,7 +3328,7 @@ renderDashboard();
 <div class="modal-overlay" id="modal-applyLeave">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">🏖️ ছুটির আবেদন</div>
+      <div class="modal-header-left"><button class="modal-back" onclick="goBack()" style="display:none" title="পেছনে যান">←</button><div class="modal-title">🏖️ ছুটির আবেদন</div></div>
       <button class="modal-close" onclick="closeModal('applyLeave')">✕</button>
     </div>
     <div class="modal-body">
@@ -3285,7 +3351,7 @@ renderDashboard();
 <div class="modal-overlay" id="modal-payslip">
   <div class="modal" style="max-width:750px">
     <div class="modal-header">
-      <div class="modal-title">📄 পে-স্লিপ</div>
+      <div class="modal-header-left"><button class="modal-back" onclick="goBack()" style="display:none" title="পেছনে যান">←</button><div class="modal-title">📄 পে-স্লিপ</div></div>
       <button class="modal-close" onclick="closeModal('payslip')">✕</button>
     </div>
     <div class="modal-body" id="payslip-content">
@@ -3511,7 +3577,7 @@ function renderEmployeeTable(data){
     <td><span class="badge ${e.status==='সক্রিয়'||e.status==='active'?'badge-success':'badge-danger'}">${e.status||'সক্রিয়'}</span></td>
     <td class="flex gap-8">
       <button class="btn btn-outline btn-sm" onclick="openEditEmpModal('${e.id}')">✏️ এডিট</button>
-      <button class="btn btn-primary btn-sm" onclick="showPayslip('${e.id}')">পে-স্লিপ</button>
+      <button class="btn btn-primary btn-sm" onclick="openPayslipFromPayroll('${e.id}')">পে-স্লিপ</button>
     </td>
   </tr>`).join('');
 }
@@ -4394,7 +4460,7 @@ function renderPayrollTable(){
     <td style="color:var(--danger)">৳${(e.deduct||0).toLocaleString()}</td>
     <td><strong>৳${(e.net||0).toLocaleString()}</strong></td>
     <td><span class="badge ${statusMap[e.status]||'badge-warning'}">${e.status||'পেন্ডিং'}</span></td>
-    <td><button class="btn btn-outline btn-sm" onclick="showPayslip('${e.id}')">📄 দেখুন</button></td>
+    <td><button class="btn btn-outline btn-sm" onclick="openPayslipFromPayroll('${e.id}')">📄 দেখুন</button></td>
   </tr>`).join('');
 }
 
@@ -5231,7 +5297,7 @@ function renderRotationRoster(){
 <div class="modal-overlay" id="modal-editDept">
   <div class="modal" style="max-width:460px">
     <div class="modal-header">
-      <div class="modal-title" id="editDeptModalTitle">🏢 বিভাগ এডিট</div>
+      <div class="modal-header-left"><button class="modal-back" onclick="goBack()" style="display:none" title="পেছনে যান">←</button><div class="modal-title" id="editDeptModalTitle">🏢 বিভাগ এডিট</div></div>
       <button class="modal-close" onclick="closeModal('editDept')">✕</button>
     </div>
     <div class="modal-body">
@@ -5257,7 +5323,7 @@ function renderRotationRoster(){
 <div class="modal-overlay" id="modal-editDesig">
   <div class="modal" style="max-width:460px">
     <div class="modal-header">
-      <div class="modal-title" id="editDesigModalTitle">💼 পদ এডিট</div>
+      <div class="modal-header-left"><button class="modal-back" onclick="goBack()" style="display:none" title="পেছনে যান">←</button><div class="modal-title" id="editDesigModalTitle">💼 পদ এডিট</div></div>
       <button class="modal-close" onclick="closeModal('editDesig')">✕</button>
     </div>
     <div class="modal-body">
@@ -5296,7 +5362,7 @@ function renderRotationRoster(){
 <div class="modal-overlay" id="modal-editEmployee">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">✏️ কর্মী এডিট</div>
+      <div class="modal-header-left"><button class="modal-back" onclick="goBack()" style="display:none" title="পেছনে যান">←</button><div class="modal-title">✏️ কর্মী এডিট</div></div>
       <button class="modal-close" onclick="closeModal('editEmployee')">✕</button>
     </div>
     <div class="modal-body">
@@ -5346,7 +5412,7 @@ function renderRotationRoster(){
 <div class="modal-overlay" id="modal-setShift">
   <div class="modal" style="max-width:500px">
     <div class="modal-header">
-      <div class="modal-title">✏️ শিফট সেট করুন</div>
+      <div class="modal-header-left"><button class="modal-back" onclick="goBack()" style="display:none" title="পেছনে যান">←</button><div class="modal-title">✏️ শিফট সেট করুন</div></div>
       <button class="modal-close" onclick="closeModal('setShift')">✕</button>
     </div>
     <div class="modal-body">
@@ -5397,7 +5463,7 @@ function renderRotationRoster(){
 <div class="modal-overlay" id="modal-rotationShift">
   <div class="modal" style="max-width:560px">
     <div class="modal-header">
-      <div class="modal-title">🔄 রোটেশন শিফট সেটআপ</div>
+      <div class="modal-header-left"><button class="modal-back" onclick="goBack()" style="display:none" title="পেছনে যান">←</button><div class="modal-title">🔄 রোটেশন শিফট সেটআপ</div></div>
       <button class="modal-close" onclick="closeModal('rotationShift')">✕</button>
     </div>
     <div class="modal-body">
@@ -5699,7 +5765,7 @@ function renderEmployeeTable(data){
     <td><span class="badge ${e.status==='সক্রিয়'||e.status==='active'?'badge-success':'badge-danger'}">${e.status||'সক্রিয়'}</span></td>
     <td class="flex gap-8">
       <button class="btn btn-outline btn-sm" onclick="openEditEmpModal('${e.id}')">✏️ এডিট</button>
-      <button class="btn btn-primary btn-sm" onclick="showPayslip('${e.id}')">পে-স্লিপ</button>
+      <button class="btn btn-primary btn-sm" onclick="openPayslipFromPayroll('${e.id}')">পে-স্লিপ</button>
     </td>
   </tr>`).join('');
 }
@@ -6352,7 +6418,7 @@ function renderPayrollTable(){
     <td style="color:var(--danger)">৳${(e.deduct||0).toLocaleString()}</td>
     <td><strong>৳${(e.net||0).toLocaleString()}</strong></td>
     <td><span class="badge ${statusMap[e.status]||'badge-warning'}">${e.status||'পেন্ডিং'}</span></td>
-    <td><button class="btn btn-outline btn-sm" onclick="showPayslip('${e.id}')">📄 দেখুন</button></td>
+    <td><button class="btn btn-outline btn-sm" onclick="openPayslipFromPayroll('${e.id}')">📄 দেখুন</button></td>
   </tr>`).join('');
 }
 
@@ -7613,6 +7679,105 @@ function logout(){
   document.querySelectorAll('.lout-btn').forEach(b => b.remove());
 }
 
+
+// ===== MODAL BACK BUTTON SYSTEM =====
+const modalHistory = [];
+
+function openModalWithBack(name, fromModal = null) {
+  if(fromModal) {
+    modalHistory.push(fromModal);
+    document.getElementById('modal-' + fromModal)?.classList.remove('open');
+  }
+  const modal = document.getElementById('modal-' + name);
+  if(!modal) return;
+  modal.classList.add('open');
+  const backBtn = modal.querySelector('.modal-back');
+  if(backBtn) backBtn.style.display = fromModal ? 'flex' : 'none';
+}
+
+function goBack() {
+  document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+  if(modalHistory.length > 0) {
+    const prev = modalHistory.pop();
+    const prevModal = document.getElementById('modal-' + prev);
+    if(prevModal) {
+      prevModal.classList.add('open');
+      // prev মডালের back বাটন — আরও হিস্ট্রি থাকলে দেখাই
+      const backBtn = prevModal.querySelector('.modal-back');
+      if(backBtn) backBtn.style.display = modalHistory.length > 0 ? 'flex' : 'none';
+    }
+  }
+}
+
+// পে-স্লিপ → back → পেরোল
+function openPayslipFromPayroll(empId) {
+  showPayslip(empId);
+  const backBtn = document.querySelector('#modal-payslip .modal-back');
+  if(backBtn) {
+    backBtn.style.display = 'flex';
+    backBtn.onclick = () => {
+      closeModal('payslip');
+    };
+  }
+}
+
+function openPayslipFromEmp(empId) {
+  showPayslip(empId);
+  const backBtn = document.querySelector('#modal-payslip .modal-back');
+  if(backBtn) {
+    backBtn.style.display = 'flex';
+    backBtn.onclick = () => closeModal('payslip');
+  }
+}
+
+// editEmployee খুললে back দেখাই না (সরাসরি খোলে)
+const _origOpenEditEmpModal = typeof openEditEmpModal !== 'undefined' ? openEditEmpModal : null;
+
+// editDept → back → editDesig chain
+function openEditDeptWithBack(idx) {
+  openEditDeptModal(idx);
+  const backBtn = document.querySelector('#modal-editDept .modal-back');
+  if(backBtn) backBtn.style.display = 'none';
+}
+
+function openEditDesigWithBack(idx) {
+  openEditDesigModal(idx);
+  const backBtn = document.querySelector('#modal-editDesig .modal-back');
+  if(backBtn) backBtn.style.display = 'none';
+}
+
+// setShift → rotationShift chain
+function openRotationFromShift() {
+  openModalWithBack('rotationShift', 'setShift');
+}
+
+// keyboard shortcut: Escape = goBack বা closeModal
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') {
+    const openModals = [...document.querySelectorAll('.modal-overlay.open')];
+    if(openModals.length > 0) {
+      if(modalHistory.length > 0) {
+        goBack();
+      } else {
+        openModals.forEach(m => m.classList.remove('open'));
+      }
+    }
+  }
+});
+
 </script>
 </body>
 </html>
+<style>
+/* modal-header-left fix */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-header-left {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+</style>
