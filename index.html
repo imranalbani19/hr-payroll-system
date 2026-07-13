@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HR ও পেরোল ম্যানেজমেন্ট সিস্টেম</title>
+<title>HR পেরোল সিস্টেম</title>
 <style>
+
   @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
   :root {
@@ -797,9 +798,1307 @@
     .main { margin-left: 0; }
     .payslip { border: none; }
   }
+
+
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --ink: #0f1923;
+  --ink-2: #3a4a5a;
+  --ink-3: #7a8a9a;
+  --bg: #f4f7fa;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --primary-light: #eff6ff;
+  --green: #059669;
+  --green-light: #ecfdf5;
+  --amber: #d97706;
+  --amber-light: #fffbeb;
+  --red: #dc2626;
+  --red-light: #fef2f2;
+  --purple: #7c3aed;
+  --purple-light: #f5f3ff;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Hind Siliguri', 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 14px;
+}
+
+/* HEADER */
+.header {
+  background: var(--ink);
+  padding: 0 32px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-mark {
+  width: 32px;
+  height: 32px;
+  background: var(--primary);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.logo-text {
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.logo-sub {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.admin-badge {
+  background: rgba(255,255,255,0.1);
+  color: #94a3b8;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* LAYOUT */
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: calc(100vh - 60px);
+}
+
+/* SIDEBAR */
+.sidebar {
+  background: white;
+  border-right: 1px solid var(--border);
+  padding: 20px 0;
+}
+
+.nav-group {
+  padding: 0 12px;
+  margin-bottom: 24px;
+}
+
+.nav-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ink-3);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 0 8px;
+  margin-bottom: 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--ink-2);
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: all 0.15s;
+  margin-bottom: 2px;
+}
+
+.nav-item:hover { background: var(--bg); color: var(--ink); }
+.nav-item.active { background: var(--primary-light); color: var(--primary); }
+.nav-icon { font-size: 16px; width: 20px; text-align: center; }
+
+/* MAIN */
+.main { padding: 28px 32px; }
+
+.page { display: none; }
+.page.active { display: block; }
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.5px;
+}
+
+.page-sub {
+  font-size: 13px;
+  color: var(--ink-3);
+  margin-top: 2px;
+}
+
+/* STAT CARDS */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+.stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--ink-3);
+  font-weight: 500;
+}
+
+/* CARDS */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+}
+
+.card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.card-body { padding: 20px; }
+
+/* BUTTONS */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-success { background: var(--green); color: white; }
+.btn-outline { background: white; color: var(--ink); border: 1px solid var(--border); }
+.btn-outline:hover { background: var(--bg); }
+.btn-danger { background: var(--red); color: white; }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn-lg { padding: 12px 24px; font-size: 15px; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* TABLE */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th { background: var(--bg); padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+td { padding: 13px 14px; border-bottom: 1px solid var(--border); font-size: 13.5px; color: var(--ink); }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #fafbfc; }
+
+/* BADGE */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.badge-green { background: var(--green-light); color: #065f46; }
+.badge-amber { background: var(--amber-light); color: #92400e; }
+.badge-red { background: var(--red-light); color: #991b1b; }
+.badge-blue { background: var(--primary-light); color: #1e40af; }
+.badge-purple { background: var(--purple-light); color: #5b21b6; }
+.badge-gray { background: var(--bg); color: var(--ink-3); }
+
+/* FORM */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-full { grid-column: 1/-1; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-label { font-size: 12px; font-weight: 600; color: var(--ink-2); }
+.form-control {
+  padding: 9px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--ink);
+  background: white;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
+.form-hint { font-size: 11px; color: var(--ink-3); margin-top: 2px; }
+
+/* MODAL */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(15,25,35,0.6);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: white;
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 580px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+}
+.modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.modal-title { font-size: 16px; font-weight: 700; }
+.modal-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--ink-3); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 6px; }
+.modal-close:hover { background: var(--bg); }
+.modal-body { padding: 24px; }
+.modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
+
+/* STEPS */
+.steps {
+  display: flex;
+  gap: 0;
+  margin-bottom: 28px;
+}
+
+.step {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.step-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: white;
+  border: 1px solid var(--border);
+  flex: 1;
+}
+
+.step:first-child .step-content { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
+.step:last-child .step-content { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+
+.step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--ink-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.step.active .step-num { background: var(--primary); color: white; }
+.step.done .step-num { background: var(--green); color: white; }
+.step-label { font-size: 12px; font-weight: 600; color: var(--ink-3); }
+.step.active .step-label { color: var(--primary); }
+.step.done .step-label { color: var(--green); }
+
+/* CUSTOMER CARD */
+.customer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.customer-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  transition: all 0.2s;
+  cursor: pointer;
+  position: relative;
+}
+
+.customer-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.customer-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 12px;
+}
+
+.customer-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.customer-info { font-size: 12px; color: var(--ink-3); margin-bottom: 12px; }
+
+.customer-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.cstat {
+  background: var(--bg);
+  border-radius: 6px;
+  padding: 8px;
+  text-align: center;
+}
+
+.cstat-val { font-size: 16px; font-weight: 700; color: var(--ink); }
+.cstat-label { font-size: 10px; color: var(--ink-3); margin-top: 1px; }
+
+.customer-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.status-dot {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dot-green { background: var(--green); box-shadow: 0 0 0 3px var(--green-light); }
+.dot-amber { background: var(--amber); }
+.dot-red { background: var(--red); }
+
+/* ONBOARDING WIZARD */
+.wizard-step { display: none; }
+.wizard-step.active { display: block; }
+
+.onboard-preview {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  font-family: 'Inter', monospace;
+  font-size: 12px;
+  color: var(--ink-2);
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+/* TOAST */
+#toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toast {
+  padding: 12px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  color: white;
+  box-shadow: var(--shadow-lg);
+  animation: slideIn 0.3s ease;
+  min-width: 220px;
+}
+
+@keyframes slideIn { from { transform: translateX(40px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  vertical-align: middle;
+}
+
+/* REVENUE CHART */
+.revenue-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 80px;
+  padding: 0 4px;
+}
+
+.rev-bar-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.rev-bar-fill {
+  width: 100%;
+  border-radius: 4px 4px 0 0;
+  background: var(--primary);
+  opacity: 0.8;
+  transition: height 0.5s ease;
+  min-height: 4px;
+}
+
+.rev-bar-fill.current { opacity: 1; background: var(--primary); }
+.rev-bar-label { font-size: 9px; color: var(--ink-3); }
+
+
+#login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#0f1923 0%,#1a2d4a 50%,#0f1923 100%);display:flex;align-items:center;justify-content:center;z-index:10000;}
+.login-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:48px 40px;width:100%;max-width:420px;backdrop-filter:blur(20px);box-shadow:0 32px 80px rgba(0,0,0,0.4);}
+.login-logo{text-align:center;margin-bottom:32px;}
+.login-logo-icon{width:64px;height:64px;background:#2563eb;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 16px;box-shadow:0 8px 32px rgba(37,99,235,0.4);}
+.login-title{color:white;font-size:22px;font-weight:700;margin-bottom:4px;}
+.login-sub{color:#64748b;font-size:13px;}
+.login-form{display:flex;flex-direction:column;gap:14px;}
+.login-group{display:flex;flex-direction:column;gap:6px;}
+.login-label{color:#94a3b8;font-size:12px;font-weight:600;}
+.login-input{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:12px 16px;color:white;font-family:inherit;font-size:14px;outline:none;width:100%;}
+.login-input:focus{border-color:#2563eb;}
+.login-input::placeholder{color:#475569;}
+.login-btn{background:#2563eb;color:white;border:none;border-radius:10px;padding:13px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;width:100%;margin-top:6px;}
+.login-btn:hover{background:#1d4ed8;}
+.login-btn:disabled{opacity:0.6;cursor:not-allowed;}
+.login-error{background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.3);color:#fca5a5;padding:10px 14px;border-radius:8px;font-size:13px;display:none;}
+.login-accounts{margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.08);}
+.login-accounts-title{color:#475569;font-size:11px;text-align:center;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;}
+.quick-login{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.quick-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px;color:#94a3b8;font-family:inherit;font-size:12px;cursor:pointer;text-align:center;}
+.quick-btn:hover{background:rgba(255,255,255,0.1);color:white;}
+.quick-btn span{display:block;font-size:18px;margin-bottom:3px;}
+#app-wrapper{display:none;}
+#admin-wrapper{display:none;}
+
 </style>
 </head>
 <body>
+
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">⚡</div>
+      <div class="login-title">HR পেরোল সিস্টেম</div>
+      <div class="login-sub">আপনার অ্যাকাউন্টে লগিন করুন</div>
+    </div>
+    <div class="login-form">
+      <div class="login-group">
+        <label class="login-label">ইউজারনেম</label>
+        <input type="text" id="login-username" class="login-input" placeholder="username দিন">
+      </div>
+      <div class="login-group">
+        <label class="login-label">পাসওয়ার্ড</label>
+        <input type="password" id="login-password" class="login-input" placeholder="password দিন"
+          onkeydown="if(event.key==='Enter') doLogin()">
+      </div>
+      <div class="login-error" id="login-error"></div>
+      <button class="login-btn" id="login-btn" onclick="doLogin()">লগিন করুন →</button>
+    </div>
+    <div class="login-accounts">
+      <div class="login-accounts-title">দ্রুত লগিন</div>
+      <div class="quick-login">
+        <button class="quick-btn" onclick="quickLogin('admin','admin123')">
+          <span>👑</span>Admin Panel
+        </button>
+        <button class="quick-btn" onclick="quickLogin('demo','demo123')">
+          <span>🏢</span>ডেমো কাস্টমার
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="admin-wrapper">
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-logo">
+    <div class="logo-mark">⚡</div>
+    <div>
+      <div class="logo-text">HR Payroll Admin</div>
+      <div class="logo-sub">Imran Al Bani — SaaS Dashboard</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="admin-badge">👤 Super Admin</span>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="nav-group">
+      <div class="nav-label">প্রধান</div>
+      <div class="nav-item active" onclick="navigate('dashboard')">
+        <span class="nav-icon">📊</span> ড্যাশবোর্ড
+      </div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-label">কাস্টমার</div>
+      <div class="nav-item" onclick="navigate('customers')">
+        <span class="nav-icon">🏢</span> সব কাস্টমার
+      </div>
+      <div class="nav-item" onclick="navigate('onboard')">
+        <span class="nav-icon">➕</span> নতুন যোগ করুন
+      </div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-label">বিজনেস</div>
+      <div class="nav-item" onclick="navigate('revenue')">
+        <span class="nav-icon">💰</span> রেভিনিউ
+      </div>
+      <div class="nav-item" onclick="navigate('support')">
+        <span class="nav-icon">🛠️</span> সাপোর্ট
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-header">
+        <div>
+          <div class="page-title">ড্যাশবোর্ড</div>
+          <div class="page-sub">আপনার সব কাস্টমারের সারসংক্ষেপ</div>
+        </div>
+        <button class="btn btn-primary" onclick="navigate('onboard')">
+          ➕ নতুন কাস্টমার
+        </button>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#eff6ff">🏢</div>
+          <div class="stat-value" id="total-customers">0</div>
+          <div class="stat-label">মোট কাস্টমার</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#ecfdf5">✅</div>
+          <div class="stat-value" id="active-customers">0</div>
+          <div class="stat-label">সক্রিয় কাস্টমার</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#f5f3ff">💰</div>
+          <div class="stat-value" id="monthly-revenue">৳০</div>
+          <div class="stat-label">মাসিক আয়</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#fffbeb">⏳</div>
+          <div class="stat-value" id="pending-payment">0</div>
+          <div class="stat-label">পেমেন্ট বাকি</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">সাম্প্রতিক কাস্টমার</div>
+            <button class="btn btn-outline btn-sm" onclick="navigate('customers')">সব দেখুন</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>প্রতিষ্ঠান</th>
+                  <th>কর্মী</th>
+                  <th>প্যাকেজ</th>
+                  <th>পেমেন্ট</th>
+                  <th>অবস্থা</th>
+                </tr>
+              </thead>
+              <tbody id="dash-customer-table"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">মাসিক রেভিনিউ</div>
+          </div>
+          <div class="card-body">
+            <div class="revenue-bar" id="revenue-chart"></div>
+            <div style="margin-top:16px">
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px">
+                <span style="color:var(--ink-3)">ছোট প্যাকেজ</span>
+                <strong id="rev-small">৳০</strong>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px">
+                <span style="color:var(--ink-3)">মাঝারি প্যাকেজ</span>
+                <strong id="rev-medium">৳০</strong>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:13px">
+                <span style="color:var(--ink-3)">বড় প্যাকেজ</span>
+                <strong id="rev-large">৳০</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CUSTOMERS -->
+    <div class="page" id="page-customers">
+      <div class="page-header">
+        <div>
+          <div class="page-title">সব কাস্টমার</div>
+          <div class="page-sub" id="customer-count-sub">মোট ০ জন কাস্টমার</div>
+        </div>
+        <button class="btn btn-primary" onclick="navigate('onboard')">➕ নতুন কাস্টমার</button>
+      </div>
+
+      <div class="customer-grid" id="customer-grid"></div>
+    </div>
+
+    <!-- ONBOARD WIZARD -->
+    <div class="page" id="page-onboard">
+      <div class="page-header">
+        <div>
+          <div class="page-title">নতুন কাস্টমার যোগ</div>
+          <div class="page-sub">অটো সেটআপ — মাত্র ৩টি ধাপ</div>
+        </div>
+      </div>
+
+      <!-- Progress Steps -->
+      <div class="steps mb-24" id="wizard-steps">
+        <div class="step active" id="step-tab-1">
+          <div class="step-content">
+            <div class="step-num">1</div>
+            <div class="step-label">কাস্টমার তথ্য</div>
+          </div>
+        </div>
+        <div class="step" id="step-tab-2">
+          <div class="step-content">
+            <div class="step-num">2</div>
+            <div class="step-label">Google Sheets</div>
+          </div>
+        </div>
+        <div class="step" id="step-tab-3">
+          <div class="step-content">
+            <div class="step-num">3</div>
+            <div class="step-label">সম্পন্ন</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 1: Customer Info -->
+      <div class="wizard-step active" id="wizard-1">
+        <div class="card">
+          <div class="card-header"><div class="card-title">📋 কাস্টমারের তথ্য</div></div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">প্রতিষ্ঠানের নাম *</label>
+                <input type="text" id="ob-company" class="form-control" placeholder="যেমন: ABC Garments Ltd">
+              </div>
+              <div class="form-group">
+                <label class="form-label">মালিকের নাম *</label>
+                <input type="text" id="ob-owner" class="form-control" placeholder="পূর্ণ নাম">
+              </div>
+              <div class="form-group">
+                <label class="form-label">ফোন নম্বর *</label>
+                <input type="text" id="ob-phone" class="form-control" placeholder="01XXXXXXXXX">
+              </div>
+              <div class="form-group">
+                <label class="form-label">ইমেইল</label>
+                <input type="email" id="ob-email" class="form-control" placeholder="email@example.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label">কর্মী সংখ্যা *</label>
+                <select id="ob-size" class="form-control">
+                  <option value="small">১-৩০ জন</option>
+                  <option value="medium" selected>৩১-৭৫ জন</option>
+                  <option value="large">৭৫-১৫০ জন</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">প্যাকেজ *</label>
+                <select id="ob-package" class="form-control">
+                  <option value="1500">ছোট — ৳১,৫০০/মাস</option>
+                  <option value="2500" selected>মাঝারি — ৳২,৫০০/মাস</option>
+                  <option value="4000">বড় — ৳৪,০০০/মাস</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">পেমেন্ট তারিখ</label>
+                <input type="date" id="ob-paydate" class="form-control">
+              </div>
+              <div class="form-group">
+                <label class="form-label">ঠিকানা</label>
+                <input type="text" id="ob-address" class="form-control" placeholder="জেলা, বিভাগ">
+              </div>
+            </div>
+            <div style="margin-top:20px;display:flex;justify-content:flex-end">
+              <button class="btn btn-primary btn-lg" onclick="wizardNext1()">
+                পরবর্তী ধাপ →
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Google Sheets -->
+      <div class="wizard-step" id="wizard-2">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🔗 Google Sheets সংযোগ</div>
+          </div>
+          <div class="card-body">
+            <div class="notice" style="background:#eff6ff;border-left:4px solid var(--primary);padding:14px 16px;border-radius:8px;margin-bottom:20px;font-size:13px;color:#1e40af">
+              💡 <strong>এখন করুন:</strong> Google Sheets বানিয়ে Apps Script Deploy করুন, URL এখানে বসান।
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+              <div style="background:var(--bg);border-radius:var(--radius-sm);padding:16px">
+                <div style="font-size:12px;font-weight:700;margin-bottom:10px;color:var(--ink-2)">ধাপ ১ — Google Sheets</div>
+                <a href="https://sheets.google.com" target="_blank" class="btn btn-outline" style="width:100%;justify-content:center;margin-bottom:8px">
+                  📊 Sheets খুলুন
+                </a>
+                <div style="font-size:11px;color:var(--ink-3)">নতুন Spreadsheet বানান → Extensions → Apps Script</div>
+              </div>
+              <div style="background:var(--bg);border-radius:var(--radius-sm);padding:16px">
+                <div style="font-size:12px;font-weight:700;margin-bottom:10px;color:var(--ink-2)">ধাপ ২ — Apps Script</div>
+                <a href="https://script.google.com" target="_blank" class="btn btn-outline" style="width:100%;justify-content:center;margin-bottom:8px">
+                  ⚙️ Script খুলুন
+                </a>
+                <div style="font-size:11px;color:var(--ink-3)">Code.gs পেস্ট → setupSheets রান → Deploy → Web App</div>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:20px">
+              <label class="form-label">Apps Script Deploy URL *</label>
+              <input type="text" id="ob-surl" class="form-control" placeholder="https://script.google.com/macros/s/...">
+              <div class="form-hint">Deploy করার পরে পাওয়া URL টা এখানে বসান</div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:20px">
+              <label class="form-label">Spreadsheet ID *</label>
+              <input type="text" id="ob-sheetid" class="form-control" placeholder="1-V77Z3HMv5ibQ8IVR1yzsx9OT0T...">
+              <div class="form-hint">Sheets URL এর /d/ এবং /edit এর মাঝের অংশ</div>
+            </div>
+
+            <div id="ob-test-result" style="display:none;padding:12px;border-radius:8px;margin-bottom:16px;font-size:13px"></div>
+
+            <div style="display:flex;justify-content:space-between">
+              <button class="btn btn-outline" onclick="wizardBack(1)">← আগের ধাপ</button>
+              <div style="display:flex;gap:10px">
+                <button class="btn btn-outline" onclick="testConnection()">🔍 কানেকশন টেস্ট</button>
+                <button class="btn btn-primary btn-lg" onclick="wizardNext2()">সম্পন্ন করুন ✅</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Done -->
+      <div class="wizard-step" id="wizard-3">
+        <div class="card">
+          <div class="card-body" style="text-align:center;padding:48px 24px">
+            <div style="font-size:64px;margin-bottom:16px">🎉</div>
+            <div style="font-size:24px;font-weight:800;margin-bottom:8px" id="ob-success-title">কাস্টমার যোগ হয়েছে!</div>
+            <div style="font-size:14px;color:var(--ink-3);margin-bottom:32px" id="ob-success-sub"></div>
+
+            <div style="background:var(--bg);border-radius:var(--radius);padding:20px;text-align:left;max-width:480px;margin:0 auto 28px">
+              <div style="font-size:12px;font-weight:700;color:var(--ink-3);margin-bottom:12px">কাস্টমারকে দিন:</div>
+              <div id="ob-customer-link" style="display:flex;gap:8px;align-items:center">
+                <input type="text" id="ob-link-val" class="form-control" readonly style="font-family:monospace;font-size:12px">
+                <button class="btn btn-outline btn-sm" onclick="copyLink()">📋 কপি</button>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:12px;justify-content:center">
+              <button class="btn btn-primary btn-lg" onclick="navigate('customers')">
+                📋 সব কাস্টমার দেখুন
+              </button>
+              <button class="btn btn-outline btn-lg" onclick="resetWizard()">
+                ➕ আরেকজন যোগ করুন
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVENUE -->
+    <div class="page" id="page-revenue">
+      <div class="page-header">
+        <div>
+          <div class="page-title">রেভিনিউ</div>
+          <div class="page-sub">মাসিক আয়ের হিসাব</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">💰 পেমেন্ট তালিকা</div></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>প্রতিষ্ঠান</th>
+                <th>প্যাকেজ</th>
+                <th>মাসিক</th>
+                <th>শেষ পেমেন্ট</th>
+                <th>পরের পেমেন্ট</th>
+                <th>অবস্থা</th>
+                <th>অ্যাকশন</th>
+              </tr>
+            </thead>
+            <tbody id="revenue-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUPPORT -->
+    <div class="page" id="page-support">
+      <div class="page-header">
+        <div>
+          <div class="page-title">সাপোর্ট</div>
+          <div class="page-sub">কাস্টমার সমস্যা ও সমাধান</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body" style="text-align:center;padding:48px;color:var(--ink-3)">
+          <div style="font-size:40px;margin-bottom:12px">🛠️</div>
+          <div style="font-size:15px;font-weight:600;margin-bottom:8px">সাপোর্ট ট্র্যাকার</div>
+          <div style="font-size:13px">কোনো সমস্যা নেই — সব কাস্টমার ভালো আছে!</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Customer Detail Modal -->
+<div class="modal-overlay" id="modal-customer">
+  <div class="modal" style="max-width:640px">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-customer-title">কাস্টমার বিস্তারিত</div>
+      <button class="modal-close" onclick="closeModal('customer')">✕</button>
+    </div>
+    <div class="modal-body" id="modal-customer-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" id="modal-delete-btn">🗑️ মুছুন</button>
+      <button class="btn btn-outline" onclick="closeModal('customer')">বন্ধ করুন</button>
+      <button class="btn btn-primary" id="modal-open-btn">🔗 সফটওয়্যার খুলুন</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script>
+// ===== STATE =====
+const COLORS = ['#2563eb','#059669','#7c3aed','#d97706','#dc2626','#0891b2','#be185d','#065f46'];
+const GITHUB_BASE = 'https://imranalbani19.github.io/hr-payroll-system/';
+
+let customers = JSON.parse(localStorage.getItem('hrp_customers') || '[]');
+
+// ===== UTILS =====
+function saveCustomers(){ localStorage.setItem('hrp_customers', JSON.stringify(customers)); }
+
+function showToast(msg, type='success'){
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  const clr = {success:'#059669',danger:'#dc2626',info:'#2563eb',warning:'#d97706'};
+  t.className = 'toast';
+  t.style.background = clr[type] || clr.success;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(()=>t.remove(), 3500);
+}
+
+function navigate(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    if(n.onclick?.toString().includes("'"+page+"'")) n.classList.add('active');
+  });
+  if(page==='dashboard') renderDashboard();
+  if(page==='customers') renderCustomers();
+  if(page==='revenue') renderRevenue();
+  if(page==='onboard'){ resetWizard(); document.getElementById('ob-paydate').value=new Date().toISOString().slice(0,10); }
+}
+
+function openModal(name){ document.getElementById('modal-'+name).classList.add('open'); }
+function closeModal(name){ document.getElementById('modal-'+name).classList.remove('open'); }
+document.addEventListener('click',e=>{ if(e.target.classList.contains('modal-overlay')) e.target.classList.remove('open'); });
+
+// ===== DASHBOARD =====
+function renderDashboard(){
+  const active = customers.filter(c=>c.status==='active').length;
+  const totalRev = customers.filter(c=>c.status==='active').reduce((s,c)=>s+parseInt(c.package||0),0);
+  const pending = customers.filter(c=>c.paymentStatus==='pending').length;
+
+  document.getElementById('total-customers').textContent = customers.length;
+  document.getElementById('active-customers').textContent = active;
+  document.getElementById('monthly-revenue').textContent = '৳'+totalRev.toLocaleString('bn-BD');
+  document.getElementById('pending-payment').textContent = pending;
+
+  // Revenue by package
+  const small  = customers.filter(c=>c.status==='active'&&c.package==='1500').length * 1500;
+  const medium = customers.filter(c=>c.status==='active'&&c.package==='2500').length * 2500;
+  const large  = customers.filter(c=>c.status==='active'&&c.package==='4000').length * 4000;
+  document.getElementById('rev-small').textContent  = '৳'+small.toLocaleString();
+  document.getElementById('rev-medium').textContent = '৳'+medium.toLocaleString();
+  document.getElementById('rev-large').textContent  = '৳'+large.toLocaleString();
+
+  // Recent customers table
+  const tbody = document.getElementById('dash-customer-table');
+  if(!customers.length){
+    tbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--ink-3)">কোনো কাস্টমার নেই — নতুন যোগ করুন</td></tr>';
+    return;
+  }
+  const pkgLabel = {'1500':'ছোট','2500':'মাঝারি','4000':'বড়'};
+  const sizeLabel = {'small':'১-৩০','medium':'৩১-৭৫','large':'৭৫-১৫০'};
+  tbody.innerHTML = customers.slice(-5).reverse().map(c=>`<tr>
+    <td><div style="display:flex;align-items:center;gap:10px">
+      <div style="width:32px;height:32px;border-radius:8px;background:${c.color};color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">${(c.company||'?')[0]}</div>
+      <div><div style="font-weight:600">${c.company}</div><div style="font-size:11px;color:var(--ink-3)">${c.owner}</div></div>
+    </div></td>
+    <td>${sizeLabel[c.size]||'—'} জন</td>
+    <td><span class="badge badge-blue">${pkgLabel[c.package]||'—'}</span></td>
+    <td>৳${parseInt(c.package||0).toLocaleString()}/মাস</td>
+    <td><span class="badge ${c.status==='active'?'badge-green':'badge-amber'}">${c.status==='active'?'✅ সক্রিয়':'⏳ পেন্ডিং'}</span></td>
+  </tr>`).join('');
+
+  renderRevenueChart();
+}
+
+function renderRevenueChart(){
+  const chart = document.getElementById('revenue-chart');
+  const months = ['জান','ফেব','মার','এপ্র','মে','জুন'];
+  const base = customers.filter(c=>c.status==='active').reduce((s,c)=>s+parseInt(c.package||0),0);
+  const data = months.map((_,i)=> i<5 ? Math.round(base * (0.5 + i*0.1)) : base);
+  const max = Math.max(...data, 1);
+  chart.innerHTML = data.map((v,i)=>`
+    <div class="rev-bar-item">
+      <div class="rev-bar-fill ${i===5?'current':''}" style="height:${Math.round(v/max*70)+10}px"></div>
+      <div class="rev-bar-label">${months[i]}</div>
+    </div>`).join('');
+}
+
+// ===== CUSTOMERS =====
+function renderCustomers(){
+  const grid = document.getElementById('customer-grid');
+  document.getElementById('customer-count-sub').textContent = `মোট ${customers.length} জন কাস্টমার`;
+
+  if(!customers.length){
+    grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--ink-3)">
+      <div style="font-size:40px;margin-bottom:12px">🏢</div>
+      <div style="font-size:15px;font-weight:600;margin-bottom:8px">কোনো কাস্টমার নেই</div>
+      <button class="btn btn-primary" onclick="navigate('onboard')">➕ প্রথম কাস্টমার যোগ করুন</button>
+    </div>`;
+    return;
+  }
+
+  const pkgLabel = {'1500':'ছোট','2500':'মাঝারি','4000':'বড়'};
+  const sizeLabel = {'small':'১-৩০','medium':'৩১-৭৫','large':'৭৫-১৫০'};
+
+  grid.innerHTML = customers.map((c,i)=>`
+    <div class="customer-card" onclick="showCustomerDetail(${i})">
+      <div class="status-dot ${c.status==='active'?'dot-green':'dot-amber'}"></div>
+      <div class="customer-avatar" style="background:${c.color}">${(c.company||'?')[0]}</div>
+      <div class="customer-name">${c.company}</div>
+      <div class="customer-info">${c.owner} · ${c.phone}</div>
+      <div class="customer-stats">
+        <div class="cstat">
+          <div class="cstat-val">${sizeLabel[c.size]||'—'}</div>
+          <div class="cstat-label">কর্মী</div>
+        </div>
+        <div class="cstat">
+          <div class="cstat-val">৳${(parseInt(c.package||0)/1000).toFixed(1)}K</div>
+          <div class="cstat-label">মাসিক</div>
+        </div>
+      </div>
+      <div class="customer-actions">
+        <a href="${c.softwareUrl||GITHUB_BASE}" target="_blank" class="btn btn-primary btn-sm" onclick="event.stopPropagation()">🔗 সফটওয়্যার</a>
+        <span class="badge ${pkgLabel[c.package]==='বড়'?'badge-purple':pkgLabel[c.package]==='মাঝারি'?'badge-blue':'badge-gray'}">${pkgLabel[c.package]||'—'}</span>
+      </div>
+    </div>`).join('');
+}
+
+function showCustomerDetail(idx){
+  const c = customers[idx];
+  const pkgLabel = {'1500':'ছোট (৳১,৫০০/মাস)','2500':'মাঝারি (৳২,৫০০/মাস)','4000':'বড় (৳৪,০০০/মাস)'};
+  document.getElementById('modal-customer-title').textContent = c.company;
+  document.getElementById('modal-customer-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px">
+      <div style="padding:12px;background:var(--bg);border-radius:8px">
+        <div style="font-size:11px;color:var(--ink-3);margin-bottom:4px">মালিক</div>
+        <div style="font-weight:600">${c.owner}</div>
+      </div>
+      <div style="padding:12px;background:var(--bg);border-radius:8px">
+        <div style="font-size:11px;color:var(--ink-3);margin-bottom:4px">ফোন</div>
+        <div style="font-weight:600">${c.phone}</div>
+      </div>
+      <div style="padding:12px;background:var(--bg);border-radius:8px">
+        <div style="font-size:11px;color:var(--ink-3);margin-bottom:4px">প্যাকেজ</div>
+        <div style="font-weight:600">${pkgLabel[c.package]||'—'}</div>
+      </div>
+      <div style="padding:12px;background:var(--bg);border-radius:8px">
+        <div style="font-size:11px;color:var(--ink-3);margin-bottom:4px">যোগদান</div>
+        <div style="font-weight:600">${c.joinDate||'—'}</div>
+      </div>
+      <div style="padding:12px;background:var(--bg);border-radius:8px;grid-column:1/-1">
+        <div style="font-size:11px;color:var(--ink-3);margin-bottom:4px">সফটওয়্যার লিংক</div>
+        <div style="font-weight:600;font-size:12px;word-break:break-all;color:var(--primary)">${c.softwareUrl||GITHUB_BASE}</div>
+      </div>
+      ${c.surl?`<div style="padding:12px;background:var(--bg);border-radius:8px;grid-column:1/-1">
+        <div style="font-size:11px;color:var(--ink-3);margin-bottom:4px">Apps Script URL</div>
+        <div style="font-size:11px;word-break:break-all;color:var(--ink-2)">${c.surl}</div>
+      </div>`:''}
+    </div>`;
+
+  document.getElementById('modal-open-btn').onclick = () => window.open(c.softwareUrl||GITHUB_BASE, '_blank');
+  document.getElementById('modal-delete-btn').onclick = () => {
+    if(confirm(c.company + ' মুছে দেবেন?')){
+      customers.splice(idx, 1);
+      saveCustomers();
+      closeModal('customer');
+      renderCustomers();
+      showToast('🗑️ কাস্টমার মুছে গেছে', 'warning');
+    }
+  };
+  openModal('customer');
+}
+
+// ===== REVENUE =====
+function renderRevenue(){
+  const tbody = document.getElementById('revenue-table');
+  if(!customers.length){
+    tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--ink-3)">কোনো কাস্টমার নেই</td></tr>';
+    return;
+  }
+  const pkgLabel = {'1500':'ছোট','2500':'মাঝারি','4000':'বড়'};
+  tbody.innerHTML = customers.map((c,i)=>{
+    const today = new Date();
+    const next = new Date(today.getFullYear(), today.getMonth()+1, 1);
+    return `<tr>
+      <td><strong>${c.company}</strong><br><span style="font-size:11px;color:var(--ink-3)">${c.owner}</span></td>
+      <td><span class="badge badge-blue">${pkgLabel[c.package]||'—'}</span></td>
+      <td><strong>৳${parseInt(c.package||0).toLocaleString()}</strong></td>
+      <td>${c.joinDate||'—'}</td>
+      <td>${next.toLocaleDateString('bn-BD')}</td>
+      <td><span class="badge badge-green">✅ সক্রিয়</span></td>
+      <td>
+        <button class="btn btn-outline btn-sm" onclick="markPaid(${i})">✅ পেমেন্ট নিলাম</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function markPaid(idx){
+  customers[idx].lastPayment = new Date().toISOString().slice(0,10);
+  customers[idx].paymentStatus = 'paid';
+  saveCustomers();
+  showToast('✅ পেমেন্ট রেকর্ড হয়েছে');
+  renderRevenue();
+}
+
+// ===== ONBOARDING WIZARD =====
+let currentStep = 1;
+
+function wizardNext1(){
+  const company = document.getElementById('ob-company').value.trim();
+  const owner   = document.getElementById('ob-owner').value.trim();
+  const phone   = document.getElementById('ob-phone').value.trim();
+  if(!company || !owner || !phone){
+    showToast('সব তারকা (*) চিহ্নিত ঘর পূরণ করুন', 'warning');
+    return;
+  }
+  goToStep(2);
+}
+
+async function wizardNext2(){
+  const surl    = document.getElementById('ob-surl').value.trim();
+  const sheetid = document.getElementById('ob-sheetid').value.trim();
+  if(!surl && !sheetid){
+    // URL ছাড়াও সেভ করতে পারব — পরে যোগ করবেন
+    if(!confirm('Apps Script URL ছাড়া সেভ করবেন? পরে আপডেট করতে পারবেন।')) return;
+  }
+
+  const company = document.getElementById('ob-company').value.trim();
+  const owner   = document.getElementById('ob-owner').value.trim();
+  const phone   = document.getElementById('ob-phone').value.trim();
+  const email   = document.getElementById('ob-email').value.trim();
+  const size    = document.getElementById('ob-size').value;
+  const pkg     = document.getElementById('ob-package').value;
+  const paydate = document.getElementById('ob-paydate').value;
+  const address = document.getElementById('ob-address').value.trim();
+
+  const customer = {
+    id: Date.now(),
+    company, owner, phone, email, size,
+    package: pkg, paydate, address, surl, sheetid,
+    status: 'active',
+    paymentStatus: 'paid',
+    joinDate: new Date().toISOString().slice(0,10),
+    color: COLORS[customers.length % COLORS.length],
+    softwareUrl: GITHUB_BASE,
+  };
+
+  customers.push(customer);
+  saveCustomers();
+
+  // Success screen
+  document.getElementById('ob-success-title').textContent = company + ' — সফলভাবে যোগ হয়েছে!';
+  document.getElementById('ob-success-sub').textContent = owner + ' এর জন্য সফটওয়্যার রেডি';
+  document.getElementById('ob-link-val').value = GITHUB_BASE;
+
+  goToStep(3);
+  showToast('🎉 ' + company + ' যোগ হয়েছে!');
+}
+
+async function testConnection(){
+  const surl = document.getElementById('ob-surl').value.trim();
+  const result = document.getElementById('ob-test-result');
+  if(!surl){ showToast('URL দিন আগে', 'warning'); return; }
+  result.style.display = 'block';
+  result.style.background = '#eff6ff';
+  result.style.color = '#1e40af';
+  result.innerHTML = '<span class="spinner"></span> টেস্ট হচ্ছে...';
+  try{
+    const r = await fetch(surl + '?action=getDashboard');
+    const d = await r.json();
+    if(d.success !== false){
+      result.style.background = '#ecfdf5';
+      result.style.color = '#065f46';
+      result.innerHTML = '✅ কানেকশন সফল! Google Sheets কাজ করছে।';
+    } else {
+      result.style.background = '#fef2f2';
+      result.style.color = '#991b1b';
+      result.innerHTML = '⚠️ URL সঠিক কিন্তু সমস্যা: ' + (d.error||'অজানা');
+    }
+  }catch(e){
+    result.style.background = '#fef2f2';
+    result.style.color = '#991b1b';
+    result.innerHTML = '❌ কানেকশন ব্যর্থ। URL চেক করুন।';
+  }
+}
+
+function copyLink(){
+  const val = document.getElementById('ob-link-val').value;
+  navigator.clipboard.writeText(val).then(()=> showToast('✅ লিংক কপি হয়েছে'));
+}
+
+function goToStep(n){
+  currentStep = n;
+  document.querySelectorAll('.wizard-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('wizard-'+n).classList.add('active');
+  document.querySelectorAll('.step').forEach((s,i)=>{
+    s.classList.remove('active','done');
+    if(i+1 < n) s.classList.add('done');
+    if(i+1 === n) s.classList.add('active');
+    s.querySelector('.step-num').textContent = i+1 < n ? '✓' : i+1;
+  });
+}
+
+function wizardBack(n){ goToStep(n); }
+
+function resetWizard(){
+  goToStep(1);
+  document.querySelectorAll('#wizard-1 input, #wizard-1 select').forEach(i=>{ if(i.type!=='date') i.value=''; });
+  document.getElementById('ob-surl').value='';
+  document.getElementById('ob-sheetid').value='';
+  document.getElementById('ob-test-result').style.display='none';
+}
+
+// ===== INIT =====
+renderDashboard();
+</script>
+</div>
+<div id="app-wrapper">
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
@@ -1249,7 +2548,7 @@
         <div class="card-header">
           <div class="card-title">👁️ প্রিভিউ (প্রথম ১০ সারি)</div>
           <div class="flex gap-8">
-            <button class="btn btn-success" onclick="confirmImport()">✅ কনফার্ম ইমপোর্ট</button>
+            <button id="confirm-import-btn" class="btn btn-success" onclick="confirmImport()">✅ কনফার্ম ইমপোর্ট</button>
             <button class="btn btn-outline">❌ বাতিল</button>
           </div>
         </div>
@@ -2141,23 +3440,506 @@ function processImport(){
   renderImportPreview(importedData);
 }
 
+
+// ===================================================
+// HR CALCULATION ENGINE — সম্পূর্ণ হিসাব ইঞ্জিন
+// ===================================================
+
+// অফিস সেটিংস (Settings পেজ থেকে পরিবর্তন করা যাবে)
+const HR_CONFIG = {
+  // শিফটের সময়
+  shifts: {
+    D: { name:'দিনের শিফট',  start:'08:00', end:'17:00', lateAfter:'08:15' },
+    E: { name:'সন্ধ্যা শিফট', start:'14:00', end:'22:00', lateAfter:'14:15' },
+    N: { name:'রাতের শিফট',  start:'22:00', end:'06:00', lateAfter:'22:15' },
+  },
+  workHoursPerDay: 8,       // দৈনিক কাজের ঘণ্টা
+  otRate: 1.5,              // ওভারটাইম রেট
+  lateDeductPerMin: 0,      // প্রতি মিনিট দেরিতে কাটা (০ মানে কাটা নেই)
+  weeklyOff: [5],           // ছুটির দিন: 0=রবি,1=সোম,...,5=শুক্র,6=শনি
+  gracePeriodMin: 15,       // গ্রেস পিরিয়ড (মিনিট)
+  workingDaysPerMonth: 26,  // মাসিক কার্যদিবস
+};
+
+// ===== সময় কনভার্ট =====
+function timeToMinutes(t) {
+  if(!t || t === '—' || t === '' || t === 'true' || t === 'false') return null;
+  const s = String(t).trim();
+  // HH:MM:SS বা HH:MM
+  const m = s.match(/^(\d{1,2}):(\d{2})/);
+  if(!m) return null;
+  return parseInt(m[1]) * 60 + parseInt(m[2]);
+}
+
+function minutesToTime(mins) {
+  if(mins === null || mins === undefined) return '—';
+  const h = Math.floor(((mins % 1440) + 1440) % 1440 / 60);
+  const m = ((mins % 1440) + 1440) % 1440 % 60;
+  return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+}
+
+// Clock In সময় দেখে অটো শিফট বের করা
+function detectShift(clockInTime) {
+  const mins = timeToMinutes(clockInTime);
+  if(mins === null) return 'D';
+  // সকাল ০৫:০০ - ১৩:৫৯ = D
+  if(mins >= 5*60 && mins < 14*60) return 'D';
+  // দুপুর ১৪:০০ - ২১:৫৯ = E
+  if(mins >= 14*60 && mins < 22*60) return 'E';
+  // রাত ২২:০০ - ০৪:৫৯ = N
+  return 'N';
+}
+
+// ===== মূল ক্যালকুলেশন =====
+function calculateAttendance(row, empRosterShift) {
+  const name   = row['Name'] || row['নাম'] || row['Emp ID'] || row['ID'] || '—';
+  const rawDate= row['Date'] || row['তারিখ'] || '';
+  const rawIn  = row['Clock In']  || row['ইন টাইম']  || row['CheckIn']  || '';
+  const rawOut = row['Clock Out'] || row['আউট টাইম'] || row['CheckOut'] || '';
+  const isLate  = row['Late']   === true || row['Late']   === 'True'  || row['Late']   === 'TRUE';
+  const isAbsent= row['Absent'] === true || row['Absent'] === 'True'  || row['Absent'] === 'TRUE';
+
+  // তারিখ
+  let date = '—';
+  if(rawDate instanceof Date) date = rawDate.toISOString().slice(0,10);
+  else if(rawDate) date = String(rawDate).trim().slice(0,10);
+
+  // অনুপস্থিত চেক
+  if(isAbsent || (!rawIn && !rawOut)) {
+    return {
+      name, date,
+      in: '—', out: '—',
+      shift: empRosterShift || 'D',
+      workHours: 0, otHours: 0, otPay: 0,
+      lateMinutes: 0, isLate: false,
+      status: 'অনুপস্থিত',
+      statusEn: 'absent',
+      deductDays: 1,
+    };
+  }
+
+  const inMins  = timeToMinutes(String(rawIn));
+  const outMins = timeToMinutes(String(rawOut));
+
+  // শিফট নির্ধারণ
+  // রোস্টারে শিফট থাকলে সেটা, না থাকলে Clock In থেকে অটো ধরি
+  const shift = empRosterShift || detectShift(String(rawIn));
+  const shiftCfg = HR_CONFIG.shifts[shift] || HR_CONFIG.shifts['D'];
+  const shiftStartMins = timeToMinutes(shiftCfg.start);
+  const lateAfterMins  = timeToMinutes(shiftCfg.lateAfter);
+
+  // মোট কাজের সময়
+  let workMins = 0;
+  if(inMins !== null && outMins !== null) {
+    workMins = outMins - inMins;
+    // রাত শিফট — মধ্যরাত পার হলে
+    if(workMins < 0) workMins += 24 * 60;
+  }
+
+  const workHours = parseFloat((workMins / 60).toFixed(2));
+
+  // ওভারটাইম
+  const otMins  = Math.max(0, workMins - HR_CONFIG.workHoursPerDay * 60);
+  const otHours = parseFloat((otMins / 60).toFixed(2));
+
+  // দেরি হিসাব
+  let lateMinutes = 0;
+  let calcIsLate  = isLate;
+
+  if(inMins !== null && lateAfterMins !== null) {
+    const diff = inMins - lateAfterMins;
+    if(diff > 0) {
+      lateMinutes = diff;
+      calcIsLate  = true;
+    }
+  }
+
+  // অবস্থা নির্ধারণ
+  let status, statusEn;
+  if(workHours === 0) {
+    status = 'অনুপস্থিত'; statusEn = 'absent';
+  } else if(calcIsLate && lateMinutes > HR_CONFIG.gracePeriodMin) {
+    status = 'দেরি'; statusEn = 'late';
+  } else if(workHours < HR_CONFIG.workHoursPerDay / 2) {
+    status = 'অর্ধদিন'; statusEn = 'halfday';
+  } else {
+    status = 'উপস্থিত'; statusEn = 'present';
+  }
+
+  return {
+    name, date,
+    in:  inMins  !== null ? minutesToTime(inMins)  : '—',
+    out: outMins !== null ? minutesToTime(outMins) : '—',
+    shift, shiftName: shiftCfg.name,
+    workHours, otHours,
+    lateMinutes: Math.round(lateMinutes),
+    isLate: calcIsLate,
+    status, statusEn,
+    deductDays: statusEn === 'absent' ? 1 : statusEn === 'halfday' ? 0.5 : 0,
+  };
+}
+
+// ===== পেরোল ক্যালকুলেশন =====
+function calculatePayroll(emp, attRecords, month) {
+  const basic      = parseFloat(emp.salary) || 0;
+  const houseRent  = Math.round(basic * 0.5);
+  const medical    = basic > 0 ? 1500 : 0;
+  const transport  = basic > 0 ? 1000 : 0;
+  const dailyRate  = basic > 0 ? basic / 30 : 0;
+  const hourlyRate = basic > 0 ? basic / (HR_CONFIG.workingDaysPerMonth * HR_CONFIG.workHoursPerDay) : 0;
+
+  // হাজিরা সারসংক্ষেপ
+  const presentDays = attRecords.filter(r => r.statusEn === 'present' || r.statusEn === 'late').length;
+  const absentDays  = attRecords.filter(r => r.statusEn === 'absent').length;
+  const halfDays    = attRecords.filter(r => r.statusEn === 'halfday').length;
+  const lateDays    = attRecords.filter(r => r.statusEn === 'late').length;
+  const totalOTHrs  = attRecords.reduce((s, r) => s + (r.otHours || 0), 0);
+  const totalLateMins = attRecords.reduce((s, r) => s + (r.lateMinutes || 0), 0);
+
+  // হাজিরা ভাতা (পূর্ণ উপস্থিতিতে)
+  const attBonus = presentDays >= HR_CONFIG.workingDaysPerMonth ? 500 : 0;
+
+  // ওভারটাইম পে
+  const otPay = Math.round(totalOTHrs * hourlyRate * HR_CONFIG.otRate);
+
+  // কাটা
+  const absentDeduct  = Math.round(absentDays * dailyRate);
+  const halfdayDeduct = Math.round(halfDays * dailyRate * 0.5);
+  const lateDeduct    = Math.round((totalLateMins / 60) * hourlyRate * HR_CONFIG.lateDeductPerMin);
+  const totalDeduct   = absentDeduct + halfdayDeduct + lateDeduct;
+
+  // মোট
+  const grossSalary = basic + houseRent + medical + transport + attBonus + otPay;
+  const netSalary   = Math.max(0, grossSalary - totalDeduct);
+
+  return {
+    empId: emp.id, name: emp.name,
+    month,
+    // আয়
+    basic, houseRent, medical, transport,
+    attBonus, otPay,
+    grossSalary,
+    // কাটা
+    absentDeduct, halfdayDeduct, lateDeduct,
+    totalDeduct,
+    // নেট
+    netSalary,
+    // সারসংক্ষেপ
+    presentDays, absentDays, halfDays, lateDays,
+    totalOTHrs: parseFloat(totalOTHrs.toFixed(1)),
+    totalLateMins,
+    status: 'পেন্ডিং',
+  };
+}
+
+// ===== XLS ইমপোর্ট + অটো ক্যালকুলেশন =====
+function processImportedData(rawRows, month) {
+  if(!rawRows || !rawRows.length) return [];
+
+  // রোস্টার থেকে কর্মীর শিফট ম্যাপ বানাই
+  const rosterShiftMap = {};
+  rosterData.forEach(r => {
+    rosterShiftMap[r.name] = r.shifts[0] || 'D'; // ডিফল্ট শিফট
+  });
+
+  // প্রতিটি রো প্রসেস করি
+  return rawRows.map(row => {
+    const name = row['Name'] || row['নাম'] || row['Emp ID'] || '';
+    const empShift = rosterShiftMap[name] || null;
+    return calculateAttendance(row, empShift);
+  });
+}
+
+// ===== সারসংক্ষেপ রিপোর্ট =====
+function generateAttSummary(processedRows) {
+  const byEmp = {};
+  processedRows.forEach(r => {
+    if(!byEmp[r.name]) byEmp[r.name] = {
+      name: r.name, records: [],
+      present: 0, absent: 0, late: 0, halfday: 0,
+      totalOT: 0, totalLateMins: 0,
+    };
+    byEmp[r.name].records.push(r);
+    if(r.statusEn === 'present') byEmp[r.name].present++;
+    else if(r.statusEn === 'absent') byEmp[r.name].absent++;
+    else if(r.statusEn === 'late'){ byEmp[r.name].late++; byEmp[r.name].present++; }
+    else if(r.statusEn === 'halfday') byEmp[r.name].halfday++;
+    byEmp[r.name].totalOT += r.otHours || 0;
+    byEmp[r.name].totalLateMins += r.lateMinutes || 0;
+  });
+  return Object.values(byEmp);
+}
+
+
+// ===================================================
+// AUTO MATCHING ENGINE — নাম/আইডি মিলিয়ে ক্যালকুলেশন
+// ===================================================
+
+// Employees শিট থেকে কর্মী খোঁজা
+function findEmployee(nameOrId) {
+  if(!nameOrId || nameOrId === '—') return null;
+  const q = String(nameOrId).trim().toLowerCase();
+
+  return employees.find(emp => {
+    const empName = String(emp.name || '').trim().toLowerCase();
+    const empId   = String(emp.id   || '').trim().toLowerCase();
+    return empName === q || empId === q ||
+           empName.includes(q) || q.includes(empName) ||
+           empId === q;
+  }) || null;
+}
+
+// রোস্টার থেকে শিফট খোঁজা
+function findEmpShift(nameOrId) {
+  const q = String(nameOrId || '').trim().toLowerCase();
+  const r = rosterData.find(r =>
+    String(r.name || '').trim().toLowerCase() === q ||
+    String(r.id   || '').trim().toLowerCase() === q
+  );
+  return r ? (r.shifts[0] || 'D') : null;
+}
+
+// ===== মূল ম্যাচিং ফাংশন =====
+async function matchAndProcess(rawRows, month) {
+  // Sheets থেকে কর্মী লিস্ট লোড (না থাকলে)
+  if(!employees.length) {
+    const res = await api('getEmployees');
+    if(res && res.data) {
+      employees = res.data.map((e,i) => ({
+        id:     e['ID']        || '',
+        name:   e['নাম']       || '',
+        post:   e['পদ']        || '',
+        dept:   e['বিভাগ']     || '',
+        salary: parseFloat(e['মূল বেতন']) || 0,
+        shift:  e['শিফট']      || 'D',
+        status: e['অবস্থা']    || 'সক্রিয়',
+        color:  empColor(i),
+      }));
+    }
+  }
+
+  const matched   = [];  // মিলেছে
+  const unmatched = [];  // মেলেনি
+
+  rawRows.forEach(row => {
+    const rawName = row['Name'] || row['নাম'] || row['Emp ID'] || row['ID'] || '';
+    const emp = findEmployee(rawName);
+
+    if(!emp) {
+      // মেলেনি — স্কিপ
+      unmatched.push(rawName);
+      return;
+    }
+
+    // মিলেছে — শিফট নির্ধারণ
+    const rosterShift = findEmpShift(emp.name) || emp.shift || 'D';
+
+    // হাজিরা ক্যালকুলেশন
+    const attResult = calculateAttendance(row, rosterShift);
+
+    // কর্মীর তথ্য যোগ করি
+    attResult.empId   = emp.id;
+    attResult.name    = emp.name;
+    attResult.dept    = emp.dept;
+    attResult.salary  = emp.salary;
+    attResult.shift   = rosterShift;
+
+    // ওভারটাইম টাকা হিসাব
+    const dailyRate  = emp.salary / 30;
+    const hourlyRate = emp.salary / (26 * 8);
+    attResult.otPay  = Math.round(attResult.otHours * hourlyRate * HR_CONFIG.otRate);
+    attResult.deductAmount = Math.round(attResult.deductDays * dailyRate);
+
+    matched.push(attResult);
+  });
+
+  return { matched, unmatched };
+}
+
+// ===== ম্যাচিং রেজাল্ট দেখানো =====
+async function showMatchResult(matched, unmatched, month) {
+  let card = document.getElementById('imported-log-card');
+  if(!card){
+    card = document.createElement('div');
+    card.id = 'imported-log-card';
+    card.className = 'card mt-16';
+    document.getElementById('page-import').appendChild(card);
+  }
+
+  const totalPresent = matched.filter(r => r.statusEn==='present'||r.statusEn==='late').length;
+  const totalAbsent  = matched.filter(r => r.statusEn==='absent').length;
+  const totalLate    = matched.filter(r => r.statusEn==='late').length;
+  const totalOT      = matched.reduce((s,r) => s+(r.otHours||0), 0).toFixed(1);
+  const totalOTPay   = matched.reduce((s,r) => s+(r.otPay||0), 0);
+  const totalDeduct  = matched.reduce((s,r) => s+(r.deductAmount||0), 0);
+
+  const statusMap = {
+    'উপস্থিত':'badge-success','অনুপস্থিত':'badge-danger',
+    'দেরি':'badge-purple','অর্ধদিন':'badge-warning'
+  };
+
+  card.innerHTML = `
+  <div class="card-header">
+    <div class="card-title">✅ ম্যাচিং রেজাল্ট — ${month}</div>
+    <div style="display:flex;gap:8px">
+      <span class="badge badge-success">${matched.length} জন মিলেছে</span>
+      ${unmatched.length ? `<span class="badge badge-danger">${unmatched.length} জন মেলেনি</span>` : ''}
+    </div>
+  </div>
+
+  <!-- সারসংক্ষেপ -->
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;padding:16px;border-bottom:1px solid var(--border)">
+    <div style="text-align:center;padding:12px;background:#ecfdf5;border-radius:8px">
+      <div style="font-size:22px;font-weight:700;color:#059669">${totalPresent}</div>
+      <div style="font-size:11px;color:#065f46;margin-top:2px">✅ উপস্থিত</div>
+    </div>
+    <div style="text-align:center;padding:12px;background:#fef2f2;border-radius:8px">
+      <div style="font-size:22px;font-weight:700;color:#dc2626">${totalAbsent}</div>
+      <div style="font-size:11px;color:#991b1b;margin-top:2px">❌ অনুপস্থিত</div>
+    </div>
+    <div style="text-align:center;padding:12px;background:#f5f3ff;border-radius:8px">
+      <div style="font-size:22px;font-weight:700;color:#7c3aed">${totalLate}</div>
+      <div style="font-size:11px;color:#5b21b6;margin-top:2px">⏰ দেরি</div>
+    </div>
+    <div style="text-align:center;padding:12px;background:#eff6ff;border-radius:8px">
+      <div style="font-size:22px;font-weight:700;color:#2563eb">${totalOT}</div>
+      <div style="font-size:11px;color:#1e40af;margin-top:2px">⏱️ OT ঘণ্টা</div>
+    </div>
+    <div style="text-align:center;padding:12px;background:#fffbeb;border-radius:8px">
+      <div style="font-size:16px;font-weight:700;color:#d97706">৳${totalOTPay.toLocaleString()}</div>
+      <div style="font-size:11px;color:#92400e;margin-top:2px">💰 OT টাকা</div>
+    </div>
+  </div>
+
+  ${unmatched.length ? `
+  <div style="padding:12px 16px;background:#fef2f2;border-bottom:1px solid #fecaca">
+    <div style="font-size:12px;font-weight:700;color:#991b1b;margin-bottom:6px">
+      ⚠️ এই নামগুলো Employees শিটে নেই — আগে কর্মী যোগ করুন:
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      ${[...new Set(unmatched)].map(n=>`<span class="badge badge-danger">${n}</span>`).join('')}
+    </div>
+  </div>` : ''}
+
+  <!-- বিস্তারিত টেবিল -->
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>কর্মী</th><th>বিভাগ</th><th>তারিখ</th><th>শিফট</th>
+        <th>ইন</th><th>আউট</th><th>ঘণ্টা</th>
+        <th>OT</th><th>দেরি</th><th>কাটা</th><th>অবস্থা</th>
+      </tr></thead>
+      <tbody>
+        ${matched.map(r=>`<tr>
+          <td>
+            <div style="font-weight:600">${r.name}</div>
+            <div style="font-size:11px;color:var(--text-muted)">${r.empId||''}</div>
+          </td>
+          <td><span style="font-size:12px;color:var(--text-muted)">${r.dept||'—'}</span></td>
+          <td>${r.date}</td>
+          <td>
+            <span class="shift-badge shift-${(r.shift||'d').toLowerCase()}">${r.shift||'D'}</span>
+            <div style="font-size:10px;color:var(--text-muted);margin-top:2px">${r.shiftName||''}</div>
+          </td>
+          <td><strong>${r.in}</strong></td>
+          <td><strong>${r.out}</strong></td>
+          <td>${r.workHours>0?r.workHours+' ঘণ্টা':'—'}</td>
+          <td style="color:var(--purple)">${r.otHours>0?r.otHours+'ঘণ্টা<br><small>৳'+r.otPay+'</small>':'—'}</td>
+          <td style="color:var(--warning)">${r.lateMinutes>0?r.lateMinutes+' মিনিট':'—'}</td>
+          <td style="color:var(--danger)">${r.deductAmount>0?'৳'+r.deductAmount:'—'}</td>
+          <td><span class="badge ${statusMap[r.status]||'badge-info'}">${r.status}</span></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- কর্মী ভিত্তিক সারসংক্ষেপ -->
+  <div style="padding:16px;border-top:1px solid var(--border)">
+    <div style="font-size:12px;font-weight:700;margin-bottom:12px">📊 কর্মী ভিত্তিক সারসংক্ষেপ:</div>
+    <div style="overflow-x:auto">
+      <table style="font-size:12px">
+        <thead><tr>
+          <th>কর্মী</th><th>মূল বেতন</th><th>উপস্থিত</th>
+          <th>অনুপস্থিত</th><th>দেরি</th>
+          <th>OT ঘণ্টা</th><th>OT টাকা</th>
+          <th>কাটা</th><th>আনুমানিক নেট</th>
+        </tr></thead>
+        <tbody>
+          ${generateEmpSummaryRows(matched)}
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+function generateEmpSummaryRows(matched) {
+  const byEmp = {};
+  matched.forEach(r => {
+    if(!byEmp[r.name]) byEmp[r.name] = {
+      name:r.name, empId:r.empId, salary:r.salary||0, dept:r.dept||'',
+      present:0, absent:0, late:0, otHours:0, otPay:0, deduct:0
+    };
+    const e = byEmp[r.name];
+    if(r.statusEn==='present'||r.statusEn==='late') e.present++;
+    if(r.statusEn==='absent') e.absent++;
+    if(r.statusEn==='late') e.late++;
+    e.otHours  += r.otHours      || 0;
+    e.otPay    += r.otPay        || 0;
+    e.deduct   += r.deductAmount || 0;
+  });
+
+  return Object.values(byEmp).map(e => {
+    const houseRent = Math.round(e.salary * 0.5);
+    const medical   = e.salary > 0 ? 1500 : 0;
+    const transport = e.salary > 0 ? 1000 : 0;
+    const gross     = e.salary + houseRent + medical + transport + Math.round(e.otPay);
+    const net       = Math.max(0, gross - e.deduct);
+    return `<tr>
+      <td><strong>${e.name}</strong><br><span style="color:var(--text-muted)">${e.empId}</span></td>
+      <td>৳${e.salary.toLocaleString()}</td>
+      <td style="color:var(--secondary)">${e.present} দিন</td>
+      <td style="color:var(--danger)">${e.absent} দিন</td>
+      <td style="color:var(--purple)">${e.late} দিন</td>
+      <td style="color:var(--purple)">${e.otHours.toFixed(1)}</td>
+      <td style="color:var(--secondary)">৳${Math.round(e.otPay).toLocaleString()}</td>
+      <td style="color:var(--danger)">৳${e.deduct.toLocaleString()}</td>
+      <td><strong style="color:var(--primary)">৳${net.toLocaleString()}</strong></td>
+    </tr>`;
+  }).join('');
+}
+
+
 async function confirmImport(){
   if(!importedData.length){showToast('কোনো ডাটা নেই','warning');return;}
-  const month=document.querySelector('#page-import input[type=month]')?.value||new Date().toISOString().slice(0,7);
+  const month = document.querySelector('#page-import input[type=month]')?.value || new Date().toISOString().slice(0,7);
 
-  // ZKTeco ফরম্যাট পার্স
-  const parsed=importedData.map(row=>{
-    const name=row['Name']||row['নাম']||row['Emp ID']||row['ID']||'—';
-    const rawDate=row['Date']||row['তারিখ']||'';
-    let date='—';
-    if(rawDate instanceof Date) date=rawDate.toISOString().slice(0,10);
-    else if(rawDate) date=String(rawDate);
-    const inn=row['Clock In']||row['ইন টাইম']||row['CheckIn']||'';
-    const out=row['Clock Out']||row['আউট টাইম']||row['CheckOut']||'';
-    const late=row['Late']===true||row['Late']==='True'||row['Late']==='YES';
-    const absent=row['Absent']===true||row['Absent']==='True'||row['Absent']==='YES';
-    return {name,date,in:String(inn)||'—',out:String(out)||'—',late,absent};
-  });
+  // বাটন লক
+  const btn = document.getElementById('confirm-import-btn');
+  if(btn){ btn.disabled=true; btn.textContent='⏳ ম্যাচ করছি...'; }
+
+  showToast('🔍 কর্মী তালিকার সাথে মিলিয়ে দেখছি...','info');
+
+  // ম্যাচিং + ক্যালকুলেশন
+  const { matched, unmatched } = await matchAndProcess(importedData, month);
+
+  if(!matched.length){
+    showToast('❌ কোনো কর্মী মেলেনি! আগে Employees শিটে কর্মী যোগ করুন।','danger');
+    if(btn){ btn.disabled=false; btn.textContent='✅ কনফার্ম ইমপোর্ট'; }
+    return;
+  }
+
+  // রেজাল্ট দেখাই
+  await showMatchResult(matched, unmatched, month);
+
+  // Sheets এ পাঠাই
+  const parsed = matched.map(r => ({
+    name: r.name, date: r.date,
+    in: r.in, out: r.out,
+    hours: r.workHours, ot: r.otHours,
+    late: r.isLate, absent: r.statusEn==='absent',
+    shift: r.shift, lateMinutes: r.lateMinutes,
+    status: r.status,
+  }));
 
   // Google Sheets এ পাঠাও
   const res=await api('importAttendance',{month,rows:JSON.stringify(parsed)});
@@ -2180,18 +3962,69 @@ async function confirmImport(){
     // Show results card
     let card=document.getElementById('imported-log-card');
     if(!card){card=document.createElement('div');card.id='imported-log-card';card.className='card mt-16';document.getElementById('page-import').appendChild(card);}
-    const statusMap={present:'badge-success',absent:'badge-danger',late:'badge-purple'};
-    const statusLabel={present:'উপস্থিত',absent:'অনুপস্থিত',late:'দেরি'};
-    card.innerHTML=`<div class="card-header"><div class="card-title">📋 ইমপোর্ট হয়েছে (${parsed.length} সারি)</div></div>
+    const statusMap={'উপস্থিত':'badge-success','অনুপস্থিত':'badge-danger','দেরি':'badge-purple','অর্ধদিন':'badge-warning'};
+
+    // সারসংক্ষেপ কার্ড
+    const totalPresent = processed.filter(r=>r.statusEn==='present'||r.statusEn==='late').length;
+    const totalAbsent  = processed.filter(r=>r.statusEn==='absent').length;
+    const totalLate    = processed.filter(r=>r.statusEn==='late').length;
+    const totalOT      = processed.reduce((s,r)=>s+(r.otHours||0),0).toFixed(1);
+
+    card.innerHTML=`
+    <div class="card-header">
+      <div class="card-title">📋 ইমপোর্ট সারসংক্ষেপ (${processed.length} রেকর্ড)</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:16px;border-bottom:1px solid var(--border)">
+      <div style="text-align:center;padding:12px;background:#ecfdf5;border-radius:8px">
+        <div style="font-size:22px;font-weight:700;color:#059669">${totalPresent}</div>
+        <div style="font-size:11px;color:#065f46;margin-top:2px">✅ উপস্থিত</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:#fef2f2;border-radius:8px">
+        <div style="font-size:22px;font-weight:700;color:#dc2626">${totalAbsent}</div>
+        <div style="font-size:11px;color:#991b1b;margin-top:2px">❌ অনুপস্থিত</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:#f5f3ff;border-radius:8px">
+        <div style="font-size:22px;font-weight:700;color:#7c3aed">${totalLate}</div>
+        <div style="font-size:11px;color:#5b21b6;margin-top:2px">⏰ দেরি</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:#eff6ff;border-radius:8px">
+        <div style="font-size:22px;font-weight:700;color:#2563eb">${totalOT}</div>
+        <div style="font-size:11px;color:#1e40af;margin-top:2px">⏱️ OT ঘণ্টা</div>
+      </div>
+    </div>
     <div class="table-wrap"><table>
-      <thead><tr><th>নাম/আইডি</th><th>তারিখ</th><th>ইন</th><th>আউট</th><th>দেরি</th><th>অবস্থা</th></tr></thead>
-      <tbody>${parsed.map(r=>{const s=r.absent?'absent':r.late?'late':'present';return`<tr>
-        <td><strong>${r.name}</strong></td><td>${r.date}</td>
-        <td>${r.in}</td><td>${r.out}</td>
-        <td>${r.late?'হ্যাঁ':'না'}</td>
-        <td><span class="badge ${statusMap[s]}">${statusLabel[s]}</span></td>
-      </tr>`;}).join('')}</tbody>
-    </table></div>`;
+      <thead><tr>
+        <th>নাম</th><th>তারিখ</th><th>শিফট</th>
+        <th>ইন</th><th>আউট</th>
+        <th>কাজের ঘণ্টা</th><th>OT</th>
+        <th>দেরি</th><th>অবস্থা</th>
+      </tr></thead>
+      <tbody>${processed.map(r=>`<tr>
+        <td><strong>${r.name}</strong></td>
+        <td>${r.date}</td>
+        <td><span class="shift-badge shift-${(r.shift||'d').toLowerCase()}">${r.shift||'D'}</span></td>
+        <td>${r.in}</td>
+        <td>${r.out}</td>
+        <td><strong>${r.workHours||0} ঘণ্টা</strong></td>
+        <td style="color:var(--purple)">${r.otHours>0?r.otHours+' ঘণ্টা':'—'}</td>
+        <td>${r.lateMinutes>0?r.lateMinutes+' মিনিট':'না'}</td>
+        <td><span class="badge ${statusMap[r.status]||'badge-info'}">${r.status}</span></td>
+      </tr>`).join('')}</tbody>
+    </table></div>
+    <div style="padding:16px;border-top:1px solid var(--border)">
+      <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:10px">কর্মী ভিত্তিক সারসংক্ষেপ:</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px">
+        ${summary.map(s=>`<div style="background:var(--bg);border-radius:8px;padding:10px;font-size:12px">
+          <div style="font-weight:600;margin-bottom:6px">${s.name}</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span class="badge badge-success">${s.present}দিন</span>
+            ${s.absent>0?`<span class="badge badge-danger">${s.absent}অনুপস্থিত</span>`:''}
+            ${s.late>0?`<span class="badge badge-purple">${s.late}দেরি</span>`:''}
+            ${s.totalOT>0?`<span class="badge badge-info">OT:${s.totalOT.toFixed(1)}ঘণ্টা</span>`:''}
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>`;
   }
 }
 
@@ -3436,5 +5269,2136 @@ function renderRotationRoster(){
     </div>
   </div>
 </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+
+
+// ===== APPS SCRIPT URL =====
+const SURL = 'https://script.google.com/macros/s/AKfycbyJExQ3PsUJCqzHGhM28e4Sp2xdUtiXNYL5fn7BhdXZy0TeVIel7c0_ws0XfG11MYI/exec';
+
+// ===== LOCAL STATE =====
+let employees   = [];
+let attLogs     = [];
+let payrollData = [];
+let otData      = [];
+let rosterData  = [];
+let importedData= [];
+const weekDays  = ['সোম','মঙ্গল','বুধ','বৃহঃ','শুক্র','শনি','রবি'];
+const COLORS    = ['#1a56db','#0e9f6e','#e02424','#7e3af2','#ff8a00','#0891b2','#be185d','#065f46'];
+function empColor(i){ return COLORS[i%COLORS.length]; }
+
+// ===== ANIMATIONS =====
+const _s = document.createElement('style');
+_s.textContent = `
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes slideIn{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
+`;
+document.head.appendChild(_s);
+
+// ===== TOAST =====
+function showToast(msg, type='success'){
+  let c=document.getElementById('_toasts');
+  if(!c){c=document.createElement('div');c.id='_toasts';c.style.cssText='position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;';document.body.appendChild(c);}
+  const t=document.createElement('div');
+  const clr={success:'#0e9f6e',danger:'#e02424',info:'#1a56db',warning:'#ff8a00'};
+  t.style.cssText=`background:${clr[type]||clr.info};color:#fff;padding:12px 18px;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 4px 12px rgba(0,0,0,.2);min-width:220px;animation:slideIn .3s ease;`;
+  t.textContent=msg; c.appendChild(t); setTimeout(()=>t.remove(),3500);
+}
+
+// ===== API CALL =====
+async function api(action, params={}){
+  const flat = {action};
+  Object.entries(params).forEach(([k,v])=>{
+    flat[k] = typeof v === 'object' ? JSON.stringify(v) : String(v===undefined||v===null?'':v);
+  });
+  const qs = Object.entries(flat).map(([k,v])=>encodeURIComponent(k)+'='+encodeURIComponent(v)).join('&');
+  const url = SURL + '?' + qs;
+  try{
+    const r = await fetch(url);
+    const text = await r.text();
+    // Apps Script sometimes returns HTML on redirect
+    if(text.trim().startsWith('<')){
+      // fire and hope for write ops
+      showToast('✅ সেভ হচ্ছে...','info');
+      return {success:true};
+    }
+    const j = JSON.parse(text);
+    if(j && j.error){showToast('⚠️ '+j.error,'danger');return null;}
+    return j;
+  }catch(e){
+    // CORS blocked — use no-cors for write, assume success
+    try{
+      await fetch(url,{mode:'no-cors'});
+      return {success:true, message:'পাঠানো হয়েছে'};
+    }catch(e2){
+      showToast('❌ সার্ভার সংযোগ ব্যর্থ','danger');
+      return null;
+    }
+  }
+}
+
+// ===== NAVIGATION =====
+function navigate(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  const titles={dashboard:'ড্যাশবোর্ড',employees:'কর্মী তালিকা',departments:'বিভাগ ও পদ',
+    attendance:'হাজিরা রেকর্ড',import:'CSV/XLS ইমপোর্ট',payroll:'পেরোল',
+    overtime:'ওভারটাইম',bonus:'বোনাস ও কাটা',leave:'ছুটি ব্যবস্থাপনা',
+    roster:'রোস্টার / শিফট',reports:'রিপোর্ট',settings:'সেটিংস'};
+  document.getElementById('page-title').textContent=titles[page]||page;
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    if(n.textContent.trim().includes((titles[page]||'').substring(0,4))) n.classList.add('active');
+  });
+  // page-specific load
+  if(page==='employees') loadEmployees();
+  if(page==='departments') loadDepartments();
+  if(page==='attendance') loadAttendance();
+  if(page==='payroll') loadPayroll();
+  if(page==='overtime') loadOvertime();
+  if(page==='leave') loadLeave();
+  if(page==='roster') loadRoster();
+  if(page==='dashboard') loadDashboard();
+}
+
+// ===== MODAL =====
+function openModal(name){ document.getElementById('modal-'+name).classList.add('open'); }
+function closeModal(name){ document.getElementById('modal-'+name).classList.remove('open'); }
+document.addEventListener('click',e=>{ if(e.target.classList.contains('modal-overlay')) e.target.classList.remove('open'); });
+
+// ===== TABS =====
+function switchTab(el,tabId){
+  const p=el.closest('.page')||document;
+  p.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  p.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+
+// ===== DATE =====
+function setDate(){
+  const d=new Date();
+  document.getElementById('current-date').textContent=d.toLocaleDateString('bn-BD',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+}
+
+// ===== DASHBOARD =====
+async function loadDashboard(){
+  const res = await api('getDashboard');
+  if(!res) return;
+  const d = res.data;
+
+  // Stat কার্ড
+  const sv = (id, val) => { const el=document.getElementById(id); if(el) el.textContent=val; };
+  sv('stat-total',   d.totalEmployees || '০');
+  sv('stat-present', d.todayPresent   || '০');
+  sv('stat-absent',  d.todayAbsent    || '০');
+  sv('stat-total-sub',   (d.totalEmployees||0) + ' জন সক্রিয়');
+  sv('stat-present-sub', (d.todayPresent && d.totalEmployees) ? Math.round(d.todayPresent/d.totalEmployees*100)+'% হাজিরা' : '');
+  sv('stat-absent-sub',  d.todayLate ? d.todayLate+' জন দেরিতে' : '');
+
+  // হাজিরা সামারি বক্স
+  sv('d-present', (d.todayPresent||0) + ' জন');
+  sv('d-absent',  (d.todayAbsent||0)  + ' জন');
+  sv('d-leave',   (d.todayLeave||0)   + ' জন');
+  sv('d-late',    (d.todayLate||0)    + ' জন');
+  sv('d-night',   (d.nightShift||0)   + ' জন');
+
+  // উপস্থিতি হার
+  const total = d.totalEmployees || 1;
+  const rate  = d.todayPresent ? Math.round(d.todayPresent/total*100) : 0;
+  sv('d-att-rate', rate + '% উপস্থিতি হার');
+  const prog = document.getElementById('d-att-rate');
+  const bar  = document.querySelector('#page-dashboard .progress-fill');
+  if(bar) bar.style.width = rate + '%';
+
+  // পেন্ডিং
+  sv('d-pending-leave', (d.pendingLeaves||0) + 'টি');
+  sv('d-pending-ot',    (d.pendingOT||0)     + 'টি');
+
+  // আজকের লগ
+  if(d.todayLog && d.todayLog.length){
+    attLogs = d.todayLog.map(r=>({
+      date: r['তারিখ'], name: r['নাম'], id: r['কর্মী আইডি'],
+      in: r['ইন টাইম'], out: r['আউট টাইম'],
+      hours: r['মোট ঘণ্টা'], ot: r['ওভারটাইম'],
+      late: r['দেরি'], status: mapStatus(r['অবস্থা'])
+    }));
+  }
+  renderDashAttTable();
+}
+
+function mapStatus(s){
+  if(!s) return 'present';
+  if(s.includes('অনুপস্থিত')) return 'absent';
+  if(s.includes('দেরি')) return 'late';
+  if(s.includes('ছুটি')) return 'leave';
+  return 'present';
+}
+
+// ===== EMPLOYEES =====
+async function loadEmployees(){
+  const tbody = document.getElementById('emp-table');
+  tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-muted)">⏳ লোড হচ্ছে...</td></tr>';
+  const res = await api('getEmployees');
+  if(!res || !res.data){ tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--danger)">❌ ডাটা লোড হয়নি</td></tr>'; return; }
+  employees = res.data.map((e,i)=>({
+    id: e['ID'], name: e['নাম'], post: e['পদ'], dept: e['বিভাগ'],
+    join: e['যোগদান তারিখ'], salary: parseFloat(e['মূল বেতন'])||0,
+    shift: e['শিফট']||'D', color: empColor(i), status: e['অবস্থা']
+  }));
+  renderEmployeeTable(employees);
+}
+
+function renderDashAttTable(){
+  const tbody=document.getElementById('dash-att-table');
+  if(!tbody) return;
+  if(!attLogs.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-muted)">আজকের হাজিরা ডাটা নেই</td></tr>';return;}
+  const statusMap={present:'badge-success',leave:'badge-warning',late:'badge-purple',absent:'badge-danger'};
+  const statusLabel={present:'উপস্থিত',leave:'ছুটি',late:'দেরি',absent:'অনুপস্থিত'};
+  tbody.innerHTML=attLogs.map(r=>`<tr>
+    <td><div class="emp-cell">
+      <div class="emp-avatar" style="background:${empColor(0)}">${(r.name||'?')[0]}</div>
+      <div><div class="emp-name-text">${r.name||'—'}</div><div class="emp-id-text">${r.id||''}</div></div>
+    </div></td>
+    <td>${r.in||'—'}</td><td>${r.out||'—'}</td><td>${r.hours||'—'}</td>
+    <td>${r.ot&&r.ot!=='—'?r.ot+' ঘণ্টা':'—'}</td>
+    <td><span class="badge ${statusMap[r.status]||'badge-info'}">${statusLabel[r.status]||r.status}</span></td>
+  </tr>`).join('');
+}
+
+function renderEmployeeTable(data){
+  const tbody=document.getElementById('emp-table');
+  if(!tbody) return;
+  if(!data||!data.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-muted)">কোনো কর্মী নেই</td></tr>';return;}
+  const shiftLabel={D:'দিন',E:'সন্ধ্যা',N:'রাত'};
+  tbody.innerHTML=data.map((e,i)=>`<tr>
+    <td><div class="emp-cell">
+      <div class="emp-avatar" style="background:${e.color||empColor(i)}">${(e.name||'?')[0]}</div>
+      <div><div class="emp-name-text">${e.name||'—'}</div><div class="emp-id-text">${e.id||''}</div></div>
+    </div></td>
+    <td>${e.post||'—'}</td>
+    <td><span class="badge badge-info">${e.dept||'—'}</span></td>
+    <td>${e.join||'—'}</td>
+    <td>৳${(e.salary||0).toLocaleString()}</td>
+    <td><span class="shift-badge shift-${(e.shift||'D').toLowerCase()}">${shiftLabel[e.shift||'D']}</span></td>
+    <td><span class="badge ${e.status==='সক্রিয়'||e.status==='active'?'badge-success':'badge-danger'}">${e.status||'সক্রিয়'}</span></td>
+    <td class="flex gap-8">
+      <button class="btn btn-outline btn-sm" onclick="openEditEmpModal('${e.id}')">✏️ এডিট</button>
+      <button class="btn btn-primary btn-sm" onclick="showPayslip('${e.id}')">পে-স্লিপ</button>
+    </td>
+  </tr>`).join('');
+}
+
+function filterEmployees(q){
+  const f=employees.filter(e=>(e.name||'').includes(q)||(e.id||'').includes(q)||(e.dept||'').includes(q));
+  renderEmployeeTable(f);
+}
+function filterByDept(dept){
+  renderEmployeeTable(dept?employees.filter(e=>e.dept===dept):employees);
+}
+
+let _addingEmployee = false; // ডাবল ক্লিক প্রতিরোধ
+
+async function addEmployee(){
+  if(_addingEmployee) return; // আগে থেকে চলছে হলে বের হও
+
+  const modal = document.getElementById('modal-addEmployee');
+  const name     = modal.querySelector('input[placeholder="কর্মীর পূর্ণ নাম"]')?.value?.trim()||'';
+  const empId    = modal.querySelector('input[placeholder="E001"]')?.value?.trim()||('E'+String(Date.now()).slice(-4));
+  const allSelects = modal.querySelectorAll('select');
+  const post     = allSelects[0]?.value||'অপারেটর';
+  const dept     = allSelects[1]?.value||'উৎপাদন';
+  const salary   = modal.querySelector('input[placeholder="20000"]')?.value||'0';
+  const joinRaw  = modal.querySelector('input[type="date"]')?.value||'';
+  const joinDate = joinRaw; // YYYY-MM-DD ফরম্যাটে রাখি
+  const phone    = modal.querySelector('input[placeholder="01XXXXXXXXX"]')?.value||'';
+  const allInputs= modal.querySelectorAll('input');
+  const nid      = allInputs[7]?.value||'';
+  const shiftRaw = allSelects[2]?.value||'';
+  const shift    = shiftRaw.includes('সন্ধ্যা')||shiftRaw.includes('(E)') ? 'E'
+                 : shiftRaw.includes('রাত')||shiftRaw.includes('(N)') ? 'N' : 'D';
+  const bank     = allInputs[9]?.value||'';
+
+  if(!name){ showToast('নাম দিন!','warning'); return; }
+
+  // বাটন লক করো
+  _addingEmployee = true;
+  const btn = modal.querySelector('.btn-primary');
+  const origText = btn ? btn.textContent : '';
+  if(btn){ btn.textContent = '⏳ যোগ হচ্ছে...'; btn.disabled = true; }
+
+  const res = await api('addEmployee',{
+    name, id:empId, post, dept, salary, joinDate, phone, nid, shift, bank
+  });
+
+  // বাটন আনলক করো
+  _addingEmployee = false;
+  if(btn){ btn.textContent = origText; btn.disabled = false; }
+
+  if(res && res.success){
+    showToast('✅ '+name+' সফলভাবে যোগ হয়েছে');
+    // মডাল বন্ধ করো
+    closeModal('addEmployee');
+    // সব ঘর ফাঁকা করো
+    modal.querySelectorAll('input').forEach(i => i.value = '');
+    modal.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+    // ১.৫ সেকেন্ড পরে তালিকা রিলোড
+    setTimeout(()=> loadEmployees(), 1500);
+  }
+}
+
+// ===== ATTENDANCE =====
+async function loadAttendance(){
+  const month=document.querySelector('#page-attendance input[type=month]')?.value||new Date().toISOString().slice(0,7);
+  const res=await api('getAttendance',{month});
+  if(!res) return;
+  attLogs=(res.data||[]).map(r=>({
+    date:r['তারিখ'],name:r['নাম'],id:r['কর্মী আইডি'],
+    in:r['ইন টাইম'],out:r['আউট টাইম'],
+    hours:r['মোট ঘণ্টা'],ot:r['ওভারটাইম'],
+    late:r['দেরি'],status:mapStatus(r['অবস্থা'])
+  }));
+  renderAttLogTable();
+  drawCalendar();
+}
+
+function renderAttLogTable(){
+  const tbody=document.getElementById('att-log-table');
+  if(!tbody) return;
+  if(!attLogs.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-muted)">কোনো ডাটা নেই — XLS ইমপোর্ট করুন</td></tr>';return;}
+  const statusMap={present:'badge-success',absent:'badge-danger',late:'badge-purple',leave:'badge-warning'};
+  const statusLabel={present:'উপস্থিত',absent:'অনুপস্থিত',late:'দেরি',leave:'ছুটি'};
+  tbody.innerHTML=attLogs.map(r=>`<tr>
+    <td>${r.date||'—'}</td>
+    <td><strong>${r.name||'—'}</strong></td>
+    <td>${r.in||'—'}</td><td>${r.out||'—'}</td>
+    <td>${r.hours||'—'}</td><td>${r.ot||'—'}</td>
+    <td>${r.late||'—'}</td>
+    <td><span class="badge ${statusMap[r.status]||'badge-info'}">${statusLabel[r.status]||r.status}</span></td>
+  </tr>`).join('');
+}
+
+// ===== XLS/XLSX/CSV IMPORT =====
+function handleFileUpload(input){
+  const file=input.files?.[0]||input;
+  if(!file) return;
+  document.querySelector('.upload-text').textContent='⏳ লোড হচ্ছে...';
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=new Uint8Array(e.target.result);
+      const wb=XLSX.read(data,{type:'array',cellDates:true});
+      const ws=wb.Sheets[wb.SheetNames[0]];
+      const rows=XLSX.utils.sheet_to_json(ws,{defval:''});
+      if(!rows.length){showToast('ফাইলে ডাটা নেই','warning');return;}
+      importedData=rows;
+      renderImportPreview(rows);
+      document.querySelector('.upload-text').textContent='✅ '+file.name+' ('+rows.length+' সারি)';
+      showToast('✅ ফাইল পড়া হয়েছে: '+rows.length+' সারি');
+    }catch(err){
+      showToast('❌ ফাইল পড়া যায়নি: '+err.message,'danger');
+      document.querySelector('.upload-text').textContent='❌ ফাইল পড়া যায়নি';
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function renderImportPreview(rows){
+  if(!rows||!rows.length) return;
+  const headers=Object.keys(rows[0]);
+  const preview=document.getElementById('import-preview');
+  document.getElementById('preview-head').innerHTML='<tr>'+headers.map(h=>`<th>${h}</th>`).join('')+'</tr>';
+  document.getElementById('preview-body').innerHTML=rows.slice(0,10).map(row=>'<tr>'+headers.map(h=>{
+    let v=row[h];
+    if(v instanceof Date) v=v.toLocaleDateString('bn-BD');
+    return `<td>${v!==undefined?v:'—'}</td>`;
+  }).join('')+'</tr>').join('');
+  preview.style.display='block';
+}
+
+function handleDrop(e){
+  e.preventDefault();
+  document.getElementById('upload-area').classList.remove('drag-over');
+  if(e.dataTransfer.files[0]) handleFileUpload(e.dataTransfer.files[0]);
+}
+
+function processImport(){
+  if(!importedData.length){showToast('আগে ফাইল আপলোড করুন','warning');return;}
+  renderImportPreview(importedData);
+}
+
+
+// ===================================================
+// AUTO MATCHING ENGINE — নাম/আইডি মিলিয়ে ক্যালকুলেশন
+// ===================================================
+
+// Employees শিট থেকে কর্মী খোঁজা
+function findEmployee(nameOrId) {
+  if(!nameOrId || nameOrId === '—') return null;
+  const q = String(nameOrId).trim().toLowerCase();
+
+  return employees.find(emp => {
+    const empName = String(emp.name || '').trim().toLowerCase();
+    const empId   = String(emp.id   || '').trim().toLowerCase();
+    return empName === q || empId === q ||
+           empName.includes(q) || q.includes(empName) ||
+           empId === q;
+  }) || null;
+}
+
+// রোস্টার থেকে শিফট খোঁজা
+function findEmpShift(nameOrId) {
+  const q = String(nameOrId || '').trim().toLowerCase();
+  const r = rosterData.find(r =>
+    String(r.name || '').trim().toLowerCase() === q ||
+    String(r.id   || '').trim().toLowerCase() === q
+  );
+  return r ? (r.shifts[0] || 'D') : null;
+}
+
+// ===== মূল ম্যাচিং ফাংশন =====
+async function matchAndProcess(rawRows, month) {
+  // Sheets থেকে কর্মী লিস্ট লোড (না থাকলে)
+  if(!employees.length) {
+    const res = await api('getEmployees');
+    if(res && res.data) {
+      employees = res.data.map((e,i) => ({
+        id:     e['ID']        || '',
+        name:   e['নাম']       || '',
+        post:   e['পদ']        || '',
+        dept:   e['বিভাগ']     || '',
+        salary: parseFloat(e['মূল বেতন']) || 0,
+        shift:  e['শিফট']      || 'D',
+        status: e['অবস্থা']    || 'সক্রিয়',
+        color:  empColor(i),
+      }));
+    }
+  }
+
+  const matched   = [];  // মিলেছে
+  const unmatched = [];  // মেলেনি
+
+  rawRows.forEach(row => {
+    const rawName = row['Name'] || row['নাম'] || row['Emp ID'] || row['ID'] || '';
+    const emp = findEmployee(rawName);
+
+    if(!emp) {
+      // মেলেনি — স্কিপ
+      unmatched.push(rawName);
+      return;
+    }
+
+    // মিলেছে — শিফট নির্ধারণ
+    const rosterShift = findEmpShift(emp.name) || emp.shift || 'D';
+
+    // হাজিরা ক্যালকুলেশন
+    const attResult = calculateAttendance(row, rosterShift);
+
+    // কর্মীর তথ্য যোগ করি
+    attResult.empId   = emp.id;
+    attResult.name    = emp.name;
+    attResult.dept    = emp.dept;
+    attResult.salary  = emp.salary;
+    attResult.shift   = rosterShift;
+
+    // ওভারটাইম টাকা হিসাব
+    const dailyRate  = emp.salary / 30;
+    const hourlyRate = emp.salary / (26 * 8);
+    attResult.otPay  = Math.round(attResult.otHours * hourlyRate * HR_CONFIG.otRate);
+    attResult.deductAmount = Math.round(attResult.deductDays * dailyRate);
+
+    matched.push(attResult);
+  });
+
+  return { matched, unmatched };
+}
+
+// ===== ম্যাচিং রেজাল্ট দেখানো =====
+async function showMatchResult(matched, unmatched, month) {
+  let card = document.getElementById('imported-log-card');
+  if(!card){
+    card = document.createElement('div');
+    card.id = 'imported-log-card';
+    card.className = 'card mt-16';
+    document.getElementById('page-import').appendChild(card);
+  }
+
+  const totalPresent = matched.filter(r => r.statusEn==='present'||r.statusEn==='late').length;
+  const totalAbsent  = matched.filter(r => r.statusEn==='absent').length;
+  const totalLate    = matched.filter(r => r.statusEn==='late').length;
+  const totalOT      = matched.reduce((s,r) => s+(r.otHours||0), 0).toFixed(1);
+  const totalOTPay   = matched.reduce((s,r) => s+(r.otPay||0), 0);
+  const totalDeduct  = matched.reduce((s,r) => s+(r.deductAmount||0), 0);
+
+  const statusMap = {
+    'উপস্থিত':'badge-success','অনুপস্থিত':'badge-danger',
+    'দেরি':'badge-purple','অর্ধদিন':'badge-warning'
+  };
+
+  card.innerHTML = `
+  <div class="card-header">
+    <div class="card-title">✅ ম্যাচিং রেজাল্ট — ${month}</div>
+    <div style="display:flex;gap:8px">
+      <span class="badge badge-success">${matched.length} জন মিলেছে</span>
+      ${unmatched.length ? `<span class="badge badge-danger">${unmatched.length} জন মেলেনি</span>` : ''}
+    </div>
+  </div>
+
+  <!-- সারসংক্ষেপ -->
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;padding:16px;border-bottom:1px solid var(--border)">
+    <div style="text-align:center;padding:12px;background:#ecfdf5;border-radius:8px">
+      <div style="font-size:22px;font-weight:700;color:#059669">${totalPresent}</div>
+      <div style="font-size:11px;color:#065f46;margin-top:2px">✅ উপস্থিত</div>
+    </div>
+    <div style="text-align:center;padding:12px;background:#fef2f2;border-radius:8px">
+      <div style="font-size:22px;font-weight:700;color:#dc2626">${totalAbsent}</div>
+      <div style="font-size:11px;color:#991b1b;margin-top:2px">❌ অনুপস্থিত</div>
+    </div>
+    <div style="text-align:center;padding:12px;background:#f5f3ff;border-radius:8px">
+      <div style="font-size:22px;font-weight:700;color:#7c3aed">${totalLate}</div>
+      <div style="font-size:11px;color:#5b21b6;margin-top:2px">⏰ দেরি</div>
+    </div>
+    <div style="text-align:center;padding:12px;background:#eff6ff;border-radius:8px">
+      <div style="font-size:22px;font-weight:700;color:#2563eb">${totalOT}</div>
+      <div style="font-size:11px;color:#1e40af;margin-top:2px">⏱️ OT ঘণ্টা</div>
+    </div>
+    <div style="text-align:center;padding:12px;background:#fffbeb;border-radius:8px">
+      <div style="font-size:16px;font-weight:700;color:#d97706">৳${totalOTPay.toLocaleString()}</div>
+      <div style="font-size:11px;color:#92400e;margin-top:2px">💰 OT টাকা</div>
+    </div>
+  </div>
+
+  ${unmatched.length ? `
+  <div style="padding:12px 16px;background:#fef2f2;border-bottom:1px solid #fecaca">
+    <div style="font-size:12px;font-weight:700;color:#991b1b;margin-bottom:6px">
+      ⚠️ এই নামগুলো Employees শিটে নেই — আগে কর্মী যোগ করুন:
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      ${[...new Set(unmatched)].map(n=>`<span class="badge badge-danger">${n}</span>`).join('')}
+    </div>
+  </div>` : ''}
+
+  <!-- বিস্তারিত টেবিল -->
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>কর্মী</th><th>বিভাগ</th><th>তারিখ</th><th>শিফট</th>
+        <th>ইন</th><th>আউট</th><th>ঘণ্টা</th>
+        <th>OT</th><th>দেরি</th><th>কাটা</th><th>অবস্থা</th>
+      </tr></thead>
+      <tbody>
+        ${matched.map(r=>`<tr>
+          <td>
+            <div style="font-weight:600">${r.name}</div>
+            <div style="font-size:11px;color:var(--text-muted)">${r.empId||''}</div>
+          </td>
+          <td><span style="font-size:12px;color:var(--text-muted)">${r.dept||'—'}</span></td>
+          <td>${r.date}</td>
+          <td>
+            <span class="shift-badge shift-${(r.shift||'d').toLowerCase()}">${r.shift||'D'}</span>
+            <div style="font-size:10px;color:var(--text-muted);margin-top:2px">${r.shiftName||''}</div>
+          </td>
+          <td><strong>${r.in}</strong></td>
+          <td><strong>${r.out}</strong></td>
+          <td>${r.workHours>0?r.workHours+' ঘণ্টা':'—'}</td>
+          <td style="color:var(--purple)">${r.otHours>0?r.otHours+'ঘণ্টা<br><small>৳'+r.otPay+'</small>':'—'}</td>
+          <td style="color:var(--warning)">${r.lateMinutes>0?r.lateMinutes+' মিনিট':'—'}</td>
+          <td style="color:var(--danger)">${r.deductAmount>0?'৳'+r.deductAmount:'—'}</td>
+          <td><span class="badge ${statusMap[r.status]||'badge-info'}">${r.status}</span></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- কর্মী ভিত্তিক সারসংক্ষেপ -->
+  <div style="padding:16px;border-top:1px solid var(--border)">
+    <div style="font-size:12px;font-weight:700;margin-bottom:12px">📊 কর্মী ভিত্তিক সারসংক্ষেপ:</div>
+    <div style="overflow-x:auto">
+      <table style="font-size:12px">
+        <thead><tr>
+          <th>কর্মী</th><th>মূল বেতন</th><th>উপস্থিত</th>
+          <th>অনুপস্থিত</th><th>দেরি</th>
+          <th>OT ঘণ্টা</th><th>OT টাকা</th>
+          <th>কাটা</th><th>আনুমানিক নেট</th>
+        </tr></thead>
+        <tbody>
+          ${generateEmpSummaryRows(matched)}
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+function generateEmpSummaryRows(matched) {
+  const byEmp = {};
+  matched.forEach(r => {
+    if(!byEmp[r.name]) byEmp[r.name] = {
+      name:r.name, empId:r.empId, salary:r.salary||0, dept:r.dept||'',
+      present:0, absent:0, late:0, otHours:0, otPay:0, deduct:0
+    };
+    const e = byEmp[r.name];
+    if(r.statusEn==='present'||r.statusEn==='late') e.present++;
+    if(r.statusEn==='absent') e.absent++;
+    if(r.statusEn==='late') e.late++;
+    e.otHours  += r.otHours      || 0;
+    e.otPay    += r.otPay        || 0;
+    e.deduct   += r.deductAmount || 0;
+  });
+
+  return Object.values(byEmp).map(e => {
+    const houseRent = Math.round(e.salary * 0.5);
+    const medical   = e.salary > 0 ? 1500 : 0;
+    const transport = e.salary > 0 ? 1000 : 0;
+    const gross     = e.salary + houseRent + medical + transport + Math.round(e.otPay);
+    const net       = Math.max(0, gross - e.deduct);
+    return `<tr>
+      <td><strong>${e.name}</strong><br><span style="color:var(--text-muted)">${e.empId}</span></td>
+      <td>৳${e.salary.toLocaleString()}</td>
+      <td style="color:var(--secondary)">${e.present} দিন</td>
+      <td style="color:var(--danger)">${e.absent} দিন</td>
+      <td style="color:var(--purple)">${e.late} দিন</td>
+      <td style="color:var(--purple)">${e.otHours.toFixed(1)}</td>
+      <td style="color:var(--secondary)">৳${Math.round(e.otPay).toLocaleString()}</td>
+      <td style="color:var(--danger)">৳${e.deduct.toLocaleString()}</td>
+      <td><strong style="color:var(--primary)">৳${net.toLocaleString()}</strong></td>
+    </tr>`;
+  }).join('');
+}
+
+
+async function confirmImport(){
+  if(!importedData.length){showToast('কোনো ডাটা নেই','warning');return;}
+  const month = document.querySelector('#page-import input[type=month]')?.value || new Date().toISOString().slice(0,7);
+
+  // বাটন লক
+  const btn = document.getElementById('confirm-import-btn');
+  if(btn){ btn.disabled=true; btn.textContent='⏳ ম্যাচ করছি...'; }
+
+  showToast('🔍 কর্মী তালিকার সাথে মিলিয়ে দেখছি...','info');
+
+  // ম্যাচিং + ক্যালকুলেশন
+  const { matched, unmatched } = await matchAndProcess(importedData, month);
+
+  if(!matched.length){
+    showToast('❌ কোনো কর্মী মেলেনি! আগে Employees শিটে কর্মী যোগ করুন।','danger');
+    if(btn){ btn.disabled=false; btn.textContent='✅ কনফার্ম ইমপোর্ট'; }
+    return;
+  }
+
+  // রেজাল্ট দেখাই
+  await showMatchResult(matched, unmatched, month);
+
+  // Sheets এ পাঠাই
+  const parsed = matched.map(r => ({
+    name: r.name, date: r.date,
+    in: r.in, out: r.out,
+    hours: r.workHours, ot: r.otHours,
+    late: r.isLate, absent: r.statusEn==='absent',
+    shift: r.shift, lateMinutes: r.lateMinutes,
+    status: r.status,
+  }));
+
+  // Google Sheets এ পাঠাও
+  const res=await api('importAttendance',{month,rows:JSON.stringify(parsed)});
+  if(res){
+    showToast(`✅ ${res.total} সারি ইমপোর্ট হয়েছে! উপস্থিত:${res.present} অনুপস্থিত:${res.absent}`);
+    document.getElementById('import-preview').style.display='none';
+    importedData=[];
+
+    // locally update attLogs for instant display
+    attLogs=parsed.map(r=>({
+      date:r.date,name:r.name,id:r.name,
+      in:r.in==='true'||r.in==='True'?'—':r.in,
+      out:r.out==='true'||r.out==='True'?'—':r.out,
+      hours:'—',ot:'—',
+      late:r.late?'হ্যাঁ':'না',
+      status:r.absent?'absent':r.late?'late':'present'
+    }));
+    renderDashAttTable();
+
+    // Show results card
+    let card=document.getElementById('imported-log-card');
+    if(!card){card=document.createElement('div');card.id='imported-log-card';card.className='card mt-16';document.getElementById('page-import').appendChild(card);}
+    const statusMap={'উপস্থিত':'badge-success','অনুপস্থিত':'badge-danger','দেরি':'badge-purple','অর্ধদিন':'badge-warning'};
+
+    // সারসংক্ষেপ কার্ড
+    const totalPresent = processed.filter(r=>r.statusEn==='present'||r.statusEn==='late').length;
+    const totalAbsent  = processed.filter(r=>r.statusEn==='absent').length;
+    const totalLate    = processed.filter(r=>r.statusEn==='late').length;
+    const totalOT      = processed.reduce((s,r)=>s+(r.otHours||0),0).toFixed(1);
+
+    card.innerHTML=`
+    <div class="card-header">
+      <div class="card-title">📋 ইমপোর্ট সারসংক্ষেপ (${processed.length} রেকর্ড)</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:16px;border-bottom:1px solid var(--border)">
+      <div style="text-align:center;padding:12px;background:#ecfdf5;border-radius:8px">
+        <div style="font-size:22px;font-weight:700;color:#059669">${totalPresent}</div>
+        <div style="font-size:11px;color:#065f46;margin-top:2px">✅ উপস্থিত</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:#fef2f2;border-radius:8px">
+        <div style="font-size:22px;font-weight:700;color:#dc2626">${totalAbsent}</div>
+        <div style="font-size:11px;color:#991b1b;margin-top:2px">❌ অনুপস্থিত</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:#f5f3ff;border-radius:8px">
+        <div style="font-size:22px;font-weight:700;color:#7c3aed">${totalLate}</div>
+        <div style="font-size:11px;color:#5b21b6;margin-top:2px">⏰ দেরি</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:#eff6ff;border-radius:8px">
+        <div style="font-size:22px;font-weight:700;color:#2563eb">${totalOT}</div>
+        <div style="font-size:11px;color:#1e40af;margin-top:2px">⏱️ OT ঘণ্টা</div>
+      </div>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr>
+        <th>নাম</th><th>তারিখ</th><th>শিফট</th>
+        <th>ইন</th><th>আউট</th>
+        <th>কাজের ঘণ্টা</th><th>OT</th>
+        <th>দেরি</th><th>অবস্থা</th>
+      </tr></thead>
+      <tbody>${processed.map(r=>`<tr>
+        <td><strong>${r.name}</strong></td>
+        <td>${r.date}</td>
+        <td><span class="shift-badge shift-${(r.shift||'d').toLowerCase()}">${r.shift||'D'}</span></td>
+        <td>${r.in}</td>
+        <td>${r.out}</td>
+        <td><strong>${r.workHours||0} ঘণ্টা</strong></td>
+        <td style="color:var(--purple)">${r.otHours>0?r.otHours+' ঘণ্টা':'—'}</td>
+        <td>${r.lateMinutes>0?r.lateMinutes+' মিনিট':'না'}</td>
+        <td><span class="badge ${statusMap[r.status]||'badge-info'}">${r.status}</span></td>
+      </tr>`).join('')}</tbody>
+    </table></div>
+    <div style="padding:16px;border-top:1px solid var(--border)">
+      <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:10px">কর্মী ভিত্তিক সারসংক্ষেপ:</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px">
+        ${summary.map(s=>`<div style="background:var(--bg);border-radius:8px;padding:10px;font-size:12px">
+          <div style="font-weight:600;margin-bottom:6px">${s.name}</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span class="badge badge-success">${s.present}দিন</span>
+            ${s.absent>0?`<span class="badge badge-danger">${s.absent}অনুপস্থিত</span>`:''}
+            ${s.late>0?`<span class="badge badge-purple">${s.late}দেরি</span>`:''}
+            ${s.totalOT>0?`<span class="badge badge-info">OT:${s.totalOT.toFixed(1)}ঘণ্টা</span>`:''}
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }
+}
+
+// ===== PAYROLL =====
+async function loadPayroll(){
+  const month = document.querySelector('#page-payroll input[type=month]')?.value || new Date().toISOString().slice(0,7);
+  const res = await api('getPayroll', {month});
+  if(!res) return;
+  const data = res.data || [];
+  if(data.length){
+    payrollData = data.map((r,i) => ({
+      id:r['কর্মী আইডি'], name:r['নাম'],
+      basic:parseFloat(r['মূল বেতন'])||0,
+      att:parseFloat(r['হাজিরা ভাতা'])||0,
+      ot:parseFloat(r['ওভারটাইম পে'])||0,
+      bonus:parseFloat(r['বোনাস'])||0,
+      deduct:parseFloat(r['কাটা'])||0,
+      net:parseFloat(r['নেট বেতন'])||0,
+      status:r['অবস্থা']||'পেন্ডিং',
+      color:empColor(i)
+    }));
+    updatePayrollSummary();
+  }
+  renderPayrollTable();
+}
+
+async function generatePayroll(){
+  const month = document.querySelector('#page-payroll input[type=month]')?.value || new Date().toISOString().slice(0,7);
+
+  // বাটন লক
+  const btn = document.querySelector('#page-payroll .btn-primary');
+  if(btn){ btn.textContent='⏳ তৈরি হচ্ছে...'; btn.disabled=true; }
+
+  // প্রথমে Sheets থেকে হাজিরা ডাটা আনি
+  const attRes = await api('getAttendance', {month});
+  const attData = (attRes?.data || []);
+
+  // কর্মী তালিকা — লোকাল না থাকলে Sheets থেকে আনি
+  let empList = employees.filter(e => e.status==='সক্রিয়' || e.status==='active');
+  if(!empList.length){
+    const empRes = await api('getEmployees');
+    empList = (empRes?.data || []).map((e,i) => ({
+      id: e['ID'], name: e['নাম'], post: e['পদ'], dept: e['বিভাগ'],
+      salary: parseFloat(e['মূল বেতন'])||0, shift: e['শিফট']||'D',
+      status: e['অবস্থা'], color: empColor(i)
+    }));
+    employees = empList;
+  }
+
+  // হাজিরা ডাটা থেকে অনন্য কর্মী বের করি (Sheets এ কর্মী না থাকলেও)
+  const empFromAtt = {};
+  attData.forEach(r => {
+    const key = r['কর্মী আইডি'] || r['নাম'] || '';
+    if(key && !empFromAtt[key]){
+      empFromAtt[key] = { id:key, name:r['নাম']||key };
+    }
+  });
+
+  // মার্জ — Sheets কর্মী + হাজিরা থেকে পাওয়া কর্মী
+  const allEmp = [...empList];
+  Object.values(empFromAtt).forEach(ea => {
+    if(!allEmp.find(e => e.id===ea.id || e.name===ea.name)){
+      allEmp.push({ id:ea.id, name:ea.name, salary:0, color:empColor(allEmp.length) });
+    }
+  });
+
+  if(!allEmp.length){
+    showToast('⚠️ কোনো কর্মী বা হাজিরা ডাটা নেই! আগে XLS ইমপোর্ট করুন।','warning');
+    if(btn){ btn.textContent='💰 পেরোল তৈরি করুন'; btn.disabled=false; }
+    return;
+  }
+
+  // পেরোল ক্যালকুলেশন
+  const totalDays = 26;
+  payrollData = allEmp.map((emp, i) => {
+    const basic = parseFloat(emp.salary)||0;
+
+    // হাজিরা ফিল্টার
+    const empAtt = attData.filter(a =>
+      a['কর্মী আইডি']===emp.id || a['নাম']===emp.name || a['কর্মী আইডি']===emp.name
+    );
+    const presentDays = empAtt.filter(a =>
+      a['অবস্থা']==='উপস্থিত' || a['অবস্থা']==='দেরি'
+    ).length;
+    const leaveDays = empAtt.filter(a => a['অবস্থা']==='ছুটি').length;
+    const absentDays = Math.max(0, totalDays - presentDays - leaveDays);
+
+    // ভাতা
+    const houseRent  = Math.round(basic * 0.5);
+    const medical    = basic > 0 ? 1500 : 0;
+    const transport  = basic > 0 ? 1000 : 0;
+    const att        = presentDays >= totalDays ? 500 : 0;
+
+    // ওভারটাইম — হাজিরা থেকে সরাসরি
+    let otHours = 0;
+    empAtt.forEach(a => {
+      const ot = parseFloat(a['ওভারটাইম'])||0;
+      otHours += ot;
+    });
+    const hourlyRate = basic > 0 ? (basic / 208) * 1.5 : 0;
+    const otPay = Math.round(otHours * hourlyRate);
+
+    // কাটা
+    const dailyRate = basic > 0 ? basic / 30 : 0;
+    const deduct = Math.round(absentDays * dailyRate);
+    const net = basic + houseRent + medical + transport + att + otPay - deduct;
+
+    return {
+      id: emp.id, name: emp.name, color: emp.color||empColor(i),
+      basic, att, ot: otPay, bonus: 0, deduct, net: Math.max(0, net),
+      status: 'পেন্ডিং',
+      _presentDays: presentDays, _absentDays: absentDays, _otHours: otHours
+    };
+  });
+
+  // Sheets এ পাঠাও (ব্যাকগ্রাউন্ডে)
+  api('generatePayroll', {month}).catch(()=>{});
+
+  renderPayrollTable();
+  updatePayrollSummary();
+
+  if(btn){ btn.textContent='💰 পেরোল তৈরি করুন'; btn.disabled=false; }
+  showToast('✅ ' + payrollData.length + ' জনের পেরোল তৈরি হয়েছে!');
+}
+
+function updatePayrollSummary(){
+  const totalEarning = payrollData.reduce((s,e) => s+(e.basic||0)+(e.att||0)+(e.ot||0)+(e.bonus||0), 0);
+  const totalDeduct  = payrollData.reduce((s,e) => s+(e.deduct||0), 0);
+  const totalNet     = payrollData.reduce((s,e) => s+(e.net||0), 0);
+  const boxes = document.querySelectorAll('.payroll-box-value');
+  if(boxes[0]) boxes[0].textContent = '৳' + totalEarning.toLocaleString('bn-BD');
+  if(boxes[1]) boxes[1].textContent = '৳' + totalDeduct.toLocaleString('bn-BD');
+  if(boxes[2]) boxes[2].textContent = '৳' + totalNet.toLocaleString('bn-BD');
+}
+
+function renderPayrollTable(){
+  const tbody=document.getElementById('payroll-table');
+  if(!tbody) return;
+  if(!payrollData.length){
+    tbody.innerHTML='<tr><td colspan="9" style="text-align:center;padding:30px;color:var(--text-muted)">পেরোল তৈরি হয়নি — "পেরোল তৈরি করুন" ক্লিক করুন</td></tr>';
+    return;
+  }
+  const statusMap={'পেন্ডিং':'badge-warning','অনুমোদিত':'badge-success'};
+  tbody.innerHTML=payrollData.map(e=>`<tr>
+    <td><div class="emp-cell">
+      <div class="emp-avatar" style="background:${e.color}">${(e.name||'?')[0]}</div>
+      <div><div class="emp-name-text">${e.name}</div><div class="emp-id-text">${e.id}</div></div>
+    </div></td>
+    <td>৳${(e.basic||0).toLocaleString()}</td>
+    <td>৳${(e.att||0).toLocaleString()}</td>
+    <td style="color:var(--purple)">৳${(e.ot||0).toLocaleString()}</td>
+    <td style="color:var(--secondary)">৳${(e.bonus||0).toLocaleString()}</td>
+    <td style="color:var(--danger)">৳${(e.deduct||0).toLocaleString()}</td>
+    <td><strong>৳${(e.net||0).toLocaleString()}</strong></td>
+    <td><span class="badge ${statusMap[e.status]||'badge-warning'}">${e.status||'পেন্ডিং'}</span></td>
+    <td><button class="btn btn-outline btn-sm" onclick="showPayslip('${e.id}')">📄 দেখুন</button></td>
+  </tr>`).join('');
+}
+
+// ===== OVERTIME =====
+async function loadOvertime(){
+  const month=document.querySelector('#page-overtime input[type=month]')?.value||new Date().toISOString().slice(0,7);
+  const res=await api('getOvertime',{month});
+  if(!res) return;
+  otData=(res.data||[]).map(r=>({
+    name:r['নাম'],id:r['কর্মী আইডি'],
+    date:r['তারিখ'],normal:r['সাধারণ ঘণ্টা'],
+    ot:r['ওভারটাইম ঘণ্টা'],rate:r['হার'],
+    pay:r['পরিমাণ'],status:r['অবস্থা']==='অনুমোদিত'?'approved':'pending'
+  }));
+  // ওভারটাইম stat আপডেট
+  const totalHrs = otData.reduce((s,r)=>s+parseFloat(r.ot||0),0);
+  const approved = otData.filter(r=>r.status==='approved').length;
+  const pending  = otData.filter(r=>r.status==='pending').length;
+  const totalPay = otData.reduce((s,r)=>s+parseFloat(r.pay||0),0);
+  const sv=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  sv('ot-total-hours', totalHrs.toFixed(1));
+  sv('ot-approved',    approved);
+  sv('ot-pending',     pending);
+  sv('ot-total-pay',   '৳'+Math.round(totalPay).toLocaleString());
+  renderOTTable();
+}
+
+async function approveAllOT(){
+  const month=document.querySelector('#page-overtime input[type=month]')?.value||new Date().toISOString().slice(0,7);
+  const res=await api('approveOvertime',{month});
+  if(res){showToast('✅ '+res.message);loadOvertime();}
+}
+
+function renderOTTable(){
+  const tbody=document.getElementById('ot-table');
+  if(!tbody) return;
+  if(!otData.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-muted)">ওভারটাইম ডাটা নেই</td></tr>';return;}
+  tbody.innerHTML=otData.map(r=>{
+    const st=r.status==='approved'?'badge-success':'badge-warning';
+    const sl=r.status==='approved'?'✅ অনুমোদিত':'⌛ পেন্ডিং';
+    return`<tr>
+      <td>${r.name||'—'}<br><span class="emp-id-text">${r.id||''}</span></td>
+      <td>${r.date||'—'}</td><td>${r.normal||'৮'}</td>
+      <td><strong style="color:var(--purple)">${r.ot||'—'}</strong></td>
+      <td>${r.rate||'১.৫'}×</td>
+      <td><strong>৳${r.pay||'—'}</strong></td>
+      <td><span class="badge ${st}">${sl}</span></td>
+      <td class="flex gap-8">
+        ${r.status==='pending'?`<button class="btn btn-success btn-sm">✅</button><button class="btn btn-danger btn-sm">❌</button>`:'<span class="text-muted">—</span>'}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ===== LEAVE =====
+async function loadLeave(){
+  const res=await api('getLeave',{status:'পেন্ডিং'});
+  if(!res) return;
+  const tbody=document.querySelector('#leave-pending-tab table tbody');
+  if(!tbody) return;
+  const data=res.data||[];
+  if(!data.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted)">কোনো পেন্ডিং আবেদন নেই</td></tr>';return;}
+  tbody.innerHTML=data.map(r=>`<tr>
+    <td><div class="emp-cell"><div class="emp-avatar" style="background:${empColor(0)}">${(r['নাম']||'?')[0]}</div><div><div class="emp-name-text">${r['নাম']||'—'}</div></div></div></td>
+    <td><span class="badge badge-info">${r['ছুটির ধরন']||'—'}</span></td>
+    <td>${r['শুরু তারিখ']||'—'}</td><td>${r['শেষ তারিখ']||'—'}</td>
+    <td>${r['দিন']||'—'} দিন</td>
+    <td>${r['কারণ']||'—'}</td>
+    <td class="flex gap-8">
+      <button class="btn btn-success btn-sm" onclick="approveLeaveRow('${r['আবেদন আইডি']}',this)">✅ অনুমোদন</button>
+      <button class="btn btn-danger btn-sm" onclick="rejectLeaveRow('${r['আবেদন আইডি']}',this)">❌ বাতিল</button>
+    </td>
+  </tr>`).join('');
+}
+
+async function approveLeaveRow(id, btn){
+  const res=await api('approveLeave',{id});
+  if(res){showToast('✅ ছুটি অনুমোদিত');btn.closest('tr').querySelector('td:last-child').innerHTML='<span class="badge badge-success">✅ অনুমোদিত</span>';}
+}
+
+async function rejectLeaveRow(id, btn){
+  const res=await api('rejectLeave',{id});
+  if(res){showToast('❌ ছুটি বাতিল','warning');btn.closest('tr').querySelector('td:last-child').innerHTML='<span class="badge badge-danger">❌ বাতিল</span>';}
+}
+
+function approveLeave(btn){ btn.closest('tr').querySelector('td:last-child').innerHTML='<span class="badge badge-success">✅ অনুমোদিত</span>'; }
+function rejectLeave(btn){ btn.closest('tr').querySelector('td:last-child').innerHTML='<span class="badge badge-danger">❌ বাতিল</span>'; }
+
+async function submitLeaveApplication(){
+  const modal=document.getElementById('modal-applyLeave');
+  const sel=modal.querySelector('select').value;
+  const leaveType=modal.querySelectorAll('select')[1].value;
+  const startDate=modal.querySelectorAll('input[type=date]')[0].value;
+  const endDate=modal.querySelectorAll('input[type=date]')[1].value;
+  const reason=modal.querySelector('textarea').value;
+  if(!startDate||!endDate){showToast('তারিখ দিন','warning');return;}
+  const res=await api('applyLeave',{empId:'',empName:sel,leaveType,startDate,endDate,reason});
+  if(res){showToast('✅ ছুটির আবেদন জমা হয়েছে');closeModal('applyLeave');loadLeave();}
+}
+
+// ===== ROSTER =====
+let selectedShiftPick = 'D';
+
+async function loadRoster(){
+  // কর্মী তালিকা না থাকলে লোড করি
+  if(!employees.length){
+    const res = await api('getEmployees');
+    if(res && res.data){
+      employees = res.data.map((e,i)=>({
+        id:e['ID'], name:e['নাম'], dept:e['বিভাগ'],
+        shift:e['শিফট']||'D', color:empColor(i), status:e['অবস্থা']
+      }));
+    }
+  }
+
+  // Sheets থেকে রোস্টার আনি
+  const res = await api('getRoster');
+  if(res && res.data && res.data.length){
+    rosterData = res.data.map(r=>({
+      id: r['কর্মী আইডি'], name:r['নাম'],
+      shifts:[r['সোম']||'D',r['মঙ্গল']||'D',r['বুধ']||'D',
+              r['বৃহঃ']||'D',r['শুক্র']||'D',r['শনি']||'OFF',r['রবি']||'OFF']
+    }));
+  } else {
+    // কর্মী লিস্ট থেকে ডিফল্ট রোস্টার বানাই
+    rosterData = employees
+      .filter(e=>e.status==='সক্রিয়'||e.status==='active'||!e.status)
+      .map(e=>({
+        id:e.id, name:e.name,
+        shifts:[e.shift||'D',e.shift||'D',e.shift||'D',e.shift||'D',e.shift||'D','OFF','OFF']
+      }));
+  }
+
+  renderRoster();
+  updateShiftEmpDropdown();
+}
+
+function renderRoster(){
+  const grid = document.getElementById('roster-grid');
+  if(!grid) return;
+
+  // বিভাগ ফিল্টার
+  const deptFilter = document.getElementById('roster-dept-filter')?.value || '';
+  let data = rosterData;
+  if(deptFilter){
+    const deptEmps = employees.filter(e=>e.dept===deptFilter).map(e=>e.name);
+    data = data.filter(r => deptEmps.includes(r.name));
+  }
+
+  if(!data.length){
+    grid.innerHTML = '<div style="padding:30px;text-align:center;color:var(--text-muted);grid-column:1/-1">কোনো কর্মী নেই — আগে কর্মী যোগ করুন</div>';
+    return;
+  }
+
+  const shiftClass = {D:'shift-d',E:'shift-e',N:'shift-n',OFF:'shift-off'};
+  grid.style.gridTemplateColumns = '150px repeat(7,1fr)';
+
+  let html = `<div class="roster-cell header">কর্মী</div>`;
+  weekDays.forEach(d => html += `<div class="roster-cell header">${d}</div>`);
+
+  data.forEach((emp, ei) => {
+    const empIdx = rosterData.findIndex(r=>r.name===emp.name);
+    html += `<div class="roster-cell emp-name" style="font-size:12px">${emp.name}</div>`;
+    (emp.shifts||['D','D','D','D','D','OFF','OFF']).forEach((s,di) => {
+      const shift = s||'OFF';
+      html += `<div class="roster-cell" style="cursor:pointer" onclick="cycleShift(${empIdx},${di})" title="ক্লিক করে শিফট বদলান">
+        <span class="shift-badge ${shiftClass[shift]||'shift-off'}">${shift}</span>
+      </div>`;
+    });
+  });
+
+  grid.innerHTML = html;
+  updateRosterSummary(data);
+}
+
+// ক্লিক করলে শিফট সাইকেল: D → E → N → OFF → D
+function cycleShift(empIdx, dayIdx){
+  const cycle = ['D','E','N','OFF'];
+  const current = rosterData[empIdx]?.shifts[dayIdx] || 'D';
+  const nextIdx = (cycle.indexOf(current) + 1) % cycle.length;
+  rosterData[empIdx].shifts[dayIdx] = cycle[nextIdx];
+  renderRoster();
+}
+
+function updateRosterSummary(data){
+  const count = {D:0,E:0,N:0,OFF:0};
+  data.forEach(emp => {
+    (emp.shifts||[]).forEach(s => { if(count[s]!==undefined) count[s]++; });
+  });
+  const sv=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v+' জন×দিন';};
+  sv('rs-d', count.D);
+  sv('rs-e', count.E);
+  sv('rs-n', count.N);
+  sv('rs-off', count.OFF);
+}
+
+// শিফট মডাল — কর্মী ড্রপডাউন
+function updateShiftEmpDropdown(){
+  const sel = document.getElementById('shift-emp-select');
+  if(!sel) return;
+  sel.innerHTML = '<option value="all">— সব কর্মী —</option>' +
+    rosterData.map((r,i)=>`<option value="${i}">${r.name}</option>`).join('');
+}
+
+function selectShiftPick(shift){
+  selectedShiftPick = shift;
+  ['D','E','N','OFF'].forEach(s=>{
+    const el = document.getElementById('shift-pick-'+s);
+    if(el) el.style.borderColor = s===shift ? 'var(--primary)' : 'var(--border)';
+  });
+}
+
+function applyShiftSetting(){
+  const empVal = document.getElementById('shift-emp-select')?.value;
+  const checkedDays = [...document.querySelectorAll('#shift-day-checkboxes input:checked')].map(c=>parseInt(c.value));
+  if(!checkedDays.length){ showToast('অন্তত একটি দিন সিলেক্ট করুন','warning'); return; }
+  if(!selectedShiftPick){ showToast('শিফট সিলেক্ট করুন','warning'); return; }
+
+  if(empVal==='all'){
+    rosterData.forEach(emp=>{
+      checkedDays.forEach(d=>{ emp.shifts[d] = selectedShiftPick; });
+    });
+    showToast('✅ সব কর্মীর শিফট আপডেট হয়েছে');
+  } else {
+    const idx = parseInt(empVal);
+    checkedDays.forEach(d=>{ rosterData[idx].shifts[d] = selectedShiftPick; });
+    showToast('✅ ' + rosterData[idx].name + ' এর শিফট আপডেট হয়েছে');
+  }
+  closeModal('setShift');
+  renderRoster();
+}
+
+async function saveRosterToSheet(){
+  if(!rosterData.length){ showToast('রোস্টার খালি!','warning'); return; }
+  const week = document.getElementById('roster-week')?.value || '';
+  const res = await api('saveRoster', {
+    rows: JSON.stringify(rosterData.map(r=>({
+      empId: r.id||r.name, name: r.name,
+      shifts: r.shifts, week
+    })))
+  });
+  if(res) showToast('✅ রোস্টার সেভ হয়েছে!');
+}
+
+function printRoster(){
+  window.print();
+}
+
+// ===== CALENDAR =====
+function drawCalendar(){
+  const cal=document.getElementById('att-calendar');
+  if(!cal) return;
+  const statuses=['present','present','present','present','weekend','present','present',
+    'present','late','present','present','weekend','leave','present',
+    'present','present','present','present','weekend','present','absent',
+    'present','present','present','leave','weekend'];
+  const statusLabel={present:'✓',absent:'✗',leave:'ছ',holiday:'ছু',weekend:'বন্ধ',late:'দেরি'};
+  let html=weekDays.map(d=>`<div class="att-day-header">${d}</div>`).join('');
+  for(let i=0;i<6;i++) html+=`<div class="att-day empty"></div>`;
+  statuses.forEach((s,i)=>{
+    html+=`<div class="att-day ${s}"><div class="day-num">${i+1}</div><div class="day-status">${statusLabel[s]||''}</div></div>`;
+  });
+  cal.innerHTML=html;
+}
+
+// ===== PAYSLIP =====
+function showPayslip(empId){
+  const pr=payrollData.find(e=>e.id===empId)||{};
+  const emp=employees.find(e=>e.id===empId)||{};
+  const basic=pr.basic||emp.salary||0;
+  const houseRent=Math.round(basic*0.5);
+  const medical=1500, transport=1000;
+  const net=(pr.net||0)+houseRent+medical+transport;
+  document.getElementById('payslip-content').innerHTML=`
+  <div class="payslip">
+    <div class="payslip-header">
+      <div class="payslip-company">আপনার প্রতিষ্ঠানের নাম</div>
+      <div class="payslip-title">বেতন বিবরণী — ${new Date().toLocaleDateString('bn-BD',{year:'numeric',month:'long'})}</div>
+    </div>
+    <div class="payslip-info">
+      <div>
+        <div class="payslip-info-row"><span class="pir-label">কর্মী নাম:</span> ${emp.name||pr.name||'—'}</div>
+        <div class="payslip-info-row"><span class="pir-label">আইডি:</span> ${empId}</div>
+        <div class="payslip-info-row"><span class="pir-label">পদ:</span> ${emp.post||'—'}</div>
+        <div class="payslip-info-row"><span class="pir-label">বিভাগ:</span> ${emp.dept||'—'}</div>
+      </div>
+      <div>
+        <div class="payslip-info-row"><span class="pir-label">কার্যদিবস:</span> ২৬ দিন</div>
+        <div class="payslip-info-row"><span class="pir-label">ওভারটাইম:</span> ${pr.ot||0} টাকা</div>
+      </div>
+    </div>
+    <table class="payslip-table">
+      <thead><tr><th>আয়</th><th>৳</th><th>কাটা</th><th>৳</th></tr></thead>
+      <tbody>
+        <tr><td>মূল বেতন</td><td>${basic.toLocaleString()}</td><td>অনুপস্থিত কাটা</td><td>${(pr.deduct||0).toLocaleString()}</td></tr>
+        <tr><td>বাড়ি ভাড়া ভাতা</td><td>${houseRent.toLocaleString()}</td><td>অন্যান্য কাটা</td><td>০</td></tr>
+        <tr><td>চিকিৎসা ভাতা</td><td>${medical.toLocaleString()}</td><td></td><td></td></tr>
+        <tr><td>যাতায়াত ভাতা</td><td>${transport.toLocaleString()}</td><td></td><td></td></tr>
+        <tr><td>হাজিরা ভাতা</td><td>${(pr.att||0).toLocaleString()}</td><td></td><td></td></tr>
+        <tr><td>ওভারটাইম</td><td>${(pr.ot||0).toLocaleString()}</td><td></td><td></td></tr>
+        <tr><td>বোনাস</td><td>${(pr.bonus||0).toLocaleString()}</td><td></td><td></td></tr>
+        <tr style="font-weight:700;background:#f8fafc"><td>মোট আয়</td><td>${(basic+houseRent+medical+transport+(pr.att||0)+(pr.ot||0)+(pr.bonus||0)).toLocaleString()}</td><td>মোট কাটা</td><td>${(pr.deduct||0).toLocaleString()}</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:16px;padding:14px;background:var(--primary-light);border-radius:8px;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-weight:600;font-size:15px">নেট বেতন</span>
+      <span style="font-weight:700;font-size:22px;color:var(--primary)">৳${net.toLocaleString()}</span>
+    </div>
+    <div style="margin-top:24px;display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted)">
+      <div>কর্মীর স্বাক্ষর: _______________</div>
+      <div>কর্তৃপক্ষের স্বাক্ষর: _______________</div>
+    </div>
+  </div>`;
+  openModal('payslip');
+}
+
+// ===== SETTINGS =====
+async function loadSettings(){
+  const res=await api('getSettings');
+  if(!res) return;
+  const d=res.data||{};
+  const fields=document.querySelectorAll('#page-settings input,#page-settings select');
+  if(d.company_name && fields[0]) fields[0].value=d.company_name;
+  if(d.office_start && fields[2]) fields[2].value=d.office_start;
+  if(d.office_end && fields[3]) fields[3].value=d.office_end;
+  if(d.grace_minutes && fields[4]) fields[4].value=d.grace_minutes;
+}
+
+// ===== INIT =====
+async function init(){
+  setDate();
+  drawCalendar();
+  await loadDashboard();
+}
+
+init();
+
+// ===== DEPARTMENTS & DESIGNATIONS =====
+
+// লোকাল স্টেট
+let departments = [
+  {name:'উৎপাদন', head:'রাহেলা বেগম'},
+  {name:'অ্যাকাউন্টস', head:'করিম সাহেব'},
+  {name:'HR', head:'নাসরিন'},
+  {name:'IT', head:'রাফি'},
+  {name:'মার্কেটিং', head:'সুমাইয়া'},
+  {name:'অপারেশন', head:'ইমরান'},
+];
+
+let designations = [
+  {name:'ম্যানেজার', dept:'সব', grade:'A'},
+  {name:'সিনিয়র অফিসার', dept:'সব', grade:'B'},
+  {name:'অফিসার', dept:'সব', grade:'C'},
+  {name:'সহকারী', dept:'সব', grade:'D'},
+  {name:'অপারেটর', dept:'উৎপাদন', grade:'E'},
+  {name:'হেলপার', dept:'উৎপাদন', grade:'F'},
+];
+
+function loadDepartments(){
+  renderDeptTable();
+  renderDesigTable();
+}
+
+function renderDeptTable(){
+  const tbody = document.getElementById('dept-tbody');
+  if(!tbody) return;
+  if(!departments.length){
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-muted)">কোনো বিভাগ নেই</td></tr>';
+    return;
+  }
+  // কর্মী সংখ্যা গণনা
+  const countByDept = {};
+  employees.forEach(e => {
+    countByDept[e.dept] = (countByDept[e.dept]||0) + 1;
+  });
+
+  tbody.innerHTML = departments.map((d,i) => `<tr>
+    <td><strong>${d.name}</strong></td>
+    <td><span class="badge badge-info">${countByDept[d.name]||0} জন</span></td>
+    <td>${d.head||'—'}</td>
+    <td>
+      <button class="btn btn-outline btn-sm" onclick="openEditDeptModal(${i})">✏️ এডিট</button>
+    </td>
+  </tr>`).join('');
+}
+
+function renderDesigTable(){
+  const tbody = document.getElementById('desig-tbody');
+  if(!tbody) return;
+  const gradeBadge = {A:'badge-purple',B:'badge-info',C:'badge-success',D:'badge-warning',E:'badge-warning',F:'badge-danger'};
+  tbody.innerHTML = designations.map((d,i) => `<tr>
+    <td><strong>${d.name}</strong></td>
+    <td>${d.dept}</td>
+    <td><span class="badge ${gradeBadge[d.grade]||'badge-info'}">${d.grade}</span></td>
+    <td>
+      <button class="btn btn-outline btn-sm" onclick="openEditDesigModal(${i})">✏️ এডিট</button>
+    </td>
+  </tr>`).join('');
+}
+
+// ===== DEPT MODAL =====
+function openAddDeptModal(){
+  document.getElementById('editDeptModalTitle').textContent = '🏢 নতুন বিভাগ যোগ';
+  document.getElementById('editDeptOldName').value = '';
+  document.getElementById('editDeptName').value = '';
+  document.getElementById('editDeptHead').value = '';
+  openModal('editDept');
+}
+
+function openEditDeptModal(idx){
+  const d = departments[idx];
+  document.getElementById('editDeptModalTitle').textContent = '🏢 বিভাগ এডিট — ' + d.name;
+  document.getElementById('editDeptOldName').value = d.name;
+  document.getElementById('editDeptName').value = d.name;
+  document.getElementById('editDeptHead').value = d.head||'';
+  openModal('editDept');
+}
+
+function saveDept(){
+  const oldName = document.getElementById('editDeptOldName').value;
+  const newName = document.getElementById('editDeptName').value.trim();
+  const head    = document.getElementById('editDeptHead').value.trim();
+  if(!newName){showToast('বিভাগের নাম দিন!','warning');return;}
+
+  if(oldName){
+    // এডিট
+    const idx = departments.findIndex(d=>d.name===oldName);
+    if(idx>=0) departments[idx] = {name:newName, head};
+    showToast('✅ বিভাগ আপডেট হয়েছে');
+  } else {
+    // নতুন
+    if(departments.find(d=>d.name===newName)){showToast('এই নামে বিভাগ আছে!','warning');return;}
+    departments.push({name:newName, head});
+    showToast('✅ নতুন বিভাগ যোগ হয়েছে');
+  }
+  closeModal('editDept');
+  renderDeptTable();
+  updateDeptDropdowns();
+}
+
+function deleteDept(){
+  const name = document.getElementById('editDeptOldName').value;
+  if(!name){closeModal('editDept');return;}
+  const empCount = employees.filter(e=>e.dept===name).length;
+  if(empCount>0){showToast('এই বিভাগে '+empCount+' জন কর্মী আছে! আগে তাদের সরান।','danger');return;}
+  departments = departments.filter(d=>d.name!==name);
+  showToast('🗑️ বিভাগ মুছে গেছে','warning');
+  closeModal('editDept');
+  renderDeptTable();
+  updateDeptDropdowns();
+}
+
+// ===== DESIG MODAL =====
+function openAddDesigModal(){
+  document.getElementById('editDesigModalTitle').textContent = '💼 নতুন পদ যোগ';
+  document.getElementById('editDesigOldName').value = '';
+  document.getElementById('editDesigName').value = '';
+  document.getElementById('editDesigGrade').value = 'C';
+  updateDesigDeptDropdown();
+  openModal('editDesig');
+}
+
+function openEditDesigModal(idx){
+  const d = designations[idx];
+  document.getElementById('editDesigModalTitle').textContent = '💼 পদ এডিট — ' + d.name;
+  document.getElementById('editDesigOldName').value = d.name;
+  document.getElementById('editDesigName').value = d.name;
+  document.getElementById('editDesigGrade').value = d.grade||'C';
+  updateDesigDeptDropdown(d.dept);
+  openModal('editDesig');
+}
+
+function updateDesigDeptDropdown(selected='সব'){
+  const sel = document.getElementById('editDesigDept');
+  if(!sel) return;
+  sel.innerHTML = '<option value="সব">সব</option>' +
+    departments.map(d=>`<option value="${d.name}" ${d.name===selected?'selected':''}>${d.name}</option>`).join('');
+}
+
+function saveDesig(){
+  const oldName = document.getElementById('editDesigOldName').value;
+  const newName = document.getElementById('editDesigName').value.trim();
+  const dept    = document.getElementById('editDesigDept').value;
+  const grade   = document.getElementById('editDesigGrade').value;
+  if(!newName){showToast('পদের নাম দিন!','warning');return;}
+
+  if(oldName){
+    const idx = designations.findIndex(d=>d.name===oldName);
+    if(idx>=0) designations[idx] = {name:newName, dept, grade};
+    showToast('✅ পদ আপডেট হয়েছে');
+  } else {
+    designations.push({name:newName, dept, grade});
+    showToast('✅ নতুন পদ যোগ হয়েছে');
+  }
+  closeModal('editDesig');
+  renderDesigTable();
+  updatePostDropdowns();
+}
+
+function deleteDesig(){
+  const name = document.getElementById('editDesigOldName').value;
+  if(!name){closeModal('editDesig');return;}
+  designations = designations.filter(d=>d.name!==name);
+  showToast('🗑️ পদ মুছে গেছে','warning');
+  closeModal('editDesig');
+  renderDesigTable();
+  updatePostDropdowns();
+}
+
+// কর্মী যোগের ফর্মে বিভাগ ও পদ আপডেট
+function updateDeptDropdowns(){
+  const sels = document.querySelectorAll('#modal-addEmployee select');
+  if(sels[1]){
+    sels[1].innerHTML = departments.map(d=>`<option value="${d.name}">${d.name}</option>`).join('');
+  }
+  // filter bar
+  document.querySelectorAll('select').forEach(sel=>{
+    if(sel.innerHTML.includes('সব বিভাগ')&&!sel.id){
+      sel.innerHTML = '<option value="">সব বিভাগ</option>'+
+        departments.map(d=>`<option value="${d.name}">${d.name}</option>`).join('');
+    }
+  });
+}
+
+function updatePostDropdowns(){
+  const sels = document.querySelectorAll('#modal-addEmployee select');
+  if(sels[0]){
+    sels[0].innerHTML = designations.map(d=>`<option value="${d.name}">${d.name}</option>`).join('');
+  }
+}
+
+
+// ===== EMPLOYEE EDIT =====
+function openEditEmpModal(empId){
+  const emp = employees.find(e => e.id === empId);
+  if(!emp){ showToast('কর্মী পাওয়া যায়নি','danger'); return; }
+
+  document.getElementById('editEmpId').value       = emp.id || '';
+  document.getElementById('editEmpIdField').value  = emp.id || '';
+  document.getElementById('editEmpName').value     = emp.name || '';
+  document.getElementById('editEmpSalary').value   = emp.salary || '';
+  document.getElementById('editEmpPhone').value    = emp.phone || '';
+  document.getElementById('editEmpNid').value      = emp.nid || '';
+  document.getElementById('editEmpBank').value     = emp.bank || '';
+  document.getElementById('editEmpStatus').value   = emp.status === 'active' ? 'সক্রিয়' : (emp.status || 'সক্রিয়');
+  document.getElementById('editEmpShift').value    = emp.shift || 'D';
+
+  // যোগদান তারিখ — YYYY-MM-DD ফরম্যাটে সেট
+  const joinVal = emp.join || '';
+  if(joinVal && joinVal.includes('-') && joinVal.length >= 10){
+    document.getElementById('editEmpJoin').value = joinVal.slice(0,10);
+  } else {
+    document.getElementById('editEmpJoin').value = '';
+  }
+
+  // পদ সিলেক্ট
+  const postSel = document.getElementById('editEmpPost');
+  [...postSel.options].forEach(o => { o.selected = o.value === emp.post; });
+  if(![...postSel.options].find(o=>o.selected) && emp.post){
+    const opt = document.createElement('option');
+    opt.value = emp.post; opt.textContent = emp.post; opt.selected = true;
+    postSel.appendChild(opt);
+  }
+
+  // বিভাগ সিলেক্ট
+  const deptSel = document.getElementById('editEmpDept');
+  [...deptSel.options].forEach(o => { o.selected = o.value === emp.dept; });
+  if(![...deptSel.options].find(o=>o.selected) && emp.dept){
+    const opt = document.createElement('option');
+    opt.value = emp.dept; opt.textContent = emp.dept; opt.selected = true;
+    deptSel.appendChild(opt);
+  }
+
+  openModal('editEmployee');
+}
+
+let _savingEmployee = false;
+
+async function saveEditEmployee(){
+  if(_savingEmployee) return;
+
+  const id     = document.getElementById('editEmpId').value;
+  const name   = document.getElementById('editEmpName').value.trim();
+  const post   = document.getElementById('editEmpPost').value;
+  const dept   = document.getElementById('editEmpDept').value;
+  const salary = document.getElementById('editEmpSalary').value;
+  const join   = document.getElementById('editEmpJoin').value;
+  const phone  = document.getElementById('editEmpPhone').value;
+  const nid    = document.getElementById('editEmpNid').value;
+  const shift  = document.getElementById('editEmpShift').value;
+  const bank   = document.getElementById('editEmpBank').value;
+  const status = document.getElementById('editEmpStatus').value;
+
+  if(!name){ showToast('নাম দিন!','warning'); return; }
+
+  _savingEmployee = true;
+  const btn = document.querySelector('#modal-editEmployee .btn-primary');
+  if(btn){ btn.textContent = '⏳ সেভ হচ্ছে...'; btn.disabled = true; }
+
+  // লোকাল স্টেট আপডেট
+  const idx = employees.findIndex(e => e.id === id);
+  if(idx >= 0){
+    employees[idx] = { ...employees[idx], name, post, dept, salary: parseFloat(salary)||0, join, phone, nid, shift, bank, status };
+  }
+
+  // Google Sheets আপডেট
+  const res = await api('updateEmployee', { id, নাম:name, পদ:post, বিভাগ:dept, 'মূল বেতন':salary, 'যোগদান তারিখ':join, ফোন:phone, এনআইডি:nid, শিফট:shift, 'ব্যাংক অ্যাকাউন্ট':bank, অবস্থা:status });
+
+  _savingEmployee = false;
+  if(btn){ btn.textContent = '✅ সেভ করুন'; btn.disabled = false; }
+
+  showToast('✅ ' + name + ' এর তথ্য আপডেট হয়েছে');
+  closeModal('editEmployee');
+  renderEmployeeTable(employees);
+}
+
+async function deleteEmployee(){
+  const id   = document.getElementById('editEmpId').value;
+  const name = document.getElementById('editEmpName').value;
+  if(!confirm(name + ' কে নিষ্ক্রিয় করবেন?')) return;
+
+  const idx = employees.findIndex(e => e.id === id);
+  if(idx >= 0) employees[idx].status = 'নিষ্ক্রিয়';
+
+  await api('deleteEmployee', { id });
+  showToast('⚠️ ' + name + ' নিষ্ক্রিয় করা হয়েছে', 'warning');
+  closeModal('editEmployee');
+  renderEmployeeTable(employees);
+}
+
+
+// ===== ROTATION SHIFT =====
+
+function openRotationModal(){
+  // মাস ডিফল্ট
+  const now = new Date();
+  document.getElementById('rot-month').value = now.toISOString().slice(0,7);
+
+  // কর্মী ড্রপডাউন
+  const sel = document.getElementById('rot-emp-select');
+  sel.innerHTML = rosterData.map((r,i) =>
+    `<option value="${i}">${r.name}</option>`
+  ).join('');
+
+  // সব সিলেক্ট করি ডিফল্টে
+  [...sel.options].forEach(o => o.selected = true);
+
+  document.getElementById('rot-preview').innerHTML = '<span style="color:var(--text-muted)">প্রিভিউ দেখতে "প্রিভিউ" বাটন চাপুন</span>';
+  openModal('rotationShift');
+}
+
+function getRotationConfig(){
+  return {
+    w1: document.getElementById('rot-w1').value,
+    w2: document.getElementById('rot-w2').value,
+    w3: document.getElementById('rot-w3').value,
+    w4: document.getElementById('rot-w4').value,
+    offFri: document.getElementById('rot-off-fri').checked,
+    offSat: document.getElementById('rot-off-sat').checked,
+    offSun: document.getElementById('rot-off-sun').checked,
+    month: document.getElementById('rot-month').value,
+  };
+}
+
+// একটি মাসের জন্য রোটেশন শিফট ক্যালকুলেট করে
+function calcMonthlyRotation(cfg){
+  const [year, month] = cfg.month.split('-').map(Number);
+  const firstDay = new Date(year, month-1, 1);
+  const lastDay  = new Date(year, month, 0).getDate();
+  const rotation = [cfg.w1, cfg.w2, cfg.w3, cfg.w4];
+
+  // সপ্তাহ ০ = মাসের ১ম সপ্তাহ
+  const days = [];
+  for(let d=1; d<=lastDay; d++){
+    const date   = new Date(year, month-1, d);
+    const dow    = date.getDay(); // 0=রবি, 1=সোম, ..., 6=শনি
+    const isFri  = dow===5;
+    const isSat  = dow===6;
+    const isSun  = dow===0;
+
+    // ছুটির দিন চেক
+    if((cfg.offFri && isFri)||(cfg.offSat && isSat)||(cfg.offSun && isSun)){
+      days.push({date:d, day:dow, shift:'OFF'});
+      continue;
+    }
+
+    // কোন সপ্তাহ — মাসের শুরু থেকে কত সপ্তাহ গেছে
+    const weekOfMonth = Math.floor((d + firstDay.getDay() - 1) / 7);
+    const shift = rotation[weekOfMonth % 4] || 'D';
+    days.push({date:d, day:dow, shift});
+  }
+  return days;
+}
+
+function previewRotation(){
+  const cfg = getRotationConfig();
+  if(!cfg.month){ showToast('মাস সিলেক্ট করুন','warning'); return; }
+
+  const days = calcMonthlyRotation(cfg);
+  const dayNames = ['রবি','সোম','মঙ্গল','বুধ','বৃহঃ','শুক্র','শনি'];
+  const shiftClass = {D:'shift-d',E:'shift-e',N:'shift-n',OFF:'shift-off'};
+  const shiftLabel = {D:'সকাল',E:'দুপুর',N:'রাত',OFF:'ছুটি'};
+
+  // সপ্তাহ ভাগ করে দেখাই
+  let html = '<div style="display:flex;flex-direction:column;gap:6px">';
+  let week = [];
+  days.forEach((d,i) => {
+    week.push(d);
+    if(d.day===0 || i===days.length-1){ // রবিবার বা শেষ দিন
+      const weekNum = Math.ceil((d.date)/7);
+      html += `<div style="display:flex;align-items:center;gap:4px">
+        <span style="font-size:10px;color:var(--text-muted);min-width:40px">সপ্তাহ ${weekNum}</span>`;
+      week.forEach(wd => {
+        html += `<div style="text-align:center;min-width:36px">
+          <div style="font-size:9px;color:var(--text-muted)">${dayNames[wd.day]}</div>
+          <div style="font-size:10px">${wd.date}</div>
+          <span class="shift-badge ${shiftClass[wd.shift]}" style="font-size:9px;padding:1px 4px">${wd.shift}</span>
+        </div>`;
+      });
+      html += '</div>';
+      week = [];
+    }
+  });
+  html += '</div>';
+
+  // সারসংক্ষেপ
+  const count = {D:0,E:0,N:0,OFF:0};
+  days.forEach(d => { if(count[d.shift]!==undefined) count[d.shift]++; });
+  html += `<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+    <span class="badge badge-info">সকাল: ${count.D} দিন</span>
+    <span class="badge badge-success">দুপুর: ${count.E} দিন</span>
+    <span class="badge badge-purple">রাত: ${count.N} দিন</span>
+    <span class="badge badge-warning">ছুটি: ${count.OFF} দিন</span>
+  </div>`;
+
+  document.getElementById('rot-preview').innerHTML = html;
+}
+
+function applyRotation(){
+  const cfg = getRotationConfig();
+  if(!cfg.month){ showToast('মাস সিলেক্ট করুন','warning'); return; }
+
+  const selEmp = [...document.querySelectorAll('#rot-emp-select option:checked')].map(o=>parseInt(o.value));
+  if(!selEmp.length){ showToast('কর্মী সিলেক্ট করুন','warning'); return; }
+
+  const days = calcMonthlyRotation(cfg);
+
+  // রোস্টার ডাটা আপডেট — ৭ দিনের সাপ্তাহিক ভিউতে (প্রথম সপ্তাহ দেখাই)
+  // সোম=1, মঙ্গল=2, বুধ=3, বৃহঃ=4, শুক্র=5, শনি=6, রবি=0
+  const dowMap = {1:0,2:1,3:2,4:3,5:4,6:5,0:6}; // সাইডবার ইনডেক্স
+
+  selEmp.forEach(idx => {
+    if(!rosterData[idx]) return;
+    // সব সপ্তাহের শিফট আলাদা রাখি
+    rosterData[idx].monthlySchedule = days;
+    rosterData[idx].rotationConfig  = cfg;
+
+    // ১ম সপ্তাহ রোস্টার গ্রিডে দেখাই
+    const week1 = [cfg.w1,cfg.w1,cfg.w1,cfg.w1,cfg.w1, cfg.offSat?'OFF':cfg.w1, cfg.offSun?'OFF':cfg.w1];
+    if(cfg.offFri) week1[4] = 'OFF';
+    rosterData[idx].shifts = week1;
+
+    // মাসিক শিফট সংরক্ষণের জন্য রোস্টার গ্রিড সপ্তাহ দেখানো
+    rosterData[idx].weeklyShifts = {
+      w1: [cfg.w1,cfg.w1,cfg.w1,cfg.w1, cfg.offFri?'OFF':cfg.w1, cfg.offSat?'OFF':cfg.w1, cfg.offSun?'OFF':cfg.w1],
+      w2: [cfg.w2,cfg.w2,cfg.w2,cfg.w2, cfg.offFri?'OFF':cfg.w2, cfg.offSat?'OFF':cfg.w2, cfg.offSun?'OFF':cfg.w2],
+      w3: [cfg.w3,cfg.w3,cfg.w3,cfg.w3, cfg.offFri?'OFF':cfg.w3, cfg.offSat?'OFF':cfg.w3, cfg.offSun?'OFF':cfg.w3],
+      w4: [cfg.w4,cfg.w4,cfg.w4,cfg.w4, cfg.offFri?'OFF':cfg.w4, cfg.offSat?'OFF':cfg.w4, cfg.offSun?'OFF':cfg.w4],
+    };
+  });
+
+  closeModal('rotationShift');
+  renderRotationRoster();
+  showToast('✅ '+selEmp.length+' জনের রোটেশন শিফট সেট হয়েছে!');
+}
+
+// রোটেশন মোডে রোস্টার গ্রিড — ৪ সপ্তাহ দেখাই
+function renderRotationRoster(){
+  const grid = document.getElementById('roster-grid');
+  if(!grid) return;
+
+  const rotEmp = rosterData.filter(r => r.weeklyShifts);
+  const normalEmp = rosterData.filter(r => !r.weeklyShifts);
+
+  if(!rotEmp.length){ renderRoster(); return; }
+
+  const shiftClass = {D:'shift-d',E:'shift-e',N:'shift-n',OFF:'shift-off'};
+  const shiftLabel = {D:'সকাল',E:'দুপুর',N:'রাত',OFF:'ছুটি'};
+  const weeks = ['সপ্তাহ ১','সপ্তাহ ২','সপ্তাহ ৩','সপ্তাহ ৪'];
+  const wKeys = ['w1','w2','w3','w4'];
+
+  grid.style.gridTemplateColumns = '150px repeat(4,1fr)';
+
+  let html = `<div class="roster-cell header">কর্মী</div>`;
+  weeks.forEach(w => html += `<div class="roster-cell header">${w}</div>`);
+
+  rotEmp.forEach((emp, ei) => {
+    html += `<div class="roster-cell emp-name" style="font-size:12px">${emp.name}<div style="font-size:10px;color:var(--text-muted)">🔄 রোটেশন</div></div>`;
+    wKeys.forEach(wk => {
+      const wShifts = emp.weeklyShifts[wk];
+      const mainShift = wShifts ? wShifts[0] : 'D';
+      const offDays = wShifts ? wShifts.filter(s=>s==='OFF').length : 0;
+      html += `<div class="roster-cell" style="cursor:pointer">
+        <span class="shift-badge ${shiftClass[mainShift]}">${mainShift}</span>
+        <div style="font-size:9px;color:var(--text-muted);margin-top:2px">${shiftLabel[mainShift]}</div>
+        ${offDays?`<div style="font-size:9px;color:var(--text-muted)">${offDays}দিন ছুটি</div>`:''}
+      </div>`;
+    });
+  });
+
+  // সাধারণ কর্মী
+  if(normalEmp.length){
+    html += `<div class="roster-cell header" style="grid-column:1/-1;background:#f0f4f8;font-size:11px">সাধারণ শিফট কর্মী</div>`;
+    html += `<div class="roster-cell header">কর্মী</div>`;
+    weekDays.forEach(d => html += `<div class="roster-cell header">${d}</div>`);
+    grid.style.gridTemplateColumns = '150px repeat(7,1fr)';
+    normalEmp.forEach((emp,ei) => {
+      const idx = rosterData.findIndex(r=>r.name===emp.name);
+      html += `<div class="roster-cell emp-name" style="font-size:12px">${emp.name}</div>`;
+      (emp.shifts||['D','D','D','D','D','OFF','OFF']).forEach((s,di) => {
+        html += `<div class="roster-cell" style="cursor:pointer" onclick="cycleShift(${idx},${di})">
+          <span class="shift-badge ${shiftClass[s]||'shift-off'}">${s}</span>
+        </div>`;
+      });
+    });
+  }
+
+  grid.innerHTML = html;
+}
+
+
+</script>
+<script>
+
+// ===== STATE =====
+const COLORS = ['#2563eb','#059669','#7c3aed','#d97706','#dc2626','#0891b2','#be185d','#065f46'];
+const GITHUB_BASE = 'https://imranalbani19.github.io/hr-payroll-system/';
+
+let customers = JSON.parse(localStorage.getItem('hrp_customers') || '[]');
+
+// ===== UTILS =====
+function saveCustomers(){ localStorage.setItem('hrp_customers', JSON.stringify(customers)); }
+
+function showToast(msg, type='success'){
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  const clr = {success:'#059669',danger:'#dc2626',info:'#2563eb',warning:'#d97706'};
+  t.className = 'toast';
+  t.style.background = clr[type] || clr.success;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(()=>t.remove(), 3500);
+}
+
+function navigate(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    if(n.onclick?.toString().includes("'"+page+"'")) n.classList.add('active');
+  });
+  if(page==='dashboard') renderDashboard();
+  if(page==='customers') renderCustomers();
+  if(page==='revenue') renderRevenue();
+  if(page==='onboard'){ resetWizard(); document.getElementById('ob-paydate').value=new Date().toISOString().slice(0,10); }
+}
+
+function openModal(name){ document.getElementById('modal-'+name).classList.add('open'); }
+function closeModal(name){ document.getElementById('modal-'+name).classList.remove('open'); }
+document.addEventListener('click',e=>{ if(e.target.classList.contains('modal-overlay')) e.target.classList.remove('open'); });
+
+// ===== DASHBOARD =====
+function renderDashboard(){
+  const active = customers.filter(c=>c.status==='active').length;
+  const totalRev = customers.filter(c=>c.status==='active').reduce((s,c)=>s+parseInt(c.package||0),0);
+  const pending = customers.filter(c=>c.paymentStatus==='pending').length;
+
+  document.getElementById('total-customers').textContent = customers.length;
+  document.getElementById('active-customers').textContent = active;
+  document.getElementById('monthly-revenue').textContent = '৳'+totalRev.toLocaleString('bn-BD');
+  document.getElementById('pending-payment').textContent = pending;
+
+  // Revenue by package
+  const small  = customers.filter(c=>c.status==='active'&&c.package==='1500').length * 1500;
+  const medium = customers.filter(c=>c.status==='active'&&c.package==='2500').length * 2500;
+  const large  = customers.filter(c=>c.status==='active'&&c.package==='4000').length * 4000;
+  document.getElementById('rev-small').textContent  = '৳'+small.toLocaleString();
+  document.getElementById('rev-medium').textContent = '৳'+medium.toLocaleString();
+  document.getElementById('rev-large').textContent  = '৳'+large.toLocaleString();
+
+  // Recent customers table
+  const tbody = document.getElementById('dash-customer-table');
+  if(!customers.length){
+    tbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--ink-3)">কোনো কাস্টমার নেই — নতুন যোগ করুন</td></tr>';
+    return;
+  }
+  const pkgLabel = {'1500':'ছোট','2500':'মাঝারি','4000':'বড়'};
+  const sizeLabel = {'small':'১-৩০','medium':'৩১-৭৫','large':'৭৫-১৫০'};
+  tbody.innerHTML = customers.slice(-5).reverse().map(c=>`<tr>
+    <td><div style="display:flex;align-items:center;gap:10px">
+      <div style="width:32px;height:32px;border-radius:8px;background:${c.color};color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">${(c.company||'?')[0]}</div>
+      <div><div style="font-weight:600">${c.company}</div><div style="font-size:11px;color:var(--ink-3)">${c.owner}</div></div>
+    </div></td>
+    <td>${sizeLabel[c.size]||'—'} জন</td>
+    <td><span class="badge badge-blue">${pkgLabel[c.package]||'—'}</span></td>
+    <td>৳${parseInt(c.package||0).toLocaleString()}/মাস</td>
+    <td><span class="badge ${c.status==='active'?'badge-green':'badge-amber'}">${c.status==='active'?'✅ সক্রিয়':'⏳ পেন্ডিং'}</span></td>
+  </tr>`).join('');
+
+  renderRevenueChart();
+}
+
+function renderRevenueChart(){
+  const chart = document.getElementById('revenue-chart');
+  const months = ['জান','ফেব','মার','এপ্র','মে','জুন'];
+  const base = customers.filter(c=>c.status==='active').reduce((s,c)=>s+parseInt(c.package||0),0);
+  const data = months.map((_,i)=> i<5 ? Math.round(base * (0.5 + i*0.1)) : base);
+  const max = Math.max(...data, 1);
+  chart.innerHTML = data.map((v,i)=>`
+    <div class="rev-bar-item">
+      <div class="rev-bar-fill ${i===5?'current':''}" style="height:${Math.round(v/max*70)+10}px"></div>
+      <div class="rev-bar-label">${months[i]}</div>
+    </div>`).join('');
+}
+
+// ===== CUSTOMERS =====
+function renderCustomers(){
+  const grid = document.getElementById('customer-grid');
+  document.getElementById('customer-count-sub').textContent = `মোট ${customers.length} জন কাস্টমার`;
+
+  if(!customers.length){
+    grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--ink-3)">
+      <div style="font-size:40px;margin-bottom:12px">🏢</div>
+      <div style="font-size:15px;font-weight:600;margin-bottom:8px">কোনো কাস্টমার নেই</div>
+      <button class="btn btn-primary" onclick="navigate('onboard')">➕ প্রথম কাস্টমার যোগ করুন</button>
+    </div>`;
+    return;
+  }
+
+  const pkgLabel = {'1500':'ছোট','2500':'মাঝারি','4000':'বড়'};
+  const sizeLabel = {'small':'১-৩০','medium':'৩১-৭৫','large':'৭৫-১৫০'};
+
+  grid.innerHTML = customers.map((c,i)=>`
+    <div class="customer-card" onclick="showCustomerDetail(${i})">
+      <div class="status-dot ${c.status==='active'?'dot-green':'dot-amber'}"></div>
+      <div class="customer-avatar" style="background:${c.color}">${(c.company||'?')[0]}</div>
+      <div class="customer-name">${c.company}</div>
+      <div class="customer-info">${c.owner} · ${c.phone}</div>
+      <div class="customer-stats">
+        <div class="cstat">
+          <div class="cstat-val">${sizeLabel[c.size]||'—'}</div>
+          <div class="cstat-label">কর্মী</div>
+        </div>
+        <div class="cstat">
+          <div class="cstat-val">৳${(parseInt(c.package||0)/1000).toFixed(1)}K</div>
+          <div class="cstat-label">মাসিক</div>
+        </div>
+      </div>
+      <div class="customer-actions">
+        <a href="${c.softwareUrl||GITHUB_BASE}" target="_blank" class="btn btn-primary btn-sm" onclick="event.stopPropagation()">🔗 সফটওয়্যার</a>
+        <span class="badge ${pkgLabel[c.package]==='বড়'?'badge-purple':pkgLabel[c.package]==='মাঝারি'?'badge-blue':'badge-gray'}">${pkgLabel[c.package]||'—'}</span>
+      </div>
+    </div>`).join('');
+}
+
+function showCustomerDetail(idx){
+  const c = customers[idx];
+  const pkgLabel = {'1500':'ছোট (৳১,৫০০/মাস)','2500':'মাঝারি (৳২,৫০০/মাস)','4000':'বড় (৳৪,০০০/মাস)'};
+  document.getElementById('modal-customer-title').textContent = c.company;
+  document.getElementById('modal-customer-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px">
+      <div style="padding:12px;background:var(--bg);border-radius:8px">
+        <div style="font-size:11px;color:var(--ink-3);margin-bottom:4px">মালিক</div>
+        <div style="font-weight:600">${c.owner}</div>
+      </div>
+      <div style="padding:12px;background:var(--bg);border-radius:8px">
+        <div style="font-size:11px;color:var(--ink-3);margin-bottom:4px">ফোন</div>
+        <div style="font-weight:600">${c.phone}</div>
+      </div>
+      <div style="padding:12px;background:var(--bg);border-radius:8px">
+        <div style="font-size:11px;color:var(--ink-3);margin-bottom:4px">প্যাকেজ</div>
+        <div style="font-weight:600">${pkgLabel[c.package]||'—'}</div>
+      </div>
+      <div style="padding:12px;background:var(--bg);border-radius:8px">
+        <div style="font-size:11px;color:var(--ink-3);margin-bottom:4px">যোগদান</div>
+        <div style="font-weight:600">${c.joinDate||'—'}</div>
+      </div>
+      <div style="padding:12px;background:var(--bg);border-radius:8px;grid-column:1/-1">
+        <div style="font-size:11px;color:var(--ink-3);margin-bottom:4px">সফটওয়্যার লিংক</div>
+        <div style="font-weight:600;font-size:12px;word-break:break-all;color:var(--primary)">${c.softwareUrl||GITHUB_BASE}</div>
+      </div>
+      ${c.surl?`<div style="padding:12px;background:var(--bg);border-radius:8px;grid-column:1/-1">
+        <div style="font-size:11px;color:var(--ink-3);margin-bottom:4px">Apps Script URL</div>
+        <div style="font-size:11px;word-break:break-all;color:var(--ink-2)">${c.surl}</div>
+      </div>`:''}
+    </div>`;
+
+  document.getElementById('modal-open-btn').onclick = () => window.open(c.softwareUrl||GITHUB_BASE, '_blank');
+  document.getElementById('modal-delete-btn').onclick = () => {
+    if(confirm(c.company + ' মুছে দেবেন?')){
+      customers.splice(idx, 1);
+      saveCustomers();
+      closeModal('customer');
+      renderCustomers();
+      showToast('🗑️ কাস্টমার মুছে গেছে', 'warning');
+    }
+  };
+  openModal('customer');
+}
+
+// ===== REVENUE =====
+function renderRevenue(){
+  const tbody = document.getElementById('revenue-table');
+  if(!customers.length){
+    tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--ink-3)">কোনো কাস্টমার নেই</td></tr>';
+    return;
+  }
+  const pkgLabel = {'1500':'ছোট','2500':'মাঝারি','4000':'বড়'};
+  tbody.innerHTML = customers.map((c,i)=>{
+    const today = new Date();
+    const next = new Date(today.getFullYear(), today.getMonth()+1, 1);
+    return `<tr>
+      <td><strong>${c.company}</strong><br><span style="font-size:11px;color:var(--ink-3)">${c.owner}</span></td>
+      <td><span class="badge badge-blue">${pkgLabel[c.package]||'—'}</span></td>
+      <td><strong>৳${parseInt(c.package||0).toLocaleString()}</strong></td>
+      <td>${c.joinDate||'—'}</td>
+      <td>${next.toLocaleDateString('bn-BD')}</td>
+      <td><span class="badge badge-green">✅ সক্রিয়</span></td>
+      <td>
+        <button class="btn btn-outline btn-sm" onclick="markPaid(${i})">✅ পেমেন্ট নিলাম</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function markPaid(idx){
+  customers[idx].lastPayment = new Date().toISOString().slice(0,10);
+  customers[idx].paymentStatus = 'paid';
+  saveCustomers();
+  showToast('✅ পেমেন্ট রেকর্ড হয়েছে');
+  renderRevenue();
+}
+
+// ===== ONBOARDING WIZARD =====
+let currentStep = 1;
+
+function wizardNext1(){
+  const company = document.getElementById('ob-company').value.trim();
+  const owner   = document.getElementById('ob-owner').value.trim();
+  const phone   = document.getElementById('ob-phone').value.trim();
+  if(!company || !owner || !phone){
+    showToast('সব তারকা (*) চিহ্নিত ঘর পূরণ করুন', 'warning');
+    return;
+  }
+  goToStep(2);
+}
+
+async function wizardNext2(){
+  const surl    = document.getElementById('ob-surl').value.trim();
+  const sheetid = document.getElementById('ob-sheetid').value.trim();
+  if(!surl && !sheetid){
+    // URL ছাড়াও সেভ করতে পারব — পরে যোগ করবেন
+    if(!confirm('Apps Script URL ছাড়া সেভ করবেন? পরে আপডেট করতে পারবেন।')) return;
+  }
+
+  const company = document.getElementById('ob-company').value.trim();
+  const owner   = document.getElementById('ob-owner').value.trim();
+  const phone   = document.getElementById('ob-phone').value.trim();
+  const email   = document.getElementById('ob-email').value.trim();
+  const size    = document.getElementById('ob-size').value;
+  const pkg     = document.getElementById('ob-package').value;
+  const paydate = document.getElementById('ob-paydate').value;
+  const address = document.getElementById('ob-address').value.trim();
+
+  const customer = {
+    id: Date.now(),
+    company, owner, phone, email, size,
+    package: pkg, paydate, address, surl, sheetid,
+    status: 'active',
+    paymentStatus: 'paid',
+    joinDate: new Date().toISOString().slice(0,10),
+    color: COLORS[customers.length % COLORS.length],
+    softwareUrl: GITHUB_BASE,
+  };
+
+  customers.push(customer);
+  saveCustomers();
+
+  // Success screen
+  document.getElementById('ob-success-title').textContent = company + ' — সফলভাবে যোগ হয়েছে!';
+  document.getElementById('ob-success-sub').textContent = owner + ' এর জন্য সফটওয়্যার রেডি';
+  document.getElementById('ob-link-val').value = GITHUB_BASE;
+
+  goToStep(3);
+  showToast('🎉 ' + company + ' যোগ হয়েছে!');
+}
+
+async function testConnection(){
+  const surl = document.getElementById('ob-surl').value.trim();
+  const result = document.getElementById('ob-test-result');
+  if(!surl){ showToast('URL দিন আগে', 'warning'); return; }
+  result.style.display = 'block';
+  result.style.background = '#eff6ff';
+  result.style.color = '#1e40af';
+  result.innerHTML = '<span class="spinner"></span> টেস্ট হচ্ছে...';
+  try{
+    const r = await fetch(surl + '?action=getDashboard');
+    const d = await r.json();
+    if(d.success !== false){
+      result.style.background = '#ecfdf5';
+      result.style.color = '#065f46';
+      result.innerHTML = '✅ কানেকশন সফল! Google Sheets কাজ করছে।';
+    } else {
+      result.style.background = '#fef2f2';
+      result.style.color = '#991b1b';
+      result.innerHTML = '⚠️ URL সঠিক কিন্তু সমস্যা: ' + (d.error||'অজানা');
+    }
+  }catch(e){
+    result.style.background = '#fef2f2';
+    result.style.color = '#991b1b';
+    result.innerHTML = '❌ কানেকশন ব্যর্থ। URL চেক করুন।';
+  }
+}
+
+function copyLink(){
+  const val = document.getElementById('ob-link-val').value;
+  navigator.clipboard.writeText(val).then(()=> showToast('✅ লিংক কপি হয়েছে'));
+}
+
+function goToStep(n){
+  currentStep = n;
+  document.querySelectorAll('.wizard-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('wizard-'+n).classList.add('active');
+  document.querySelectorAll('.step').forEach((s,i)=>{
+    s.classList.remove('active','done');
+    if(i+1 < n) s.classList.add('done');
+    if(i+1 === n) s.classList.add('active');
+    s.querySelector('.step-num').textContent = i+1 < n ? '✓' : i+1;
+  });
+}
+
+function wizardBack(n){ goToStep(n); }
+
+function resetWizard(){
+  goToStep(1);
+  document.querySelectorAll('#wizard-1 input, #wizard-1 select').forEach(i=>{ if(i.type!=='date') i.value=''; });
+  document.getElementById('ob-surl').value='';
+  document.getElementById('ob-sheetid').value='';
+  document.getElementById('ob-test-result').style.display='none';
+}
+
+// ===== INIT =====
+renderDashboard();
+
+</script>
+<script>
+
+// ===== কাস্টমার অ্যাকাউন্ট লিস্ট =====
+// নতুন কাস্টমার যোগ করতে এখানে লাইন যোগ করুন
+const ACCOUNTS = [
+  {
+    username: 'admin',
+    password: 'admin123',
+    role: 'admin',
+    name: 'Imran Al Bani'
+  },
+  {
+    username: 'demo',
+    password: 'demo123',
+    role: 'customer',
+    company: 'ডেমো গার্মেন্টস লিমিটেড',
+    surl: 'https://script.google.com/macros/s/AKfycbyJExQ3PsUJCqzHGhM28e4Sp2xdUtiXNYL5fn7BhdXZy0TeVIel7c0_ws0XfG11MYI/exec'
+  },
+  // নতুন কাস্টমার নিচে এইভাবে যোগ করুন:
+  // {username:'abc_garments', password:'abc123', role:'customer', company:'ABC Garments', surl:'https://script.google.com/...'},
+];
+
+function doLogin(){
+  const user = document.getElementById('login-username').value.trim();
+  const pass = document.getElementById('login-password').value.trim();
+  const err  = document.getElementById('login-error');
+  const btn  = document.getElementById('login-btn');
+
+  err.style.display = 'none';
+  if(!user || !pass){
+    err.style.display = 'block';
+    err.textContent = '❌ সব ঘর পূরণ করুন!';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '⏳ লগিন হচ্ছে...';
+
+  setTimeout(()=>{
+    const acc = ACCOUNTS.find(a => a.username === user && a.password === pass);
+
+    if(!acc){
+      err.style.display = 'block';
+      err.textContent = '❌ ইউজারনেম বা পাসওয়ার্ড ভুল!';
+      btn.disabled = false;
+      btn.textContent = 'লগিন করুন →';
+      return;
+    }
+
+    document.getElementById('login-screen').style.display = 'none';
+
+    if(acc.role === 'admin'){
+      // Admin Panel খুলবে
+      document.getElementById('admin-wrapper').style.display = 'block';
+      addLogoutBtn('admin-wrapper', '.header-right', true);
+      renderDashboard();
+
+    } else {
+      // HR Payroll খুলবে
+      document.getElementById('app-wrapper').style.display = 'block';
+
+      // কাস্টমারের Google Sheets URL সেট
+      if(acc.surl) window.SURL = acc.surl;
+
+      // কোম্পানির নাম দেখাও
+      const lt = document.querySelector('#app-wrapper .logo-title');
+      if(lt && acc.company) lt.textContent = acc.company;
+
+      addLogoutBtn('app-wrapper', '.topbar-right', false);
+      init();
+    }
+  }, 700);
+}
+
+function addLogoutBtn(wrapperId, selector, dark){
+  const container = document.querySelector('#' + wrapperId + ' ' + selector);
+  if(!container || container.querySelector('.lout-btn')) return;
+  const b = document.createElement('button');
+  b.className = 'lout-btn';
+  b.textContent = '🚪 লগআউট';
+  if(dark){
+    b.style.cssText = 'background:rgba(255,255,255,0.08);color:#94a3b8;border:1px solid rgba(255,255,255,0.1);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-family:inherit;';
+  } else {
+    b.style.cssText = 'display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1px solid #e2e8f0;background:white;cursor:pointer;font-family:inherit;font-size:13px;font-weight:500;';
+  }
+  b.onclick = logout;
+  container.appendChild(b);
+}
+
+function quickLogin(u, p){
+  document.getElementById('login-username').value = u;
+  document.getElementById('login-password').value = p;
+  doLogin();
+}
+
+function logout(){
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app-wrapper').style.display = 'none';
+  document.getElementById('admin-wrapper').style.display = 'none';
+  document.getElementById('login-username').value = '';
+  document.getElementById('login-password').value = '';
+  // logout বাটন সরাই
+  document.querySelectorAll('.lout-btn').forEach(b => b.remove());
+}
+
+</script>
 </body>
 </html>
