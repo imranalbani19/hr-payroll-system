@@ -3,4159 +3,715 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HR পেরোল সিস্টেম</title>
+<title>শিফট ও রোস্টার প্ল্যানার</title>
 <style>
 
-  @import url('https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Hind+Siliguri:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
-  :root {
-    /* প্রাইমারি — গভীর ডেনিম-ইন্ডিগো (কাপড়ের নীল রং থেকে অনুপ্রাণিত) */
-    --primary: #313C82;
-    --primary-dark: #212A63;
-    --primary-light: #ECEEF9;
-    --primary-mid: #4C58A6;
-
-    /* সেকেন্ডারি — গভীর টিল-গ্রিন (সফল/উপস্থিতি) */
-    --secondary: #0D8A6B;
-    --secondary-light: #E7F7F1;
-    --secondary-mid: #14A883;
-
-    /* বিপদ — থ্রেড রেড */
-    --danger: #C0334A;
-    --danger-light: #FCEEF1;
-    --danger-mid: #D95468;
-
-    /* সতর্কতা/ব্রাস অ্যাকসেন্ট — বোতাম-হার্ডওয়্যারের রং, এই ডিজাইনের স্বাক্ষর টোন */
-    --warning: #AD7A1E;
-    --warning-light: #FBF2E1;
-    --warning-mid: #CC9A3E;
-
-    /* পার্পেল — মিউটেড ভায়োলেট */
-    --purple: #6B4A9C;
-    --purple-light: #F1ECF9;
-    --purple-mid: #8A6BB8;
-
-    /* ব্যাকগ্রাউন্ড — শীতল ফ্যাব্রিক-সাদা */
-    --bg: #F4F6FB;
-    --bg-2: #EBEEF6;
-
-    /* সাইডবার — গভীর ইন্ডিগো-নাইট */
-    --sidebar-bg: #10133A;
-    --sidebar-bg2: #1B2057;
-    --sidebar-text: #9CA3C4;
-    --sidebar-active: #313C82;
-
-    /* কার্ড */
-    --card: #FFFFFF;
-    --card-hover: #FAFBFF;
-
-    /* টেক্সট */
-    --text: #171A30;
-    --text-muted: #5D6480;
-    --text-light: #9499B5;
-
-    /* বর্ডার */
-    --border: #E2E5F0;
-    --border-strong: #C9CEE0;
-
-    /* শ্যাডো */
-    --shadow: 0 1px 2px rgba(23,26,48,0.06), 0 1px 3px rgba(23,26,48,0.04);
-    --shadow-md: 0 4px 12px rgba(23,26,48,0.08), 0 2px 4px rgba(23,26,48,0.04);
-    --shadow-lg: 0 12px 32px rgba(23,26,48,0.14), 0 4px 8px rgba(23,26,48,0.06);
-
-    /* রেডিয়াস */
-    --radius: 14px;
-    --radius-sm: 10px;
-    --radius-xs: 6px;
-
-    /* ফন্ট — হেডিং-এ সেরিফ ডিসপ্লে, বডিতে বাংলা সান্স, ডেটাতে মোনো */
-    --font-display: 'Tiro Bangla', Georgia, serif;
-    --font-main: 'Hind Siliguri', 'Plus Jakarta Sans', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-
-    /* স্বাক্ষর — সেলাই-থ্রেড ডিভাইডার */
-    --stitch: repeating-linear-gradient(90deg, var(--warning-mid) 0 6px, transparent 6px 12px);
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: var(--font-main);
-    background: var(--bg);
-    color: var(--text);
-    display: flex;
-    min-height: 100vh;
-    font-size: 14px;
-  }
-
-  h1, h2, h3,
-  .logo-title, .topbar-title, .card-title, .page-title,
-  .stat-value, .modal-title, .payslip-title, .customer-name,
-  .login-title {
-    font-family: var(--font-display);
-    letter-spacing: 0.2px;
-  }
-
-  /* ===== SIDEBAR ===== */
-  .sidebar {
-    width: 250px;
-    min-height: 100vh;
-    background: linear-gradient(180deg, var(--sidebar-bg) 0%, var(--sidebar-bg2) 100%);
-    border-right: 1px solid rgba(76,88,166,0.2);
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 0; left: 0; bottom: 0;
-    z-index: 100;
-    transition: transform 0.3s;
-  }
-
-  .sidebar-logo {
-    padding: 20px 20px 18px;
-    border-bottom: none;
-    position: relative;
-  }
-  .sidebar-logo::after {
-    content: '';
-    position: absolute;
-    left: 20px; right: 20px; bottom: 0;
-    height: 1px;
-    background: var(--stitch);
-    background-size: 12px 1px;
-    opacity: 0.55;
-  }
-
-  .logo-badge {
-    background: linear-gradient(135deg, var(--primary), var(--purple));
-    color: white;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 6px;
-    letter-spacing: 1px;
-    display: inline-block;
-    margin-bottom: 8px;
-    box-shadow: 0 2px 8px rgba(79,70,229,0.4);
-  }
-
-  .logo-title {
-    color: white;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 1.3;
-  }
-
-  .logo-sub {
-    color: var(--sidebar-text);
-    font-size: 11px;
-    margin-top: 2px;
-  }
-
-  .sidebar-nav {
-    flex: 1;
-    padding: 12px 0;
-    overflow-y: auto;
-  }
-
-  .nav-section {
-    padding: 8px 16px 4px;
-    font-size: 10px;
-    font-weight: 600;
-    color: #475569;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-  }
-
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 20px;
-    color: var(--sidebar-text);
-    cursor: pointer;
-    transition: all 0.2s;
-    border-left: 3px solid transparent;
-    font-size: 13.5px;
-  }
-
-  .nav-item:hover {
-    background: rgba(255,255,255,0.05);
-    color: white;
-  }
-
-  .nav-item.active {
-    background: linear-gradient(90deg, rgba(79,70,229,0.2), rgba(79,70,229,0.05));
-    color: white;
-    border-left-color: #818CF8;
-    box-shadow: inset 0 0 0 1px rgba(129,140,248,0.1);
-  }
-
-  .nav-icon { font-size: 16px; width: 20px; text-align: center; }
-
-  .sidebar-footer {
-    padding: 16px 20px;
-    border-top: 1px solid rgba(255,255,255,0.07);
-  }
-
-  .user-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .user-avatar {
-    width: 34px; height: 34px;
-    background: var(--primary);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    color: white; font-weight: 700; font-size: 13px;
-  }
-
-  .user-name { color: white; font-size: 13px; font-weight: 500; }
-  .user-role { color: var(--sidebar-text); font-size: 11px; }
-
-  /* ===== MAIN CONTENT ===== */
-  .main {
-    margin-left: 250px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
-  .topbar {
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 50;
-  }
-  .topbar::after {
-    content: '';
-    position: absolute;
-    left: 0; right: 0; bottom: -1px;
-    height: 1px;
-    background: var(--stitch);
-    background-size: 12px 1px;
-    opacity: 0.5;
-  }
-
-  .topbar-title {
-    font-size: 19px;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: 0.2px;
-  }
-
-  .topbar-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .topbar-date {
-    font-size: 12px;
-    color: var(--text-muted);
-    background: var(--bg);
-    padding: 6px 12px;
-    border-radius: 20px;
-  }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    border-radius: var(--radius-sm);
-    border: none;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 500;
-    transition: all 0.2s;
-  }
-
-  .btn-primary { background: linear-gradient(135deg, #4F46E5, #6366F1); color: white; box-shadow: 0 2px 8px rgba(79,70,229,0.3); }
-  .btn-primary:hover { background: linear-gradient(135deg, #3730A3, #4F46E5); box-shadow: 0 4px 12px rgba(79,70,229,0.4); transform: translateY(-1px); }
-  .btn-success { background: linear-gradient(135deg, #059669, #10B981); color: white; box-shadow: 0 2px 8px rgba(5,150,105,0.3); }
-  .btn-success:hover { background: linear-gradient(135deg, #047857, #059669); box-shadow: 0 4px 12px rgba(5,150,105,0.4); transform: translateY(-1px); }
-  .btn-danger { background: var(--danger); color: white; }
-  .btn-outline {
-    background: white;
-    color: var(--text);
-    border: 1px solid var(--border);
-  }
-  .btn-outline:hover { background: var(--bg); }
-  .btn-sm { padding: 5px 10px; font-size: 12px; }
-
-  .content {
-    padding: 24px;
-    flex: 1;
-  }
-
-  /* ===== PAGE SECTIONS ===== */
-  .page { display: none; }
-  .page.active { display: block; }
-
-  /* ===== CARDS ===== */
-  .card {
-    background: var(--card);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    transition: box-shadow 0.2s;
-  }
-
-  .card-header {
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .card-title {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text);
-  }
-
-  .card-body { padding: 20px; }
-
-  /* ===== STAT CARDS ===== */
-  .stat-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 24px;
-  }
-
-  .stat-card {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 20px;
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    transition: all 0.2s;
-  }
-  .stat-card:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-1px);
-    border-color: var(--border-strong);
-  }
-
-  .stat-icon {
-    width: 46px; height: 46px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
-    flex-shrink: 0;
-  }
-
-  .stat-value {
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .stat-label {
-    font-size: 12px;
-    color: var(--text-muted);
-    font-weight: 500;
-  }
-
-  .stat-change {
-    font-size: 11px;
-    margin-top: 4px;
-    font-weight: 500;
-  }
-
-  .stat-change.up { color: var(--secondary); }
-  .stat-change.down { color: var(--danger); }
-
-  /* ===== GRID LAYOUT ===== */
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-
-  /* ===== TABLE ===== */
-  .table-wrap { overflow-x: auto; }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  th {
-    background: #F8FAFC;
-    padding: 11px 14px;
-    text-align: left;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  td {
-    padding: 12px 14px;
-    border-bottom: 1px solid var(--border);
-    font-size: 13.5px;
-    color: var(--text);
-  }
-
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #f8fafc; }
-
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-  }
-
-  .badge-success { background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
-  .badge-danger { background: #FFF1F2; color: #9F1239; border: 1px solid #FECDD3; }
-  .badge-warning { background: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; }
-  .badge-info { background: #EEF2FF; color: #3730A3; border: 1px solid #C7D2FE; }
-  .badge-purple { background: #F5F3FF; color: #5B21B6; border: 1px solid #DDD6FE; }
-
-  /* ===== FORM ===== */
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-  .form-full { grid-column: 1 / -1; }
-
-  .form-group { display: flex; flex-direction: column; gap: 6px; }
-  .form-label { font-size: 13px; font-weight: 500; color: var(--text); }
-
-  .form-control {
-    width: 100%;
-    padding: 9px 12px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-family: inherit;
-    font-size: 13px;
-    color: var(--text);
-    background: white;
-    transition: border-color 0.2s;
-    outline: none;
-  }
-
-  .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79,70,229,0.12); outline: none; }
-  select.form-control { cursor: pointer; }
-
-  /* ===== MODAL ===== */
-  .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 200;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-
-  .modal-overlay.open { display: flex; }
-
-  .modal {
-    background: white;
-    border-radius: var(--radius);
-    width: 100%;
-    max-width: 600px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: var(--shadow-lg);
-  }
-
-  .modal-header {
-    padding: 18px 24px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .modal-title { font-size: 16px; font-weight: 600; }
-  .modal-close {
-    background: none; border: none; font-size: 20px;
-    cursor: pointer; color: var(--text-muted);
-    width: 30px; height: 30px;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 6px;
-  }
-  .modal-close:hover { background: var(--bg); }
-  .modal-body { padding: 24px; }
-  .modal-footer {
-    padding: 16px 24px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-  }
-
-  /* ===== UPLOAD AREA ===== */
-  .upload-area {
-    border: 2px dashed var(--border);
-    border-radius: var(--radius);
-    padding: 40px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .upload-area:hover, .upload-area.drag-over {
-    border-color: var(--primary);
-    background: var(--primary-light);
-  }
-
-  .upload-icon { font-size: 40px; margin-bottom: 12px; }
-  .upload-text { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
-  .upload-sub { font-size: 12px; color: var(--text-muted); }
-
-  /* ===== ATTENDANCE CALENDAR ===== */
-  .att-calendar {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-  }
-
-  .att-day-header {
-    text-align: center;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-muted);
-    padding: 6px;
-    text-transform: uppercase;
-  }
-
-  .att-day {
-    aspect-ratio: 1;
-    border-radius: 6px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    border: 1px solid transparent;
-    transition: all 0.15s;
-    gap: 2px;
-  }
-
-  .att-day .day-num { font-size: 13px; font-weight: 600; }
-  .att-day .day-status { font-size: 9px; font-weight: 600; }
-
-  .att-day.present { background: var(--secondary-light); color: #065f46; border-color: #6ee7b7; }
-  .att-day.absent { background: var(--danger-light); color: #9b1c1c; border-color: #fca5a5; }
-  .att-day.leave { background: var(--warning-light); color: #92400e; border-color: #fcd34d; }
-  .att-day.holiday { background: var(--purple-light); color: #5521b5; border-color: #c4b5fd; }
-  .att-day.weekend { background: #f1f5f9; color: var(--text-muted); }
-  .att-day.empty { background: transparent; border: none; cursor: default; }
-
-  /* ===== PAYROLL ===== */
-  .payroll-summary {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-bottom: 20px;
-  }
-
-  .payroll-box {
-    border-radius: var(--radius-sm);
-    padding: 16px;
-    text-align: center;
-  }
-
-  .payroll-box.earning { background: var(--secondary-light); }
-  .payroll-box.deduction { background: var(--danger-light); }
-  .payroll-box.net { background: var(--primary-light); }
-
-  .payroll-box-label { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
-  .payroll-box-value { font-size: 22px; font-weight: 700; color: var(--text); }
-
-  .payroll-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 13.5px;
-  }
-
-  .payroll-row:last-child { border-bottom: none; }
-  .payroll-row.total { font-weight: 700; font-size: 15px; padding-top: 14px; }
-
-  /* ===== SHIFT ROSTER ===== */
-  .roster-grid {
-    display: grid;
-    grid-template-columns: 140px repeat(7, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border-radius: var(--radius-sm);
-    overflow: hidden;
-  }
-
-  .roster-cell {
-    background: white;
-    padding: 10px 8px;
-    text-align: center;
-    font-size: 12px;
-  }
-
-  .roster-cell.header {
-    background: var(--bg);
-    font-weight: 600;
-    color: var(--text-muted);
-    font-size: 11px;
-    text-transform: uppercase;
-  }
-
-  .roster-cell.emp-name {
-    text-align: left;
-    font-weight: 500;
-    color: var(--text);
-    padding-left: 12px;
-    background: #fafafa;
-  }
-
-  .shift-badge {
-    display: inline-block;
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 700;
-  }
-
-  .shift-d { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; font-weight: 700; }
-  .shift-n { background: #EDE9FE; color: #5B21B6; border: 1px solid #DDD6FE; font-weight: 700; }
-  .shift-e { background: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; font-weight: 700; }
-  .shift-off { background: #F8FAFC; color: #94A3B8; border: 1px solid #E2E8F0; font-weight: 600; }
-
-  /* ===== LEAVE ===== */
-  .leave-balance-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-
-  .leave-balance-card {
-    border-radius: var(--radius-sm);
-    padding: 14px;
-    border: 1px solid var(--border);
-    text-align: center;
-  }
-
-  .leave-type-label { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
-
-  .leave-balance-circle {
-    width: 56px; height: 56px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; font-weight: 700;
-    margin: 0 auto 8px;
-  }
-
-  .leave-used { font-size: 11px; color: var(--text-muted); }
-
-  /* ===== NOTICE ===== */
-  .notice {
-    padding: 12px 16px;
-    border-radius: var(--radius-sm);
-    border-left: 4px solid;
-    margin-bottom: 16px;
-    font-size: 13px;
-  }
-
-  .notice-info { background: var(--primary-light); border-color: var(--primary); color: #1e429f; }
-  .notice-success { background: var(--secondary-light); border-color: var(--secondary); color: #065f46; }
-  .notice-warning { background: var(--warning-light); border-color: var(--warning); color: #92400e; }
-
-  /* ===== SEARCH/FILTER BAR ===== */
-  .filter-bar {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 16px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  .search-input {
-    flex: 1;
-    min-width: 200px;
-    position: relative;
-  }
-
-  .search-input input {
-    width: 100%;
-    padding: 9px 12px 9px 36px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-family: inherit;
-    font-size: 13px;
-    outline: none;
-    background: white;
-  }
-
-  .search-input input:focus { border-color: var(--primary); }
-
-  .search-icon {
-    position: absolute;
-    left: 11px; top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-muted);
-    font-size: 14px;
-  }
-
-  /* ===== AVATAR ===== */
-  .emp-avatar {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    display: inline-flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700; color: white;
-    flex-shrink: 0;
-  }
-
-  .emp-cell {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .emp-name-text { font-weight: 500; }
-  .emp-id-text { font-size: 11px; color: var(--text-muted); }
-
-  /* ===== QUICK ACTIONS ===== */
-  .quick-actions {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-
-  .quick-action {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .quick-action:hover {
-    border-color: var(--primary);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-1px);
-  }
-
-  .qa-icon { font-size: 28px; margin-bottom: 8px; }
-  .qa-label { font-size: 12px; font-weight: 600; color: var(--text); }
-
-  /* ===== RESPONSIVE ===== */
-  @media (max-width: 1024px) {
-    .stat-grid { grid-template-columns: repeat(2, 1fr); }
-    .quick-actions { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  @media (max-width: 768px) {
-    .sidebar { transform: translateX(-100%); }
-    .main { margin-left: 0; }
-    .stat-grid { grid-template-columns: 1fr 1fr; }
-    .grid-2 { grid-template-columns: 1fr; }
-    .form-grid { grid-template-columns: 1fr; }
-    .leave-balance-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  .mb-16 { margin-bottom: 16px; }
-  .mb-24 { margin-bottom: 24px; }
-  .mt-16 { margin-top: 16px; }
-  .text-right { text-align: right; }
-  .flex { display: flex; }
-  .flex-center { display: flex; align-items: center; }
-  .gap-8 { gap: 8px; }
-  .gap-12 { gap: 12px; }
-  .fw-600 { font-weight: 600; }
-  .text-muted { color: var(--text-muted); font-size: 12px; }
-
-  /* ===== PROGRESS BAR ===== */
-  .progress-bar {
-    height: 6px;
-    background: var(--border);
-    border-radius: 3px;
-    overflow: hidden;
-    margin-top: 6px;
-  }
-  .progress-fill {
-    height: 100%;
-    border-radius: 3px;
-    transition: width 0.3s;
-  }
-
-  /* ===== TABS ===== */
-  .tabs {
-    display: flex;
-    border-bottom: 2px solid var(--border);
-    margin-bottom: 20px;
-    gap: 0;
-  }
-
-  .tab {
-    padding: 10px 18px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-muted);
-    border-bottom: 2px solid transparent;
-    margin-bottom: -2px;
-    transition: all 0.2s;
-  }
-
-  .tab.active {
-    color: var(--primary);
-    border-bottom-color: var(--primary);
-  }
-
-  .tab:hover { color: var(--text); }
-
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
-
-  /* ===== PAYSLIP PRINT ===== */
-  .payslip {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 30px;
-    border: 2px solid var(--border);
-    border-radius: var(--radius);
-    font-family: 'Hind Siliguri', sans-serif;
-  }
-
-  .payslip-header {
-    text-align: center;
-    padding-bottom: 20px;
-    border-bottom: 2px solid var(--text);
-    margin-bottom: 20px;
-  }
-
-  .payslip-company { font-size: 20px; font-weight: 700; }
-  .payslip-title { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
-
-  .payslip-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 20px;
-    font-size: 13px;
-  }
-
-  .payslip-info-row { display: flex; gap: 8px; }
-  .pir-label { font-weight: 600; min-width: 100px; }
-
-  .payslip-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .payslip-table th, .payslip-table td {
-    border: 1px solid var(--border);
-    padding: 8px 12px;
-    text-align: left;
-  }
-  .payslip-table th { background: var(--bg); font-weight: 600; }
-
-  @media print {
-    .sidebar, .topbar, .btn, .filter-bar { display: none !important; }
-    .main { margin-left: 0; }
-    .payslip { border: none; }
-  }
-
-
+@import url('https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Hind+Siliguri:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --primary:#313C82; --primary-dark:#212A63; --primary-light:#ECEEF9; --primary-mid:#4C58A6;
+  --secondary:#0D8A6B; --secondary-light:#E7F7F1; --secondary-mid:#14A883;
+  --danger:#C0334A; --danger-light:#FCEEF1; --danger-mid:#D95468;
+  --warning:#AD7A1E; --warning-light:#FBF2E1; --warning-mid:#CC9A3E;
+  --purple:#6B4A9C; --purple-light:#F1ECF9; --purple-mid:#8A6BB8;
+  --bg:#F4F6FB; --bg-2:#EBEEF6;
+  --sidebar-bg:#10133A; --sidebar-bg2:#1B2057; --sidebar-text:#9CA3C4;
+  --card:#FFFFFF; --card-hover:#FAFBFF;
+  --text:#171A30; --text-muted:#5D6480; --text-light:#9499B5;
+  --border:#E2E5F0; --border-strong:#C9CEE0;
+  --shadow:0 1px 2px rgba(23,26,48,0.06),0 1px 3px rgba(23,26,48,0.04);
+  --shadow-md:0 4px 12px rgba(23,26,48,0.08),0 2px 4px rgba(23,26,48,0.04);
+  --shadow-lg:0 12px 32px rgba(23,26,48,0.14),0 4px 8px rgba(23,26,48,0.06);
+  --radius:14px; --radius-sm:10px; --radius-xs:6px;
+  --font-display:'Tiro Bangla',Georgia,serif;
+  --font-main:'Hind Siliguri',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --stitch: repeating-linear-gradient(90deg, var(--warning-mid) 0 6px, transparent 6px 12px);
+  --off-color:#94A0B8;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--font-main);background:var(--bg);color:var(--text);display:flex;min-height:100vh;font-size:14px;}
+
+h1,h2,h3,.logo-title,.topbar-title,.card-title,.page-title,.modal-title,.stat-value{
+  font-family:var(--font-display); letter-spacing:0.2px;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+  width:236px; min-height:100vh;
+  background:linear-gradient(180deg,var(--sidebar-bg) 0%, var(--sidebar-bg2) 100%);
+  display:flex; flex-direction:column; position:fixed; top:0; left:0; bottom:0; z-index:100;
+}
+.sidebar-logo{ padding:22px 20px 18px; position:relative; }
+.sidebar-logo::after{ content:''; position:absolute; left:20px; right:20px; bottom:0; height:1px; background:var(--stitch); background-size:12px 1px; opacity:.55; }
+.logo-badge{ background:linear-gradient(135deg,var(--primary),var(--purple)); color:#fff; font-size:11px; font-weight:700; padding:3px 10px; border-radius:6px; letter-spacing:1px; display:inline-block; margin-bottom:8px; }
+.logo-title{ color:#fff; font-size:17px; font-weight:700; line-height:1.3; }
+.logo-sub{ color:var(--sidebar-text); font-size:11px; margin-top:2px; }
+
+.sidebar-nav{ flex:1; padding:14px 0; overflow-y:auto; }
+.nav-group-label{ color:#5C64A0; font-size:10px; font-weight:700; letter-spacing:1px; padding:14px 20px 6px; text-transform:uppercase; }
+.nav-item{
+  display:flex; align-items:center; gap:10px; padding:11px 20px; color:var(--sidebar-text);
+  cursor:pointer; font-size:13.5px; font-weight:500; border-left:3px solid transparent;
+}
+.nav-item:hover{ background:rgba(255,255,255,0.04); color:#fff; }
+.nav-item.active{ background:rgba(255,255,255,0.07); color:#fff; border-left-color:var(--warning-mid); }
+.nav-icon{ font-size:16px; width:18px; text-align:center; }
+
+.sidebar-foot{ padding:14px 20px 18px; color:#5C64A0; font-size:10.5px; border-top:1px solid rgba(255,255,255,0.06); }
+
+/* ===== MAIN ===== */
+.main{ margin-left:236px; flex:1; display:flex; flex-direction:column; min-height:100vh; }
+.topbar{
+  background:rgba(255,255,255,0.95); backdrop-filter:blur(10px); border-bottom:1px solid var(--border);
+  padding:0 26px; height:64px; display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; z-index:50;
+}
+.topbar-title{ font-size:19px; font-weight:700; }
+.topbar-sub{ font-size:12px; color:var(--text-muted); font-family:var(--font-main); margin-top:1px; }
+.topbar-actions{ display:flex; gap:8px; }
+
+.content{ padding:26px 30px; flex:1; }
+.page{ display:none; }
+.page.active{ display:block; }
+
+/* ===== BUTTONS ===== */
+.btn{ display:inline-flex; align-items:center; gap:6px; padding:9px 16px; border-radius:var(--radius-sm); border:1px solid transparent; font-family:var(--font-main); font-size:13px; font-weight:600; cursor:pointer; transition:.15s; white-space:nowrap; }
+.btn-primary{ background:var(--primary); color:#fff; } .btn-primary:hover{ background:var(--primary-dark); }
+.btn-outline{ background:#fff; color:var(--text); border-color:var(--border-strong); } .btn-outline:hover{ background:var(--bg); }
+.btn-danger{ background:var(--danger); color:#fff; } .btn-danger:hover{ background:#a32a3e; }
+.btn-warning{ background:var(--warning); color:#fff; } .btn-warning:hover{ background:#8f6417; }
+.btn-sm{ padding:6px 11px; font-size:12px; }
+.btn:disabled{ opacity:.5; cursor:not-allowed; }
+
+/* ===== STAT ROW ===== */
+.stat-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
+.stat-card{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow); }
+.stat-value{ font-size:24px; font-weight:700; line-height:1; margin-bottom:4px; }
+.stat-label{ font-size:11.5px; color:var(--text-muted); font-weight:500; }
+
+/* ===== CARD ===== */
+.card{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:20px; }
+.card-header{ padding:16px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+.card-title{ font-size:15.5px; font-weight:700; }
+.card-body{ padding:20px; }
+
+/* ===== ROSTER TABLE ===== */
+.table-scroll{ overflow-x:auto; }
+table.roster{ width:100%; border-collapse:collapse; font-size:13px; min-width:760px; }
+table.roster th{ background:var(--bg-2); color:var(--text-muted); font-weight:600; font-size:11.5px; text-transform:uppercase; letter-spacing:.4px; padding:10px 8px; text-align:center; border-bottom:1px solid var(--border); }
+table.roster th:first-child{ text-align:left; padding-left:16px; min-width:170px; }
+table.roster td{ padding:6px 6px; border-bottom:1px solid var(--border); text-align:center; }
+table.roster td:first-child{ text-align:left; padding-left:16px; }
+table.roster tr:hover td{ background:var(--card-hover); }
+
+.emp-cell{ display:flex; align-items:center; gap:10px; }
+.emp-avatar{ width:30px; height:30px; border-radius:8px; background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; flex-shrink:0; }
+.emp-name{ font-weight:600; font-size:13px; }
+.emp-dept{ font-size:11px; color:var(--text-muted); }
+
+.shift-chip{
+  display:inline-flex; align-items:center; justify-content:center; min-width:52px; height:30px; padding:0 8px;
+  border-radius:8px; font-family:var(--font-mono); font-weight:600; font-size:12px; cursor:pointer; user-select:none;
+  border:1px solid transparent; transition:.12s;
+}
+.shift-chip:hover{ filter:brightness(0.95); transform:translateY(-1px); }
+.shift-chip.empty{ background:var(--bg-2); color:var(--text-light); border:1px dashed var(--border-strong); }
+.shift-chip.off{ background:#EEF0F6; color:var(--off-color); }
+
+/* ===== SHIFT / EMPLOYEE LIST ===== */
+.shift-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px; }
+.shift-item{ border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 16px; position:relative; }
+.shift-item .sname{ font-weight:700; font-size:14.5px; margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+.color-dot{ width:12px; height:12px; border-radius:4px; flex-shrink:0; }
+.shift-item .stime{ font-family:var(--font-mono); font-size:12.5px; color:var(--text-muted); }
+.shift-item .sactions{ margin-top:10px; display:flex; gap:6px; }
+
+.emp-row-list{ display:flex; flex-direction:column; }
+.emp-list-item{ display:flex; align-items:center; justify-content:space-between; padding:12px 4px; border-bottom:1px solid var(--border); }
+.emp-list-item:last-child{ border-bottom:none; }
+
+/* ===== FORM ===== */
+.form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.form-full{ grid-column:1/-1; }
+.form-group{ display:flex; flex-direction:column; gap:6px; }
+.form-label{ font-size:12px; font-weight:600; color:var(--text-muted); }
+.form-control{ padding:9px 12px; border:1px solid var(--border-strong); border-radius:var(--radius-xs); font-family:var(--font-main); font-size:13.5px; color:var(--text); background:#fff; }
+.form-control:focus{ outline:none; border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-light); }
+input[type=color].form-control{ padding:3px; height:40px; cursor:pointer; }
+
+/* ===== MODAL ===== */
+.modal-overlay{ display:none; position:fixed; inset:0; background:rgba(15,17,35,0.5); align-items:center; justify-content:center; z-index:1000; padding:20px; }
+.modal-overlay.open{ display:flex; }
+.modal{ background:#fff; border-radius:var(--radius); width:100%; max-width:480px; box-shadow:var(--shadow-lg); max-height:90vh; overflow-y:auto; }
+.modal-header{ padding:18px 22px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+.modal-title{ font-size:16px; font-weight:700; }
+.modal-close{ background:none; border:none; font-size:20px; cursor:pointer; color:var(--text-muted); width:30px; height:30px; border-radius:6px; }
+.modal-close:hover{ background:var(--bg); }
+.modal-body{ padding:20px 22px; }
+.modal-footer{ padding:14px 22px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:8px; }
+
+/* ===== TOAST ===== */
+#toast-container{ position:fixed; bottom:22px; right:22px; z-index:2000; display:flex; flex-direction:column; gap:8px; }
+.toast{ background:var(--secondary); color:#fff; padding:11px 18px; border-radius:9px; font-size:13px; font-weight:600; box-shadow:var(--shadow-lg); animation:slideIn .25s; }
+@keyframes slideIn{ from{ transform:translateX(20px); opacity:0;} to{ transform:translateX(0); opacity:1;} }
+
+.legend{ display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
+.legend-item{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text-muted); }
+
+.hint-box{ background:var(--primary-light); border:1px solid #D3D8F2; color:var(--primary-dark); padding:10px 14px; border-radius:var(--radius-xs); font-size:12.5px; margin-bottom:16px; }
+
+@media print{
+  .sidebar,.topbar-actions,.card .btn,.no-print{ display:none !important; }
+  .main{ margin-left:0; }
+  body{ background:#fff; }
+}
+
+@media (max-width:900px){
+  .sidebar{ transform:translateX(-100%); }
+  .main{ margin-left:0; }
+  .stat-row{ grid-template-columns:repeat(2,1fr); }
+}
 </style>
 </head>
 <body>
 
-<div id="app-wrapper" style="position:relative;z-index:1;width:100%;min-height:100vh;">
-
-<!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sidebar-logo">
-    <div class="logo-badge">HR & PAYROLL</div>
-    <div class="logo-title">কর্মী ব্যবস্থাপনা</div>
-    <div class="logo-sub">সিস্টেম v1.0</div>
+    <div class="logo-badge">SHIFT PLANNER</div>
+    <div class="logo-title">রোস্টার প্ল্যানার</div>
+    <div class="logo-sub">শিফট ও টাইম টেবিল ম্যানেজমেন্ট</div>
   </div>
-
   <nav class="sidebar-nav">
-    <div class="nav-section">প্রধান</div>
-    <div class="nav-item active" onclick="navigate('dashboard')">
-      <span class="nav-icon">📊</span> ড্যাশবোর্ড
-    </div>
-
-    <div class="nav-section">কর্মী</div>
-    <div class="nav-item" onclick="navigate('employees')">
-      <span class="nav-icon">👥</span> কর্মী তালিকা
-    </div>
-    <div class="nav-item" onclick="navigate('departments')">
-      <span class="nav-icon">🏢</span> বিভাগ ও পদ
-    </div>
-
-    <div class="nav-section">হাজিরা</div>
-    <div class="nav-item" onclick="navigate('attendance')">
-      <span class="nav-icon">🕐</span> হাজিরা রেকর্ড
-    </div>
-    <div class="nav-item" onclick="navigate('import')">
-      <span class="nav-icon">📂</span> CSV ইমপোর্ট
-    </div>
-
-    <div class="nav-section">বেতন</div>
-    <div class="nav-item" onclick="navigate('payroll')">
-      <span class="nav-icon">💰</span> পেরোল
-    </div>
-    <div class="nav-item" onclick="navigate('overtime')">
-      <span class="nav-icon">⏰</span> ওভারটাইম
-    </div>
-    <div class="nav-item" onclick="navigate('bonus')">
-      <span class="nav-icon">🎁</span> বোনাস ও কাটা
-    </div>
-
-    <div class="nav-section">ছুটি ও শিফট</div>
-    <div class="nav-item" onclick="navigate('leave')">
-      <span class="nav-icon">🏖️</span> ছুটি ব্যবস্থাপনা
-    </div>
-    <div class="nav-item" onclick="navigate('roster')">
-      <span class="nav-icon">📅</span> রোস্টার / শিফট
-    </div>
-
-    <div class="nav-section">রিপোর্ট</div>
-    <div class="nav-item" onclick="navigate('reports')">
-      <span class="nav-icon">📋</span> রিপোর্ট
-    </div>
-    <div class="nav-item" onclick="navigate('settings')">
-      <span class="nav-icon">⚙️</span> সেটিংস
-    </div>
+    <div class="nav-group-label">মেনু</div>
+    <div class="nav-item active" data-page="roster" onclick="navigate('roster')"><span class="nav-icon">🗓️</span> সাপ্তাহিক রোস্টার</div>
+    <div class="nav-item" data-page="shifts" onclick="navigate('shifts')"><span class="nav-icon">⏱️</span> শিফট সেটিংস</div>
+    <div class="nav-item" data-page="employees" onclick="navigate('employees')"><span class="nav-icon">👥</span> কর্মী তালিকা</div>
   </nav>
-
-  <div class="sidebar-footer">
-    <div class="user-info">
-      <div class="user-avatar">A</div>
-      <div>
-        <div class="user-name">Admin</div>
-        <div class="user-role">সুপার অ্যাডমিন</div>
-      </div>
-    </div>
-  </div>
+  <div class="sidebar-foot">সব ডেটা আপনার ব্রাউজারে সেভ থাকে (localStorage) — কোনো সার্ভার লাগে না।</div>
 </aside>
 
-<!-- MAIN -->
 <div class="main">
-  <div class="topbar">
-    <div class="topbar-title" id="page-title">ড্যাশবোর্ড</div>
-    <div class="topbar-right">
-      <div class="topbar-date" id="current-date"></div>
-      <button class="btn btn-primary btn-sm" onclick="navigate('employees'); openModal('addEmployee')">
-        + নতুন কর্মী
-      </button>
-    </div>
-  </div>
 
-  <div class="content">
-
-    <!-- ===== DASHBOARD ===== -->
-    <div class="page active" id="page-dashboard">
-
-      <div class="stat-grid">
-        <div class="stat-card">
-          <div class="stat-icon" style="background:#e8f0fe">👥</div>
-          <div>
-            <div class="stat-value" id="stat-total">—</div>
-            <div class="stat-label">মোট কর্মী</div>
-            <div class="stat-change" id="stat-total-sub"></div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background:#def7ec">✅</div>
-          <div>
-            <div class="stat-value" id="stat-present">—</div>
-            <div class="stat-label">আজ উপস্থিত</div>
-            <div class="stat-change" id="stat-present-sub"></div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background:#fde8e8">❌</div>
-          <div>
-            <div class="stat-value" id="stat-absent">—</div>
-            <div class="stat-label">আজ অনুপস্থিত</div>
-            <div class="stat-change" id="stat-absent-sub"></div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background:#edebfe">💰</div>
-          <div>
-            <div class="stat-value" id="stat-payroll">—</div>
-            <div class="stat-label">এই মাসের বেতন</div>
-            <div class="stat-change" id="stat-payroll-sub"></div>
-          </div>
-        </div>
+  <!-- ===== ROSTER PAGE ===== -->
+  <section id="page-roster" class="page active">
+    <header class="topbar">
+      <div>
+        <div class="topbar-title">সাপ্তাহিক শিফট রোস্টার</div>
+        <div class="topbar-sub">প্রতিটি ঘরে ক্লিক করে শিফট বদলান</div>
       </div>
-
-      <div class="quick-actions mb-24">
-        <div class="quick-action" onclick="navigate('import')">
-          <div class="qa-icon">📂</div>
-          <div class="qa-label">CSV ইমপোর্ট</div>
-        </div>
-        <div class="quick-action" onclick="navigate('payroll')">
-          <div class="qa-icon">💰</div>
-          <div class="qa-label">পেরোল তৈরি</div>
-        </div>
-        <div class="quick-action" onclick="navigate('leave')">
-          <div class="qa-icon">🏖️</div>
-          <div class="qa-label">ছুটি অনুমোদন</div>
-        </div>
-        <div class="quick-action" onclick="navigate('roster')">
-          <div class="qa-icon">📅</div>
-          <div class="qa-label">শিফট রোস্টার</div>
-        </div>
+      <div class="topbar-actions">
+        <button class="btn btn-outline btn-sm" onclick="openRotationModal()">🔄 রোটেশন প্রয়োগ</button>
+        <button class="btn btn-outline btn-sm" onclick="exportCSV()">⬇️ CSV এক্সপোর্ট</button>
+        <button class="btn btn-primary btn-sm" onclick="window.print()">🖨️ প্রিন্ট</button>
       </div>
+    </header>
+    <div class="content">
 
-      <div class="grid-2 mb-16">
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">আজকের হাজিরা</div>
-            <span class="badge badge-success">লাইভ</span>
-          </div>
-          <div class="card-body">
-            <div class="payroll-row"><span>✅ উপস্থিত</span><strong style="color:var(--secondary)" id="d-present">—</strong></div>
-            <div class="payroll-row"><span>❌ অনুপস্থিত</span><strong style="color:var(--danger)" id="d-absent">—</strong></div>
-            <div class="payroll-row"><span>🏖️ ছুটিতে</span><strong style="color:var(--warning)" id="d-leave">—</strong></div>
-            <div class="payroll-row"><span>⏰ দেরিতে এসেছে</span><strong style="color:var(--purple)" id="d-late">—</strong></div>
-            <div class="payroll-row"><span>🌙 নাইট শিফট</span><strong id="d-night">—</strong></div>
-            <div class="progress-bar mt-16">
-              <div class="progress-fill" style="width:87%;background:var(--secondary)"></div>
-            </div>
-            <div class="text-muted mt-16" id="d-att-rate">— উপস্থিতি হার</div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">পেন্ডিং কাজ</div>
-          </div>
-          <div class="card-body">
-            <div class="payroll-row">
-              <span>📋 ছুটির আবেদন</span>
-              <span class="badge badge-warning" id="d-pending-leave">—</span>
-            </div>
-            <div class="payroll-row">
-              <span>⏰ ওভারটাইম অনুমোদন</span>
-              <span class="badge badge-info" id="d-pending-ot">—</span>
-            </div>
-            <div class="payroll-row">
-              <span>💰 পেরোল অনুমোদন</span>
-              <span class="badge badge-purple">জুন মাস</span>
-            </div>
-            <div class="payroll-row">
-              <span>👤 নতুন কর্মী যাচাই</span>
-              <span class="badge badge-warning">2 জন</span>
-            </div>
-            <div class="mt-16">
-              <button class="btn btn-primary btn-sm" style="width:100%" onclick="navigate('leave')">
-                সব পেন্ডিং দেখুন →
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="stat-row" id="roster-stats"></div>
 
       <div class="card">
         <div class="card-header">
-          <div class="card-title">সাম্প্রতিক হাজিরা লগ</div>
-          <button class="btn btn-outline btn-sm" onclick="navigate('attendance')">সব দেখুন</button>
+          <div class="card-title">টাইম টেবিল</div>
+          <button class="btn btn-primary btn-sm" onclick="openEmployeeModal()">➕ কর্মী যোগ করুন</button>
         </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>কর্মী</th>
-                <th>ইন টাইম</th>
-                <th>আউট টাইম</th>
-                <th>মোট সময়</th>
-                <th>ওভারটাইম</th>
-                <th>অবস্থা</th>
-              </tr>
-            </thead>
-            <tbody id="dash-att-table">
-              <!-- Filled by JS -->
-            </tbody>
-          </table>
+        <div class="card-body">
+          <div class="hint-box">💡 প্রতিটি ঘরে ক্লিক করলে শিফট ক্রমান্বয়ে বদলাবে (খালি → শিফট ১ → শিফট ২ → ... → ছুটি → খালি)।</div>
+          <div class="table-scroll">
+            <table class="roster" id="roster-table"></table>
+          </div>
+          <div class="legend" id="roster-legend"></div>
         </div>
       </div>
+
     </div>
+  </section>
 
-    <!-- ===== EMPLOYEES ===== -->
-    <div class="page" id="page-employees">
-      <div class="filter-bar">
-        <div class="search-input">
-          <span class="search-icon">🔍</span>
-          <input type="text" placeholder="কর্মীর নাম বা আইডি খুঁজুন..." oninput="filterEmployees(this.value)">
-        </div>
-        <select class="form-control" style="width:auto" onchange="filterByDept(this.value)">
-          <option value="">সব বিভাগ</option>
-          <option>উৎপাদন</option>
-          <option>অ্যাকাউন্টস</option>
-          <option>HR</option>
-          <option>IT</option>
-          <option>মার্কেটিং</option>
-          <option>অপারেশন</option>
-        </select>
-        <select class="form-control" style="width:auto">
-          <option>সব অবস্থা</option>
-          <option>সক্রিয়</option>
-          <option>নিষ্ক্রিয়</option>
-        </select>
-        <button class="btn btn-primary" onclick="openModal('addEmployee')">+ নতুন কর্মী</button>
+  <!-- ===== SHIFTS PAGE ===== -->
+  <section id="page-shifts" class="page">
+    <header class="topbar">
+      <div>
+        <div class="topbar-title">শিফট সেটিংস</div>
+        <div class="topbar-sub">অফিসের শিফটের সময়সূচি তৈরি ও এডিট করুন</div>
       </div>
-
+      <div class="topbar-actions">
+        <button class="btn btn-primary btn-sm" onclick="openShiftModal()">➕ নতুন শিফট</button>
+      </div>
+    </header>
+    <div class="content">
       <div class="card">
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>কর্মী</th>
-                <th>পদ</th>
-                <th>বিভাগ</th>
-                <th>যোগদান তারিখ</th>
-                <th>মূল বেতন</th>
-                <th>শিফট</th>
-                <th>অবস্থা</th>
-                <th>অ্যাকশন</th>
-              </tr>
-            </thead>
-            <tbody id="emp-table">
-              <!-- Filled by JS -->
-            </tbody>
-          </table>
+        <div class="card-header"><div class="card-title">শিফট তালিকা</div></div>
+        <div class="card-body">
+          <div class="shift-grid" id="shift-grid"></div>
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- ===== DEPARTMENTS ===== -->
-    <div class="page" id="page-departments">
-      <div class="grid-2 mb-16">
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">বিভাগ সমূহ</div>
-            <button class="btn btn-primary btn-sm" onclick="openAddDeptModal()">+ বিভাগ যোগ</button>
-          </div>
-          <div class="card-body">
-            <table>
-              <thead><tr><th>বিভাগের নাম</th><th>কর্মী</th><th>প্রধান</th><th>অ্যাকশন</th></tr></thead>
-              <tbody id="dept-tbody">
-                <tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-muted)">⏳ লোড হচ্ছে...</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">পদ সমূহ</div>
-            <button class="btn btn-primary btn-sm" onclick="openAddDesigModal()">+ পদ যোগ</button>
-          </div>
-          <div class="card-body">
-            <table>
-              <thead><tr><th>পদের নাম</th><th>বিভাগ</th><th>গ্রেড</th><th>অ্যাকশন</th></tr></thead>
-              <tbody id="desig-tbody">
-                <tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-muted)">⏳ লোড হচ্ছে...</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+  <!-- ===== EMPLOYEES PAGE ===== -->
+  <section id="page-employees" class="page">
+    <header class="topbar">
+      <div>
+        <div class="topbar-title">কর্মী তালিকা</div>
+        <div class="topbar-sub">রোস্টারে যুক্ত সব কর্মীর তালিকা</div>
       </div>
-    </div>
-
-    <!-- ===== ATTENDANCE ===== -->
-    <div class="page" id="page-attendance">
-      <div class="filter-bar">
-        <div class="search-input">
-          <span class="search-icon">🔍</span>
-          <input type="text" placeholder="কর্মী খুঁজুন...">
-        </div>
-        <input type="month" class="form-control" style="width:auto" value="2025-06" onchange="loadCalendar(this.value)">
-        <select class="form-control" style="width:auto">
-          <option>সব বিভাগ</option>
-          <option>উৎপাদন</option>
-          <option>অ্যাকাউন্টস</option>
-        </select>
-        <button class="btn btn-primary" onclick="navigate('import')">📂 CSV ইমপোর্ট</button>
-        <button class="btn btn-outline">📥 রিপোর্ট ডাউনলোড</button>
+      <div class="topbar-actions">
+        <button class="btn btn-primary btn-sm" onclick="openEmployeeModal()">➕ নতুন কর্মী</button>
       </div>
-
-      <div class="grid-2 mb-16">
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">👤 কর্মীর হাজিরা ক্যালেন্ডার</div>
-            <select class="form-control" style="width:auto" id="cal-emp-select" onchange="drawCalendar()">
-              <option value="E001">মো. রফিকুল ইসলাম</option>
-              <option value="E002">সুমাইয়া আক্তার</option>
-              <option value="E003">করিম শেখ</option>
-              <option value="E004">নাসরিন বেগম</option>
-              <option value="E005">আরিফ হোসেন</option>
-            </select>
-          </div>
-          <div class="card-body">
-            <div class="att-calendar" id="att-calendar">
-              <!-- Filled by JS -->
-            </div>
-            <div class="flex gap-8 mt-16" style="flex-wrap:wrap">
-              <span class="badge badge-success">✅ উপস্থিত</span>
-              <span class="badge badge-danger">❌ অনুপস্থিত</span>
-              <span class="badge badge-warning">🏖️ ছুটি</span>
-              <span class="badge badge-purple">🎉 ছুটির দিন</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">📊 জুন মাসের সারসংক্ষেপ</div>
-          </div>
-          <div class="card-body">
-            <div class="payroll-row"><span>মোট কার্যদিবস</span><strong id="att-total-days">—</strong></div>
-            <div class="payroll-row"><span>✅ উপস্থিত</span><strong style="color:var(--secondary)" id="att-present-days">—</strong></div>
-            <div class="payroll-row"><span>❌ অনুপস্থিত</span><strong style="color:var(--danger)" id="att-absent-days">—</strong></div>
-            <div class="payroll-row"><span>🏖️ ছুটি</span><strong style="color:var(--warning)" id="att-leave-days">—</strong></div>
-            <div class="payroll-row"><span>⏰ মোট ওভারটাইম</span><strong style="color:var(--purple)" id="att-ot-hours">—</strong></div>
-            <div class="payroll-row"><span>🕐 দেরিতে আসা</span><strong id="att-late-days">—</strong></div>
-            <div class="payroll-row"><span>উপস্থিতি হার</span><strong style="color:var(--secondary)" id="att-rate">—</strong></div>
-            <div class="progress-bar">
-              <div class="progress-fill" id="att-progress" style="width:0%;background:var(--secondary)"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    </header>
+    <div class="content">
       <div class="card">
-        <div class="card-header">
-          <div class="card-title">দৈনিক হাজিরা লগ</div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>তারিখ</th>
-                <th>কর্মী</th>
-                <th>ইন টাইম</th>
-                <th>আউট টাইম</th>
-                <th>মোট ঘণ্টা</th>
-                <th>ওভারটাইম</th>
-                <th>দেরি</th>
-                <th>অবস্থা</th>
-              </tr>
-            </thead>
-            <tbody id="att-log-table">
-              <!-- Filled by JS -->
-            </tbody>
-          </table>
+        <div class="card-header"><div class="card-title">সব কর্মী</div></div>
+        <div class="card-body">
+          <div class="emp-row-list" id="employee-list"></div>
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- ===== CSV IMPORT ===== -->
-    <div class="page" id="page-import">
-      <div class="notice notice-info mb-16">
-        💡 ZKTeco হাজিরা মেশিন থেকে CSV বা Excel ফাইল ডাউনলোড করে এখানে আপলোড করুন। সিস্টেম অটোমেটিক পার্স করবে।
-      </div>
+</div>
 
-      <div class="grid-2 mb-16">
-        <div class="card">
-          <div class="card-header"><div class="card-title">📂 ফাইল আপলোড</div></div>
-          <div class="card-body">
-            <div class="upload-area" id="upload-area" onclick="document.getElementById('csv-file').click()"
-              ondragover="event.preventDefault();this.classList.add('drag-over')"
-              ondrop="handleDrop(event)" ondragleave="this.classList.remove('drag-over')">
-              <div class="upload-icon">📁</div>
-              <div class="upload-text">CSV বা Excel ফাইল টেনে আনুন</div>
-              <div class="upload-sub">অথবা ক্লিক করে ফাইল বেছে নিন</div>
-              <div class="upload-sub mt-16">সমর্থিত: .csv, .xls, .xlsx</div>
-            </div>
-            <input type="file" id="csv-file" accept=".csv,.xls,.xlsx" style="display:none" onchange="handleFileUpload(this)">
-            <div class="mt-16">
-              <div class="form-group mb-16">
-                <label class="form-label">মেশিনের ধরন</label>
-                <select class="form-control">
-                  <option>ZKTeco (সাধারণ CSV)</option>
-                  <option>ZKTeco (Excel Report)</option>
-                  <option>Suprema</option>
-                  <option>কাস্টম ফরম্যাট</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="form-label">মাস নির্বাচন</label>
-                <input type="month" class="form-control" value="2025-06">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header"><div class="card-title">⚙️ কলাম ম্যাপিং</div></div>
-          <div class="card-body">
-            <div class="notice notice-warning mb-16">ফাইল আপলোড করলে কলাম অটো ডিটেক্ট হবে</div>
-            <div class="form-group mb-16">
-              <label class="form-label">কর্মী আইডি কলাম</label>
-              <select class="form-control"><option>Emp ID</option><option>Employee ID</option><option>ID</option></select>
-            </div>
-            <div class="form-group mb-16">
-              <label class="form-label">তারিখ কলাম</label>
-              <select class="form-control"><option>Date</option><option>Att Date</option></select>
-            </div>
-            <div class="form-group mb-16">
-              <label class="form-label">ইন-টাইম কলাম</label>
-              <select class="form-control"><option>CheckIn</option><option>Time In</option><option>In</option></select>
-            </div>
-            <div class="form-group mb-16">
-              <label class="form-label">আউট-টাইম কলাম</label>
-              <select class="form-control"><option>CheckOut</option><option>Time Out</option><option>Out</option></select>
-            </div>
-            <button class="btn btn-primary" style="width:100%" onclick="processImport()">✅ ইমপোর্ট প্রক্রিয়া শুরু</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" id="import-preview" style="display:none">
-        <div class="card-header">
-          <div class="card-title">👁️ প্রিভিউ (প্রথম ১০ সারি)</div>
-          <div class="flex gap-8">
-            <button id="confirm-import-btn" class="btn btn-success" onclick="confirmImport()">✅ কনফার্ম ইমপোর্ট</button>
-            <button class="btn btn-outline">❌ বাতিল</button>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table id="preview-table">
-            <thead id="preview-head"></thead>
-            <tbody id="preview-body"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== PAYROLL ===== -->
-    <div class="page" id="page-payroll">
-      <div class="filter-bar">
-        <input type="month" class="form-control" style="width:auto" value="2025-06">
-        <select class="form-control" style="width:auto">
-          <option>সব বিভাগ</option>
-          <option>উৎপাদন</option>
-          <option>অ্যাকাউন্টস</option>
-        </select>
-        <button class="btn btn-primary" onclick="generatePayroll()">💰 পেরোল তৈরি করুন</button>
-        <button class="btn btn-outline">📥 Excel ডাউনলোড</button>
-        <button class="btn btn-outline">🖨️ প্রিন্ট</button>
-      </div>
-
-      <div class="payroll-summary mb-16">
-        <div class="payroll-box earning">
-          <div class="payroll-box-label">মোট আয়</div>
-          <div class="payroll-box-value" id="pay-total-earn">৳০</div>
-        </div>
-        <div class="payroll-box deduction">
-          <div class="payroll-box-label">মোট কাটা</div>
-          <div class="payroll-box-value" id="pay-total-deduct">৳০</div>
-        </div>
-        <div class="payroll-box net">
-          <div class="payroll-box-label">নেট বেতন</div>
-          <div class="payroll-box-value" id="pay-total-net">৳০</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">জুন ২০২৫ — পেরোল তালিকা</div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>কর্মী</th>
-                <th>মূল বেতন</th>
-                <th>হাজিরা ভাতা</th>
-                <th>ওভারটাইম</th>
-                <th>বোনাস</th>
-                <th>কাটা</th>
-                <th>নেট বেতন</th>
-                <th>অবস্থা</th>
-                <th>পে-স্লিপ</th>
-              </tr>
-            </thead>
-            <tbody id="payroll-table">
-              <!-- Filled by JS -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== OVERTIME ===== -->
-    <div class="page" id="page-overtime">
-      <div class="filter-bar">
-        <input type="month" class="form-control" style="width:auto" value="2025-06">
-        <select class="form-control" style="width:auto"><option>সব বিভাগ</option></select>
-        <button class="btn btn-primary">✅ সব অনুমোদন</button>
-        <button class="btn btn-outline">📥 রিপোর্ট</button>
-      </div>
-
-      <div class="stat-grid mb-16">
-        <div class="stat-card">
-          <div class="stat-icon" style="background:#edebfe">⏰</div>
-          <div><div class="stat-value" id="ot-total-hours">—</div><div class="stat-label">মোট ওভারটাইম ঘণ্টা</div></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background:#def7ec">✅</div>
-          <div><div class="stat-value" id="ot-approved">—</div><div class="stat-label">অনুমোদিত</div></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background:#fff3e0">⌛</div>
-          <div><div class="stat-value" id="ot-pending">—</div><div class="stat-label">পেন্ডিং</div></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background:#edebfe">💰</div>
-          <div><div class="stat-value" id="ot-total-pay">—</div><div class="stat-label">মোট ওভারটাইম পে</div></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header"><div class="card-title">ওভারটাইম তালিকা</div></div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>কর্মী</th>
-                <th>তারিখ</th>
-                <th>সাধারণ ঘণ্টা</th>
-                <th>ওভারটাইম ঘণ্টা</th>
-                <th>হার (×)</th>
-                <th>ওভারটাইম টাকা</th>
-                <th>অবস্থা</th>
-                <th>অ্যাকশন</th>
-              </tr>
-            </thead>
-            <tbody id="ot-table">
-              <!-- Filled by JS -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== BONUS & DEDUCTIONS ===== -->
-    <div class="page" id="page-bonus">
-      <div class="tabs">
-        <div class="tab active" onclick="switchTab(this,'bonus-tab')">🎁 বোনাস</div>
-        <div class="tab" onclick="switchTab(this,'deduct-tab')">✂️ কাটা</div>
-        <div class="tab" onclick="switchTab(this,'allowance-tab')">💼 ভাতা</div>
-      </div>
-
-      <div class="tab-content active" id="bonus-tab">
-        <div class="filter-bar">
-          <select class="form-control" style="width:auto">
-            <option>বোনাসের ধরন</option>
-            <option>ঈদ বোনাস</option>
-            <option>পারফরম্যান্স</option>
-            <option>উপস্থিতি</option>
-          </select>
-          <button class="btn btn-primary" onclick="openModal('addBonus')">+ বোনাস যোগ</button>
-        </div>
-        <div class="card">
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>কর্মী</th><th>বোনাসের ধরন</th><th>পরিমাণ</th><th>মাস</th><th>মন্তব্য</th><th>অ্যাকশন</th></tr></thead>
-              <tbody>
-                <tr><td><div class="emp-cell"><div class="emp-avatar" style="background:#1a56db">র</div><div><div class="emp-name-text">রফিকুল ইসলাম</div><div class="emp-id-text">E001</div></div></div></td><td>ঈদ বোনাস</td><td><strong>৳১২,০০০</strong></td><td>জুন ২০২৫</td><td>ঈদুল আযহা</td><td><button class="btn btn-outline btn-sm">মুছুন</button></td></tr>
-                <tr><td><div class="emp-cell"><div class="emp-avatar" style="background:#0e9f6e">স</div><div><div class="emp-name-text">সুমাইয়া আক্তার</div><div class="emp-id-text">E002</div></div></div></td><td>পারফরম্যান্স</td><td><strong>৳৫,০০০</strong></td><td>জুন ২০২৫</td><td>সেরা কর্মী</td><td><button class="btn btn-outline btn-sm">মুছুন</button></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-content" id="deduct-tab">
-        <div class="filter-bar">
-          <button class="btn btn-primary" onclick="openModal('addDeduct')">+ কাটা যোগ</button>
-        </div>
-        <div class="card">
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>কর্মী</th><th>কাটার কারণ</th><th>পরিমাণ</th><th>মাস</th><th>মন্তব্য</th><th>অ্যাকশন</th></tr></thead>
-              <tbody>
-                <tr><td><div class="emp-cell"><div class="emp-avatar" style="background:#e02424">ক</div><div><div class="emp-name-text">করিম শেখ</div><div class="emp-id-text">E003</div></div></div></td><td>অনুপস্থিত কাটা</td><td><strong style="color:var(--danger)">৳২,৫০০</strong></td><td>জুন ২০২৫</td><td>৩ দিন অনুপস্থিত</td><td><button class="btn btn-outline btn-sm">মুছুন</button></td></tr>
-                <tr><td><div class="emp-cell"><div class="emp-avatar" style="background:#7e3af2">ন</div><div><div class="emp-name-text">নাসরিন বেগম</div><div class="emp-id-text">E004</div></div></div></td><td>দেরি কাটা</td><td><strong style="color:var(--danger)">৳৫০০</strong></td><td>জুন ২০২৫</td><td>৫ দিন দেরি</td><td><button class="btn btn-outline btn-sm">মুছুন</button></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-content" id="allowance-tab">
-        <div class="card">
-          <div class="card-body">
-            <div class="grid-3">
-              <div class="form-group"><label class="form-label">বাড়ি ভাড়া ভাতা (%)</label><input type="number" class="form-control" value="50"></div>
-              <div class="form-group"><label class="form-label">চিকিৎসা ভাতা (৳)</label><input type="number" class="form-control" value="1500"></div>
-              <div class="form-group"><label class="form-label">যাতায়াত ভাতা (৳)</label><input type="number" class="form-control" value="1000"></div>
-              <div class="form-group"><label class="form-label">খাবার ভাতা (৳)</label><input type="number" class="form-control" value="800"></div>
-              <div class="form-group"><label class="form-label">মোবাইল ভাতা (৳)</label><input type="number" class="form-control" value="500"></div>
-              <div class="form-group"><label class="form-label">ওভারটাইম হার (×)</label><input type="number" class="form-control" value="1.5" step="0.5"></div>
-            </div>
-            <div class="mt-16">
-              <button class="btn btn-primary">✅ সেভ করুন</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== LEAVE ===== -->
-    <div class="page" id="page-leave">
-      <div class="tabs">
-        <div class="tab active" onclick="switchTab(this,'leave-pending-tab')">⌛ পেন্ডিং (5)</div>
-        <div class="tab" onclick="switchTab(this,'leave-all-tab')">📋 সব আবেদন</div>
-        <div class="tab" onclick="switchTab(this,'leave-balance-tab')">📊 ব্যালেন্স</div>
-        <div class="tab" onclick="switchTab(this,'leave-type-tab')">⚙️ ছুটির ধরন</div>
-      </div>
-
-      <div class="tab-content active" id="leave-pending-tab">
-        <div class="notice notice-warning mb-16">⏳ ৫টি ছুটির আবেদন অনুমোদনের অপেক্ষায় আছে।</div>
-        <div class="card">
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>কর্মী</th><th>ছুটির ধরন</th><th>শুরু</th><th>শেষ</th><th>দিন</th><th>কারণ</th><th>অ্যাকশন</th></tr></thead>
-              <tbody>
-                <tr>
-                  <td><div class="emp-cell"><div class="emp-avatar" style="background:#1a56db">র</div><div><div class="emp-name-text">রফিকুল ইসলাম</div></div></div></td>
-                  <td><span class="badge badge-info">অসুস্থতা</span></td>
-                  <td>২০ জুন</td><td>২২ জুন</td><td>৩ দিন</td>
-                  <td>জ্বর ও ঠান্ডা</td>
-                  <td class="flex gap-8">
-                    <button class="btn btn-success btn-sm" onclick="approveLeave(this)">✅ অনুমোদন</button>
-                    <button class="btn btn-danger btn-sm" onclick="rejectLeave(this)">❌ বাতিল</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td><div class="emp-cell"><div class="emp-avatar" style="background:#0e9f6e">স</div><div><div class="emp-name-text">সুমাইয়া আক্তার</div></div></div></td>
-                  <td><span class="badge badge-warning">বার্ষিক</span></td>
-                  <td>২৫ জুন</td><td>২৭ জুন</td><td>৩ দিন</td>
-                  <td>পারিবারিক অনুষ্ঠান</td>
-                  <td class="flex gap-8">
-                    <button class="btn btn-success btn-sm" onclick="approveLeave(this)">✅ অনুমোদন</button>
-                    <button class="btn btn-danger btn-sm" onclick="rejectLeave(this)">❌ বাতিল</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="mt-16 text-right">
-          <button class="btn btn-primary" onclick="openModal('applyLeave')">+ ছুটির আবেদন</button>
-        </div>
-      </div>
-
-      <div class="tab-content" id="leave-all-tab">
-        <div class="card">
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>কর্মী</th><th>ধরন</th><th>তারিখ</th><th>দিন</th><th>অবস্থা</th><th>অনুমোদনকারী</th></tr></thead>
-              <tbody>
-                <tr><td>রফিকুল ইসলাম</td><td>অসুস্থতা</td><td>২০-২২ জুন</td><td>৩</td><td><span class="badge badge-warning">পেন্ডিং</span></td><td>—</td></tr>
-                <tr><td>করিম শেখ</td><td>বার্ষিক</td><td>০৫-০৭ জুন</td><td>৩</td><td><span class="badge badge-success">অনুমোদিত</span></td><td>Admin</td></tr>
-                <tr><td>নাসরিন বেগম</td><td>মাতৃত্ব</td><td>০১-৩০ মে</td><td>৩০</td><td><span class="badge badge-success">অনুমোদিত</span></td><td>Admin</td></tr>
-                <tr><td>আরিফ হোসেন</td><td>বার্ষিক</td><td>১৫-১৬ জুন</td><td>২</td><td><span class="badge badge-danger">বাতিল</span></td><td>Admin</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-content" id="leave-balance-tab">
-        <div class="filter-bar">
-          <div class="search-input">
-            <span class="search-icon">🔍</span>
-            <input type="text" placeholder="কর্মী খুঁজুন...">
-          </div>
-        </div>
-        <div class="card">
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>কর্মী</th><th>বার্ষিক</th><th>অসুস্থতা</th><th>উৎসব</th><th>মাতৃত্ব/পিতৃত্ব</th><th>মোট ব্যবহৃত</th></tr></thead>
-              <tbody>
-                <tr>
-                  <td><div class="emp-cell"><div class="emp-avatar" style="background:#1a56db">র</div><div><div class="emp-name-text">রফিকুল ইসলাম</div></div></div></td>
-                  <td><span class="badge badge-info">—</span></td>
-                  <td><span class="badge badge-success">—</span></td>
-                  <td><span class="badge badge-warning">—</span></td>
-                  <td><span class="badge badge-purple">—</span></td>
-                  <td><strong>—</strong></td>
-                </tr>
-                <tr>
-                  <td><div class="emp-cell"><div class="emp-avatar" style="background:#0e9f6e">স</div><div><div class="emp-name-text">সুমাইয়া আক্তার</div></div></div></td>
-                  <td><span class="badge badge-warning">১৫/২০</span></td>
-                  <td><span class="badge badge-success">—</span></td>
-                  <td><span class="badge badge-success">—</span></td>
-                  <td><span class="badge badge-info">—</span></td>
-                  <td><strong>—</strong></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-content" id="leave-type-tab">
-        <div class="card">
-          <div class="card-body">
-            <div class="notice notice-info mb-16">বাংলাদেশের শ্রম আইন অনুযায়ী ডিফল্ট ছুটির নিয়ম সেট করা আছে।</div>
-            <table>
-              <thead><tr><th>ছুটির ধরন</th><th>বার্ষিক দিন</th><th>বেতন সহ</th><th>ক্যারি ফরওয়ার্ড</th></tr></thead>
-              <tbody>
-                <tr><td>বার্ষিক ছুটি</td><td><input type="number" class="form-control" value="20" style="width:70px"></td><td><span class="badge badge-success">হ্যাঁ</span></td><td><span class="badge badge-success">হ্যাঁ</span></td></tr>
-                <tr><td>অসুস্থতার ছুটি</td><td><input type="number" class="form-control" value="14" style="width:70px"></td><td><span class="badge badge-success">হ্যাঁ</span></td><td><span class="badge badge-danger">না</span></td></tr>
-                <tr><td>উৎসব ছুটি</td><td><input type="number" class="form-control" value="10" style="width:70px"></td><td><span class="badge badge-success">হ্যাঁ</span></td><td><span class="badge badge-danger">না</span></td></tr>
-                <tr><td>মাতৃত্বকালীন ছুটি</td><td><input type="number" class="form-control" value="180" style="width:70px"></td><td><span class="badge badge-success">হ্যাঁ</span></td><td><span class="badge badge-danger">না</span></td></tr>
-                <tr><td>পিতৃত্বকালীন ছুটি</td><td><input type="number" class="form-control" value="7" style="width:70px"></td><td><span class="badge badge-success">হ্যাঁ</span></td><td><span class="badge badge-danger">না</span></td></tr>
-              </tbody>
-            </table>
-            <div class="mt-16"><button class="btn btn-primary">✅ সেভ করুন</button></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== ROSTER ===== -->
-    <div class="page" id="page-roster">
-      <div class="filter-bar">
-        <input type="week" id="roster-week" class="form-control" style="width:auto" onchange="renderRoster()">
-        <select id="roster-dept-filter" class="form-control" style="width:auto" onchange="renderRoster()">
-          <option value="">সব বিভাগ</option>
-          <option>উৎপাদন</option><option>অ্যাকাউন্টস</option>
-          <option>HR</option><option>IT</option><option>মার্কেটিং</option><option>অপারেশন</option>
-        </select>
-        <button class="btn btn-primary" onclick="openModal('setShift')">✏️ শিফট সেট করুন</button>
-        <button class="btn btn-outline" onclick="openModalWithBack('rotationShift', null)" style="background:#edebfe;color:#5521b5;border-color:#c4b5fd">🔄 রোটেশন শিফট</button>
-        <button class="btn btn-success" onclick="saveRosterToSheet()">💾 সেভ করুন</button>
-        <button class="btn btn-outline" onclick="printRoster()">🖨️ প্রিন্ট</button>
-      </div>
-
-      <div class="grid-2 mb-16">
-        <div class="card">
-          <div class="card-header"><div class="card-title">শিফটের ধরন</div></div>
-          <div class="card-body">
-            <div class="payroll-row"><span><span class="shift-badge shift-d">D</span> দিনের শিফট</span><strong>সকাল ৮টা — বিকাল ৫টা</strong></div>
-            <div class="payroll-row"><span><span class="shift-badge shift-e">E</span> সন্ধ্যা শিফট</span><strong>বিকাল ২টা — রাত ১০টা</strong></div>
-            <div class="payroll-row"><span><span class="shift-badge shift-n">N</span> রাতের শিফট</span><strong>রাত ১০টা — সকাল ৬টা</strong></div>
-            <div class="payroll-row"><span><span class="shift-badge shift-off">OFF</span> ছুটির দিন</span><strong>—</strong></div>
-            <div class="mt-16" style="font-size:12px;color:var(--text-muted)">💡 যেকোনো ঘরে ক্লিক করে শিফট পরিবর্তন করুন</div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><div class="card-title">এই সপ্তাহের সারসংক্ষেপ</div></div>
-          <div class="card-body" id="roster-summary">
-            <div class="payroll-row"><span>দিনের শিফট (D)</span><strong id="rs-d">—</strong></div>
-            <div class="payroll-row"><span>সন্ধ্যা শিফট (E)</span><strong id="rs-e">—</strong></div>
-            <div class="payroll-row"><span>রাতের শিফট (N)</span><strong id="rs-n">—</strong></div>
-            <div class="payroll-row"><span>ছুটি (OFF)</span><strong id="rs-off">—</strong></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">📅 সাপ্তাহিক রোস্টার</div>
-          <div style="font-size:12px;color:var(--text-muted)">ঘরে ক্লিক করে শিফট বদলান → সেভ করুন</div>
-        </div>
-        <div class="card-body" style="padding:0;overflow-x:auto">
-          <div class="roster-grid" id="roster-grid"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== REPORTS ===== -->
-    <div class="page" id="page-reports">
-      <div class="grid-2 mb-16">
-        <div class="card">
-          <div class="card-header"><div class="card-title">📋 রিপোর্ট তৈরি করুন</div></div>
-          <div class="card-body">
-            <div class="form-group mb-16">
-              <label class="form-label">রিপোর্টের ধরন</label>
-              <select class="form-control">
-                <option>মাসিক হাজিরা রিপোর্ট</option>
-                <option>পেরোল সারসংক্ষেপ</option>
-                <option>ওভারটাইম রিপোর্ট</option>
-                <option>ছুটির রিপোর্ট</option>
-                <option>কর্মী তালিকা</option>
-                <option>বিভাগ ভিত্তিক রিপোর্ট</option>
-              </select>
-            </div>
-            <div class="form-grid">
-              <div class="form-group">
-                <label class="form-label">শুরুর তারিখ</label>
-                <input type="date" class="form-control" value="2025-06-01">
-              </div>
-              <div class="form-group">
-                <label class="form-label">শেষের তারিখ</label>
-                <input type="date" class="form-control" value="2025-06-30">
-              </div>
-            </div>
-            <div class="form-group mt-16">
-              <label class="form-label">বিভাগ</label>
-              <select class="form-control"><option>সব বিভাগ</option><option>উৎপাদন</option></select>
-            </div>
-            <div class="flex gap-8 mt-16">
-              <button class="btn btn-primary">📊 রিপোর্ট দেখুন</button>
-              <button class="btn btn-success">📥 Excel</button>
-              <button class="btn btn-outline">📄 PDF</button>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><div class="card-title">📊 দ্রুত রিপোর্ট</div></div>
-          <div class="card-body">
-            <div class="payroll-row" style="cursor:pointer" onclick="navigate('payroll')">
-              <span>💰 জুন মাসের পেরোল</span><span class="badge badge-info">দেখুন →</span>
-            </div>
-            <div class="payroll-row" style="cursor:pointer" onclick="navigate('attendance')">
-              <span>🕐 আজকের হাজিরা</span><span class="badge badge-success">দেখুন →</span>
-            </div>
-            <div class="payroll-row" style="cursor:pointer" onclick="navigate('overtime')">
-              <span>⏰ ওভারটাইম রিপোর্ট</span><span class="badge badge-warning">দেখুন →</span>
-            </div>
-            <div class="payroll-row" style="cursor:pointer" onclick="navigate('leave')">
-              <span>🏖️ ছুটির রিপোর্ট</span><span class="badge badge-purple">দেখুন →</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== SETTINGS ===== -->
-    <div class="page" id="page-settings">
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-header"><div class="card-title">🏢 প্রতিষ্ঠানের তথ্য</div></div>
-          <div class="card-body">
-            <div class="form-group mb-16">
-              <label class="form-label">প্রতিষ্ঠানের নাম</label>
-              <input type="text" class="form-control" placeholder="আপনার প্রতিষ্ঠানের নাম">
-            </div>
-            <div class="form-group mb-16">
-              <label class="form-label">ঠিকানা</label>
-              <input type="text" class="form-control" placeholder="ঠিকানা">
-            </div>
-            <div class="form-group mb-16">
-              <label class="form-label">ফোন</label>
-              <input type="text" class="form-control" placeholder="+880...">
-            </div>
-            <div class="form-group mb-16">
-              <label class="form-label">পে-ডে (মাসের কত তারিখ)</label>
-              <input type="number" class="form-control" value="25" min="1" max="31">
-            </div>
-            <button class="btn btn-primary">✅ সেভ করুন</button>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><div class="card-title">⚙️ বেতন নীতি</div></div>
-          <div class="card-body">
-            <div class="form-group mb-16">
-              <label class="form-label">কার্যদিবস (সপ্তাহে)</label>
-              <select class="form-control"><option>৬ দিন (শুক্র বন্ধ)</option><option>৫ দিন (শুক্র-শনি বন্ধ)</option></select>
-            </div>
-            <div class="form-group mb-16">
-              <label class="form-label">অফিস শুরু</label>
-              <input type="time" class="form-control" value="08:00">
-            </div>
-            <div class="form-group mb-16">
-              <label class="form-label">অফিস শেষ</label>
-              <input type="time" class="form-control" value="17:00">
-            </div>
-            <div class="form-group mb-16">
-              <label class="form-label">দেরির গ্রেস পিরিয়ড (মিনিট)</label>
-              <input type="number" class="form-control" value="15">
-            </div>
-            <div class="form-group mb-16">
-              <label class="form-label">অনুপস্থিত কাটা পদ্ধতি</label>
-              <select class="form-control"><option>দৈনিক বেতন × অনুপস্থিত দিন</option><option>মাসিক বেতন ÷ ৩০</option></select>
-            </div>
-            <button class="btn btn-primary">✅ সেভ করুন</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /content -->
-</div><!-- /main -->
-
-<!-- ===== MODALS ===== -->
-
-<!-- Add Employee Modal -->
-<div class="modal-overlay" id="modal-addEmployee">
+<!-- ===== SHIFT MODAL ===== -->
+<div class="modal-overlay" id="modal-shift">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-header-left"><button class="modal-back" onclick="goBack()" style="display:none" title="পেছনে যান">←</button><div class="modal-title">👤 নতুন কর্মী যোগ</div></div>
-      <button class="modal-close" onclick="closeModal('addEmployee')">✕</button>
+      <div class="modal-title" id="shift-modal-title">নতুন শিফট</div>
+      <button class="modal-close" onclick="closeModal('shift')">✕</button>
     </div>
     <div class="modal-body">
       <div class="form-grid">
-        <div class="form-group"><label class="form-label">পূর্ণ নাম *</label><input type="text" class="form-control" placeholder="কর্মীর পূর্ণ নাম"></div>
-        <div class="form-group"><label class="form-label">কর্মী আইডি *</label><input type="text" class="form-control" placeholder="E001"></div>
-        <div class="form-group"><label class="form-label">পদ</label><select class="form-control"><option>অপারেটর</option><option>সিনিয়র অফিসার</option><option>ম্যানেজার</option></select></div>
-        <div class="form-group"><label class="form-label">বিভাগ</label><select class="form-control"><option>উৎপাদন</option><option>অ্যাকাউন্টস</option><option>HR</option><option>IT</option></select></div>
-        <div class="form-group"><label class="form-label">মূল বেতন (৳)</label><input type="number" class="form-control" placeholder="20000"></div>
-        <div class="form-group"><label class="form-label">যোগদান তারিখ</label><input type="date" class="form-control"></div>
-        <div class="form-group"><label class="form-label">ফোন নম্বর</label><input type="text" class="form-control" placeholder="01XXXXXXXXX"></div>
-        <div class="form-group"><label class="form-label">এনআইডি নম্বর</label><input type="text" class="form-control"></div>
-        <div class="form-group"><label class="form-label">ডিফল্ট শিফট</label><select class="form-control"><option>দিনের শিফট (D)</option><option>সন্ধ্যা শিফট (E)</option><option>রাতের শিফট (N)</option></select></div>
-        <div class="form-group"><label class="form-label">ব্যাংক অ্যাকাউন্ট</label><input type="text" class="form-control" placeholder="অ্যাকাউন্ট নম্বর"></div>
+        <div class="form-group form-full">
+          <label class="form-label">শিফটের নাম *</label>
+          <input class="form-control" id="sf-name" placeholder="যেমন: ডে শিফট">
+        </div>
+        <div class="form-group">
+          <label class="form-label">শুরুর সময়</label>
+          <input type="time" class="form-control" id="sf-start" value="08:00">
+        </div>
+        <div class="form-group">
+          <label class="form-label">শেষের সময়</label>
+          <input type="time" class="form-control" id="sf-end" value="17:00">
+        </div>
+        <div class="form-group form-full">
+          <label class="form-label">রং</label>
+          <input type="color" class="form-control" id="sf-color" value="#313C82">
+        </div>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('addEmployee')">বাতিল</button>
-      <button class="btn btn-primary" onclick="addEmployee()">✅ কর্মী যোগ করুন</button>
+      <button class="btn btn-outline" onclick="closeModal('shift')">বাতিল</button>
+      <button class="btn btn-primary" onclick="saveShift()">✅ সেভ করুন</button>
     </div>
   </div>
 </div>
 
-<!-- Apply Leave Modal -->
-<div class="modal-overlay" id="modal-applyLeave">
+<!-- ===== EMPLOYEE MODAL ===== -->
+<div class="modal-overlay" id="modal-employee">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-header-left"><button class="modal-back" onclick="goBack()" style="display:none" title="পেছনে যান">←</button><div class="modal-title">🏖️ ছুটির আবেদন</div></div>
-      <button class="modal-close" onclick="closeModal('applyLeave')">✕</button>
+      <div class="modal-title" id="emp-modal-title">নতুন কর্মী</div>
+      <button class="modal-close" onclick="closeModal('employee')">✕</button>
     </div>
     <div class="modal-body">
       <div class="form-grid">
-        <div class="form-group form-full"><label class="form-label">কর্মী</label><select class="form-control"><option>রফিকুল ইসলাম (E001)</option><option>সুমাইয়া আক্তার (E002)</option></select></div>
-        <div class="form-group"><label class="form-label">ছুটির ধরন</label><select class="form-control"><option>বার্ষিক ছুটি</option><option>অসুস্থতার ছুটি</option><option>উৎসব ছুটি</option><option>জরুরি ছুটি</option></select></div>
-        <div class="form-group"><label class="form-label">শুরুর তারিখ</label><input type="date" class="form-control"></div>
-        <div class="form-group"><label class="form-label">শেষের তারিখ</label><input type="date" class="form-control"></div>
-        <div class="form-group form-full"><label class="form-label">কারণ</label><textarea class="form-control" rows="3" placeholder="ছুটির কারণ লিখুন..."></textarea></div>
+        <div class="form-group form-full">
+          <label class="form-label">নাম *</label>
+          <input class="form-control" id="em-name" placeholder="কর্মীর নাম">
+        </div>
+        <div class="form-group form-full">
+          <label class="form-label">বিভাগ / পদ</label>
+          <input class="form-control" id="em-dept" placeholder="যেমন: সুইং অপারেটর">
+        </div>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('applyLeave')">বাতিল</button>
-      <button class="btn btn-primary">✅ আবেদন জমা দিন</button>
+      <button class="btn btn-danger no-print" id="emp-delete-btn" style="display:none" onclick="deleteEmployeeFromModal()">🗑️ মুছুন</button>
+      <button class="btn btn-outline" onclick="closeModal('employee')">বাতিল</button>
+      <button class="btn btn-primary" onclick="saveEmployee()">✅ সেভ করুন</button>
     </div>
   </div>
 </div>
 
-<!-- Payslip Modal -->
-<div class="modal-overlay" id="modal-payslip">
-  <div class="modal" style="max-width:750px">
+<!-- ===== ROTATION MODAL ===== -->
+<div class="modal-overlay" id="modal-rotation">
+  <div class="modal">
     <div class="modal-header">
-      <div class="modal-header-left"><button class="modal-back" onclick="goBack()" style="display:none" title="পেছনে যান">←</button><div class="modal-title">📄 পে-স্লিপ</div></div>
-      <button class="modal-close" onclick="closeModal('payslip')">✕</button>
+      <div class="modal-title">🔄 সাপ্তাহিক রোটেশন প্যাটার্ন প্রয়োগ</div>
+      <button class="modal-close" onclick="closeModal('rotation')">✕</button>
     </div>
-    <div class="modal-body" id="payslip-content">
-      <!-- Filled by JS -->
+    <div class="modal-body">
+      <div class="hint-box">প্রতিটি দিনের জন্য একটা শিফট বেছে নিন। এটাই হবে ১ নম্বর কর্মীর প্যাটার্ন — "ঘুরিয়ে বসান" চালু থাকলে পরের প্রতিটি কর্মী এক দিন করে শিফট করে পাবে (রোটেটিং রোস্টার)।</div>
+      <div id="rotation-days"></div>
+      <div class="form-group" style="margin-top:14px">
+        <label class="form-label"><input type="checkbox" id="rot-stagger" checked style="margin-right:6px"> ঘুরিয়ে বসান (round-robin rotation)</label>
+      </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('payslip')">বন্ধ করুন</button>
-      <button class="btn btn-primary" onclick="window.print()">🖨️ প্রিন্ট</button>
+      <button class="btn btn-outline" onclick="closeModal('rotation')">বাতিল</button>
+      <button class="btn btn-primary" onclick="applyRotation()">✅ সবার উপর প্রয়োগ করুন</button>
     </div>
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<div id="toast-container"></div>
+
 <script>
-// ===== APPS SCRIPT URL =====
-const SURL = 'https://script.google.com/macros/s/AKfycbyJExQ3PsUJCqzHGhM28e4Sp2xdUtiXNYL5fn7BhdXZy0TeVIel7c0_ws0XfG11MYI/exec';
+// ===================================================
+// STATE
+// ===================================================
+const DAYS = [
+  {key:0, label:'শনি'}, {key:1, label:'রবি'}, {key:2, label:'সোম'}, {key:3, label:'মঙ্গল'},
+  {key:4, label:'বুধ'}, {key:5, label:'বৃহস্পতি'}, {key:6, label:'শুক্র'}
+];
+// JS Date.getDay(): 0=রবি...6=শনি — আমাদের DAYS.key (0=শনি) এ ম্যাপ করতে:
+const JS_DAY_TO_KEY = [1,2,3,4,5,6,0]; // index = Date().getDay()
 
-// ===== LOCAL STATE =====
-let employees   = [];
-let attLogs     = [];
-let payrollData = [];
-let otData      = [];
-let rosterData  = [];
-let importedData= [];
-const weekDays  = ['সোম','মঙ্গল','বুধ','বৃহঃ','শুক্র','শনি','রবি'];
-const COLORS    = ['#1a56db','#0e9f6e','#e02424','#7e3af2','#ff8a00','#0891b2','#be185d','#065f46'];
-function empColor(i){ return COLORS[i%COLORS.length]; }
+const OFF = 'OFF';
+const AVATAR_COLORS = ['#313C82','#0D8A6B','#AD7A1E','#6B4A9C','#C0334A','#4C58A6'];
 
-// ===== ANIMATIONS =====
-const _s = document.createElement('style');
-_s.textContent = `
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes slideIn{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
-`;
-document.head.appendChild(_s);
+let shifts = JSON.parse(localStorage.getItem('tt_shifts') || 'null') || [
+  {id:'D', name:'ডে শিফট', start:'08:00', end:'17:00', color:'#313C82'},
+  {id:'E', name:'ইভিনিং শিফট', start:'14:00', end:'22:00', color:'#AD7A1E'},
+  {id:'N', name:'নাইট শিফট', start:'22:00', end:'06:00', color:'#6B4A9C'},
+];
+let employees = JSON.parse(localStorage.getItem('tt_employees') || 'null') || [];
+let assignments = JSON.parse(localStorage.getItem('tt_assignments') || 'null') || {}; // key: `${empId}_${dayKey}` -> shiftId | 'OFF'
 
-// ===== TOAST =====
+let editingShiftId = null;
+let editingEmployeeId = null;
+
+function save(){
+  localStorage.setItem('tt_shifts', JSON.stringify(shifts));
+  localStorage.setItem('tt_employees', JSON.stringify(employees));
+  localStorage.setItem('tt_assignments', JSON.stringify(assignments));
+}
+
+function uid(){ return 'id' + Date.now() + Math.floor(Math.random()*1000); }
+
 function showToast(msg, type='success'){
-  let c=document.getElementById('_toasts');
-  if(!c){c=document.createElement('div');c.id='_toasts';c.style.cssText='position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;';document.body.appendChild(c);}
-  const t=document.createElement('div');
-  const clr={success:'#0e9f6e',danger:'#e02424',info:'#1a56db',warning:'#ff8a00'};
-  t.style.cssText=`background:${clr[type]||clr.info};color:#fff;padding:12px 18px;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 4px 12px rgba(0,0,0,.2);min-width:220px;animation:slideIn .3s ease;`;
-  t.textContent=msg; c.appendChild(t); setTimeout(()=>t.remove(),3500);
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  const clr = {success:'var(--secondary)', danger:'var(--danger)', warning:'var(--warning)'};
+  t.className = 'toast';
+  t.style.background = clr[type] || clr.success;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(()=>t.remove(), 3000);
 }
 
-// ===== API CALL =====
-async function api(action, params={}){
-  const flat = {action};
-  Object.entries(params).forEach(([k,v])=>{
-    flat[k] = typeof v === 'object' ? JSON.stringify(v) : String(v===undefined||v===null?'':v);
-  });
-  const qs = Object.entries(flat).map(([k,v])=>encodeURIComponent(k)+'='+encodeURIComponent(v)).join('&');
-  const url = SURL + '?' + qs;
-  try{
-    const r = await fetch(url);
-    const text = await r.text();
-    // Apps Script sometimes returns HTML on redirect
-    if(text.trim().startsWith('<')){
-      // fire and hope for write ops
-      showToast('✅ সেভ হচ্ছে...','info');
-      return {success:true};
-    }
-    const j = JSON.parse(text);
-    if(j && j.error){showToast('⚠️ '+j.error,'danger');return null;}
-    return j;
-  }catch(e){
-    // CORS blocked — use no-cors for write, assume success
-    try{
-      await fetch(url,{mode:'no-cors'});
-      return {success:true, message:'পাঠানো হয়েছে'};
-    }catch(e2){
-      showToast('❌ সার্ভার সংযোগ ব্যর্থ','danger');
-      return null;
-    }
-  }
-}
-
-// ===== NAVIGATION =====
+// ===================================================
+// NAVIGATION
+// ===================================================
 function navigate(page){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+page).classList.add('active');
-  const titles={dashboard:'ড্যাশবোর্ড',employees:'কর্মী তালিকা',departments:'বিভাগ ও পদ',
-    attendance:'হাজিরা রেকর্ড',import:'CSV/XLS ইমপোর্ট',payroll:'পেরোল',
-    overtime:'ওভারটাইম',bonus:'বোনাস ও কাটা',leave:'ছুটি ব্যবস্থাপনা',
-    roster:'রোস্টার / শিফট',reports:'রিপোর্ট',settings:'সেটিংস'};
-  document.getElementById('page-title').textContent=titles[page]||page;
-  document.querySelectorAll('.nav-item').forEach(n=>{
-    if(n.textContent.trim().includes((titles[page]||'').substring(0,4))) n.classList.add('active');
-  });
-  // page-specific load
-  if(page==='employees') loadEmployees();
-  if(page==='departments') loadDepartments();
-  if(page==='attendance') loadAttendance();
-  if(page==='payroll') loadPayroll();
-  if(page==='overtime') loadOvertime();
-  if(page==='leave') loadLeave();
-  if(page==='roster') loadRoster();
-  if(page==='dashboard') loadDashboard();
+  document.querySelector(`.nav-item[data-page="${page}"]`).classList.add('active');
+  if(page==='roster') renderRoster();
+  if(page==='shifts') renderShifts();
+  if(page==='employees') renderEmployees();
 }
 
-// ===== MODAL =====
 function openModal(name){ document.getElementById('modal-'+name).classList.add('open'); }
 function closeModal(name){ document.getElementById('modal-'+name).classList.remove('open'); }
-document.addEventListener('click',e=>{ if(e.target.classList.contains('modal-overlay')) e.target.classList.remove('open'); });
+document.addEventListener('click', e=>{ if(e.target.classList.contains('modal-overlay')) e.target.classList.remove('open'); });
 
-// ===== TABS =====
-function switchTab(el,tabId){
-  const p=el.closest('.page')||document;
-  p.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  p.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById(tabId).classList.add('active');
-}
-
-// ===== DATE =====
-function setDate(){
-  const d=new Date();
-  document.getElementById('current-date').textContent=d.toLocaleDateString('bn-BD',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-}
-
-// ===== DASHBOARD =====
-async function loadDashboard(){
-  const res = await api('getDashboard');
-  if(!res) return;
-  const d = res.data;
-
-  // Stat কার্ড
-  const sv = (id, val) => { const el=document.getElementById(id); if(el) el.textContent=val; };
-  sv('stat-total',   d.totalEmployees || '০');
-  sv('stat-present', d.todayPresent   || '০');
-  sv('stat-absent',  d.todayAbsent    || '০');
-  sv('stat-total-sub',   (d.totalEmployees||0) + ' জন সক্রিয়');
-  sv('stat-present-sub', (d.todayPresent && d.totalEmployees) ? Math.round(d.todayPresent/d.totalEmployees*100)+'% হাজিরা' : '');
-  sv('stat-absent-sub',  d.todayLate ? d.todayLate+' জন দেরিতে' : '');
-
-  // হাজিরা সামারি বক্স
-  sv('d-present', (d.todayPresent||0) + ' জন');
-  sv('d-absent',  (d.todayAbsent||0)  + ' জন');
-  sv('d-leave',   (d.todayLeave||0)   + ' জন');
-  sv('d-late',    (d.todayLate||0)    + ' জন');
-  sv('d-night',   (d.nightShift||0)   + ' জন');
-
-  // উপস্থিতি হার
-  const total = d.totalEmployees || 1;
-  const rate  = d.todayPresent ? Math.round(d.todayPresent/total*100) : 0;
-  sv('d-att-rate', rate + '% উপস্থিতি হার');
-  const prog = document.getElementById('d-att-rate');
-  const bar  = document.querySelector('#page-dashboard .progress-fill');
-  if(bar) bar.style.width = rate + '%';
-
-  // পেন্ডিং
-  sv('d-pending-leave', (d.pendingLeaves||0) + 'টি');
-  sv('d-pending-ot',    (d.pendingOT||0)     + 'টি');
-
-  // আজকের লগ
-  if(d.todayLog && d.todayLog.length){
-    attLogs = d.todayLog.map(r=>({
-      date: r['তারিখ'], name: r['নাম'], id: r['কর্মী আইডি'],
-      in: r['ইন টাইম'], out: r['আউট টাইম'],
-      hours: r['মোট ঘণ্টা'], ot: r['ওভারটাইম'],
-      late: r['দেরি'], status: mapStatus(r['অবস্থা'])
-    }));
-  }
-  renderDashAttTable();
-}
-
-function mapStatus(s){
-  if(!s) return 'present';
-  if(s.includes('অনুপস্থিত')) return 'absent';
-  if(s.includes('দেরি')) return 'late';
-  if(s.includes('ছুটি')) return 'leave';
-  return 'present';
-}
-
-// ===== EMPLOYEES =====
-async function loadEmployees(){
-  const tbody = document.getElementById('emp-table');
-  tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-muted)">⏳ লোড হচ্ছে...</td></tr>';
-  const res = await api('getEmployees');
-  if(!res || !res.data){ tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--danger)">❌ ডাটা লোড হয়নি</td></tr>'; return; }
-  employees = res.data.map((e,i)=>({
-    id: e['ID'], name: e['নাম'], post: e['পদ'], dept: e['বিভাগ'],
-    join: e['যোগদান তারিখ'], salary: parseFloat(e['মূল বেতন'])||0,
-    shift: e['শিফট']||'D', color: empColor(i), status: e['অবস্থা']
-  }));
-  renderEmployeeTable(employees);
-}
-
-function renderDashAttTable(){
-  const tbody=document.getElementById('dash-att-table');
-  if(!tbody) return;
-  if(!attLogs.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-muted)">আজকের হাজিরা ডাটা নেই</td></tr>';return;}
-  const statusMap={present:'badge-success',leave:'badge-warning',late:'badge-purple',absent:'badge-danger'};
-  const statusLabel={present:'উপস্থিত',leave:'ছুটি',late:'দেরি',absent:'অনুপস্থিত'};
-  tbody.innerHTML=attLogs.map(r=>`<tr>
-    <td><div class="emp-cell">
-      <div class="emp-avatar" style="background:${empColor(0)}">${(r.name||'?')[0]}</div>
-      <div><div class="emp-name-text">${r.name||'—'}</div><div class="emp-id-text">${r.id||''}</div></div>
-    </div></td>
-    <td>${r.in||'—'}</td><td>${r.out||'—'}</td><td>${r.hours||'—'}</td>
-    <td>${r.ot&&r.ot!=='—'?r.ot+' ঘণ্টা':'—'}</td>
-    <td><span class="badge ${statusMap[r.status]||'badge-info'}">${statusLabel[r.status]||r.status}</span></td>
-  </tr>`).join('');
-}
-
-function renderEmployeeTable(data){
-  const tbody=document.getElementById('emp-table');
-  if(!tbody) return;
-  if(!data||!data.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-muted)">কোনো কর্মী নেই</td></tr>';return;}
-  const shiftLabel={D:'দিন',E:'সন্ধ্যা',N:'রাত'};
-  tbody.innerHTML=data.map((e,i)=>`<tr>
-    <td><div class="emp-cell">
-      <div class="emp-avatar" style="background:${e.color||empColor(i)}">${(e.name||'?')[0]}</div>
-      <div><div class="emp-name-text">${e.name||'—'}</div><div class="emp-id-text">${e.id||''}</div></div>
-    </div></td>
-    <td>${e.post||'—'}</td>
-    <td><span class="badge badge-info">${e.dept||'—'}</span></td>
-    <td>${e.join||'—'}</td>
-    <td>৳${(e.salary||0).toLocaleString()}</td>
-    <td><span class="shift-badge shift-${(e.shift||'D').toLowerCase()}">${shiftLabel[e.shift||'D']}</span></td>
-    <td><span class="badge ${e.status==='সক্রিয়'||e.status==='active'?'badge-success':'badge-danger'}">${e.status||'সক্রিয়'}</span></td>
-    <td class="flex gap-8">
-      <button class="btn btn-outline btn-sm" onclick="openEditEmpModal('${e.id}')">✏️ এডিট</button>
-      <button class="btn btn-primary btn-sm" onclick="openPayslipFromPayroll('${e.id}')">পে-স্লিপ</button>
-    </td>
-  </tr>`).join('');
-}
-
-function filterEmployees(q){
-  const f=employees.filter(e=>(e.name||'').includes(q)||(e.id||'').includes(q)||(e.dept||'').includes(q));
-  renderEmployeeTable(f);
-}
-function filterByDept(dept){
-  renderEmployeeTable(dept?employees.filter(e=>e.dept===dept):employees);
-}
-
-let _addingEmployee = false; // ডাবল ক্লিক প্রতিরোধ
-
-async function addEmployee(){
-  if(_addingEmployee) return; // আগে থেকে চলছে হলে বের হও
-
-  const modal = document.getElementById('modal-addEmployee');
-  const name     = modal.querySelector('input[placeholder="কর্মীর পূর্ণ নাম"]')?.value?.trim()||'';
-  const empId    = modal.querySelector('input[placeholder="E001"]')?.value?.trim()||('E'+String(Date.now()).slice(-4));
-  const allSelects = modal.querySelectorAll('select');
-  const post     = allSelects[0]?.value||'অপারেটর';
-  const dept     = allSelects[1]?.value||'উৎপাদন';
-  const salary   = modal.querySelector('input[placeholder="20000"]')?.value||'0';
-  const joinRaw  = modal.querySelector('input[type="date"]')?.value||'';
-  const joinDate = joinRaw; // YYYY-MM-DD ফরম্যাটে রাখি
-  const phone    = modal.querySelector('input[placeholder="01XXXXXXXXX"]')?.value||'';
-  const allInputs= modal.querySelectorAll('input');
-  const nid      = allInputs[7]?.value||'';
-  const shiftRaw = allSelects[2]?.value||'';
-  const shift    = shiftRaw.includes('সন্ধ্যা')||shiftRaw.includes('(E)') ? 'E'
-                 : shiftRaw.includes('রাত')||shiftRaw.includes('(N)') ? 'N' : 'D';
-  const bank     = allInputs[9]?.value||'';
-
-  if(!name){ showToast('নাম দিন!','warning'); return; }
-
-  // বাটন লক করো
-  _addingEmployee = true;
-  const btn = modal.querySelector('.btn-primary');
-  const origText = btn ? btn.textContent : '';
-  if(btn){ btn.textContent = '⏳ যোগ হচ্ছে...'; btn.disabled = true; }
-
-  const res = await api('addEmployee',{
-    name, id:empId, post, dept, salary, joinDate, phone, nid, shift, bank
-  });
-
-  // বাটন আনলক করো
-  _addingEmployee = false;
-  if(btn){ btn.textContent = origText; btn.disabled = false; }
-
-  if(res && res.success){
-    showToast('✅ '+name+' সফলভাবে যোগ হয়েছে');
-    // মডাল বন্ধ করো
-    closeModal('addEmployee');
-    // সব ঘর ফাঁকা করো
-    modal.querySelectorAll('input').forEach(i => i.value = '');
-    modal.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
-    // ১.৫ সেকেন্ড পরে তালিকা রিলোড
-    setTimeout(()=> loadEmployees(), 1500);
-  }
-}
-
-// ===== ATTENDANCE =====
-async function loadAttendance(){
-  const month=document.querySelector('#page-attendance input[type=month]')?.value||new Date().toISOString().slice(0,7);
-  const res=await api('getAttendance',{month});
-  if(!res) return;
-  attLogs=(res.data||[]).map(r=>({
-    date:r['তারিখ'],name:r['নাম'],id:r['কর্মী আইডি'],
-    in:r['ইন টাইম'],out:r['আউট টাইম'],
-    hours:r['মোট ঘণ্টা'],ot:r['ওভারটাইম'],
-    late:r['দেরি'],status:mapStatus(r['অবস্থা'])
-  }));
-  renderAttLogTable();
-  drawCalendar();
-}
-
-function renderAttLogTable(){
-  const tbody=document.getElementById('att-log-table');
-  if(!tbody) return;
-  if(!attLogs.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-muted)">কোনো ডাটা নেই — XLS ইমপোর্ট করুন</td></tr>';return;}
-  const statusMap={present:'badge-success',absent:'badge-danger',late:'badge-purple',leave:'badge-warning'};
-  const statusLabel={present:'উপস্থিত',absent:'অনুপস্থিত',late:'দেরি',leave:'ছুটি'};
-  tbody.innerHTML=attLogs.map(r=>`<tr>
-    <td>${r.date||'—'}</td>
-    <td><strong>${r.name||'—'}</strong></td>
-    <td>${r.in||'—'}</td><td>${r.out||'—'}</td>
-    <td>${r.hours||'—'}</td><td>${r.ot||'—'}</td>
-    <td>${r.late||'—'}</td>
-    <td><span class="badge ${statusMap[r.status]||'badge-info'}">${statusLabel[r.status]||r.status}</span></td>
-  </tr>`).join('');
-}
-
-// ===== XLS/XLSX/CSV IMPORT =====
-function handleFileUpload(input){
-  const file=input.files?.[0]||input;
-  if(!file) return;
-  document.querySelector('.upload-text').textContent='⏳ লোড হচ্ছে...';
-  const reader=new FileReader();
-  reader.onload=e=>{
-    try{
-      const data=new Uint8Array(e.target.result);
-      const wb=XLSX.read(data,{type:'array',cellDates:true});
-      const ws=wb.Sheets[wb.SheetNames[0]];
-      const rows=XLSX.utils.sheet_to_json(ws,{defval:''});
-      if(!rows.length){showToast('ফাইলে ডাটা নেই','warning');return;}
-      importedData=rows;
-      renderImportPreview(rows);
-      document.querySelector('.upload-text').textContent='✅ '+file.name+' ('+rows.length+' সারি)';
-      showToast('✅ ফাইল পড়া হয়েছে: '+rows.length+' সারি');
-    }catch(err){
-      showToast('❌ ফাইল পড়া যায়নি: '+err.message,'danger');
-      document.querySelector('.upload-text').textContent='❌ ফাইল পড়া যায়নি';
-    }
-  };
-  reader.readAsArrayBuffer(file);
-}
-
-function renderImportPreview(rows){
-  if(!rows||!rows.length) return;
-  const headers=Object.keys(rows[0]);
-  const preview=document.getElementById('import-preview');
-  document.getElementById('preview-head').innerHTML='<tr>'+headers.map(h=>`<th>${h}</th>`).join('')+'</tr>';
-  document.getElementById('preview-body').innerHTML=rows.slice(0,10).map(row=>'<tr>'+headers.map(h=>{
-    let v=row[h];
-    if(v instanceof Date) v=v.toLocaleDateString('bn-BD');
-    return `<td>${v!==undefined?v:'—'}</td>`;
-  }).join('')+'</tr>').join('');
-  preview.style.display='block';
-}
-
-function handleDrop(e){
-  e.preventDefault();
-  document.getElementById('upload-area').classList.remove('drag-over');
-  if(e.dataTransfer.files[0]) handleFileUpload(e.dataTransfer.files[0]);
-}
-
-function processImport(){
-  if(!importedData.length){showToast('আগে ফাইল আপলোড করুন','warning');return;}
-  renderImportPreview(importedData);
-}
-
+function shiftById(id){ return shifts.find(s=>s.id===id); }
 
 // ===================================================
-// HR CALCULATION ENGINE — সম্পূর্ণ হিসাব ইঞ্জিন
+// SHIFTS PAGE
 // ===================================================
-
-// অফিস সেটিংস (Settings পেজ থেকে পরিবর্তন করা যাবে)
-const HR_CONFIG = {
-  // শিফটের সময়
-  shifts: {
-    D: { name:'দিনের শিফট',  start:'08:00', end:'17:00', lateAfter:'08:15' },
-    E: { name:'সন্ধ্যা শিফট', start:'14:00', end:'22:00', lateAfter:'14:15' },
-    N: { name:'রাতের শিফট',  start:'22:00', end:'06:00', lateAfter:'22:15' },
-  },
-  workHoursPerDay: 8,       // দৈনিক কাজের ঘণ্টা
-  otRate: 1.5,              // ওভারটাইম রেট
-  lateDeductPerMin: 0,      // প্রতি মিনিট দেরিতে কাটা (০ মানে কাটা নেই)
-  weeklyOff: [5],           // ছুটির দিন: 0=রবি,1=সোম,...,5=শুক্র,6=শনি
-  gracePeriodMin: 15,       // গ্রেস পিরিয়ড (মিনিট)
-  workingDaysPerMonth: 26,  // মাসিক কার্যদিবস
-};
-
-// ===== সময় কনভার্ট =====
-function timeToMinutes(t) {
-  if(!t || t === '—' || t === '' || t === 'true' || t === 'false') return null;
-  const s = String(t).trim();
-  // HH:MM:SS বা HH:MM
-  const m = s.match(/^(\d{1,2}):(\d{2})/);
-  if(!m) return null;
-  return parseInt(m[1]) * 60 + parseInt(m[2]);
+function renderShifts(){
+  const grid = document.getElementById('shift-grid');
+  if(!shifts.length){
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:36px;color:var(--text-muted)">কোনো শিফট নেই — "➕ নতুন শিফট" চাপুন</div>`;
+    return;
+  }
+  grid.innerHTML = shifts.map(s=>`
+    <div class="shift-item" style="border-left:4px solid ${s.color}">
+      <div class="sname"><span class="color-dot" style="background:${s.color}"></span>${s.name}</div>
+      <div class="stime">${s.start} – ${s.end}</div>
+      <div class="sactions">
+        <button class="btn btn-outline btn-sm" onclick="openShiftModal('${s.id}')">✏️ এডিট</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteShift('${s.id}')">🗑️</button>
+      </div>
+    </div>`).join('');
 }
 
-function minutesToTime(mins) {
-  if(mins === null || mins === undefined) return '—';
-  const h = Math.floor(((mins % 1440) + 1440) % 1440 / 60);
-  const m = ((mins % 1440) + 1440) % 1440 % 60;
-  return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
-}
-
-// Clock In সময় দেখে অটো শিফট বের করা
-function detectShift(clockInTime) {
-  const mins = timeToMinutes(clockInTime);
-  if(mins === null) return 'D';
-  // সকাল ০৫:০০ - ১৩:৫৯ = D
-  if(mins >= 5*60 && mins < 14*60) return 'D';
-  // দুপুর ১৪:০০ - ২১:৫৯ = E
-  if(mins >= 14*60 && mins < 22*60) return 'E';
-  // রাত ২২:০০ - ০৪:৫৯ = N
-  return 'N';
-}
-
-// ===== মূল ক্যালকুলেশন =====
-function calculateAttendance(row, empRosterShift) {
-  const name   = row['Name'] || row['নাম'] || row['Emp ID'] || row['ID'] || '—';
-  const rawDate= row['Date'] || row['তারিখ'] || '';
-  const rawIn  = row['Clock In']  || row['ইন টাইম']  || row['CheckIn']  || '';
-  const rawOut = row['Clock Out'] || row['আউট টাইম'] || row['CheckOut'] || '';
-  const isLate  = row['Late']   === true || row['Late']   === 'True'  || row['Late']   === 'TRUE';
-  const isAbsent= row['Absent'] === true || row['Absent'] === 'True'  || row['Absent'] === 'TRUE';
-
-  // তারিখ
-  let date = '—';
-  if(rawDate instanceof Date) date = rawDate.toISOString().slice(0,10);
-  else if(rawDate) date = String(rawDate).trim().slice(0,10);
-
-  // অনুপস্থিত চেক
-  if(isAbsent || (!rawIn && !rawOut)) {
-    return {
-      name, date,
-      in: '—', out: '—',
-      shift: empRosterShift || 'D',
-      workHours: 0, otHours: 0, otPay: 0,
-      lateMinutes: 0, isLate: false,
-      status: 'অনুপস্থিত',
-      statusEn: 'absent',
-      deductDays: 1,
-    };
-  }
-
-  const inMins  = timeToMinutes(String(rawIn));
-  const outMins = timeToMinutes(String(rawOut));
-
-  // শিফট নির্ধারণ
-  // রোস্টারে শিফট থাকলে সেটা, না থাকলে Clock In থেকে অটো ধরি
-  const shift = empRosterShift || detectShift(String(rawIn));
-  const shiftCfg = HR_CONFIG.shifts[shift] || HR_CONFIG.shifts['D'];
-  const shiftStartMins = timeToMinutes(shiftCfg.start);
-  const lateAfterMins  = timeToMinutes(shiftCfg.lateAfter);
-
-  // মোট কাজের সময়
-  let workMins = 0;
-  if(inMins !== null && outMins !== null) {
-    workMins = outMins - inMins;
-    // রাত শিফট — মধ্যরাত পার হলে
-    if(workMins < 0) workMins += 24 * 60;
-  }
-
-  const workHours = parseFloat((workMins / 60).toFixed(2));
-
-  // ওভারটাইম
-  const otMins  = Math.max(0, workMins - HR_CONFIG.workHoursPerDay * 60);
-  const otHours = parseFloat((otMins / 60).toFixed(2));
-
-  // দেরি হিসাব
-  let lateMinutes = 0;
-  let calcIsLate  = isLate;
-
-  if(inMins !== null && lateAfterMins !== null) {
-    const diff = inMins - lateAfterMins;
-    if(diff > 0) {
-      lateMinutes = diff;
-      calcIsLate  = true;
-    }
-  }
-
-  // অবস্থা নির্ধারণ
-  let status, statusEn;
-  if(workHours === 0) {
-    status = 'অনুপস্থিত'; statusEn = 'absent';
-  } else if(calcIsLate && lateMinutes > HR_CONFIG.gracePeriodMin) {
-    status = 'দেরি'; statusEn = 'late';
-  } else if(workHours < HR_CONFIG.workHoursPerDay / 2) {
-    status = 'অর্ধদিন'; statusEn = 'halfday';
+function openShiftModal(id=null){
+  editingShiftId = id;
+  document.getElementById('shift-modal-title').textContent = id ? 'শিফট এডিট করুন' : 'নতুন শিফট';
+  if(id){
+    const s = shiftById(id);
+    document.getElementById('sf-name').value = s.name;
+    document.getElementById('sf-start').value = s.start;
+    document.getElementById('sf-end').value = s.end;
+    document.getElementById('sf-color').value = s.color;
   } else {
-    status = 'উপস্থিত'; statusEn = 'present';
+    document.getElementById('sf-name').value = '';
+    document.getElementById('sf-start').value = '08:00';
+    document.getElementById('sf-end').value = '17:00';
+    document.getElementById('sf-color').value = AVATAR_COLORS[shifts.length % AVATAR_COLORS.length];
   }
-
-  return {
-    name, date,
-    in:  inMins  !== null ? minutesToTime(inMins)  : '—',
-    out: outMins !== null ? minutesToTime(outMins) : '—',
-    shift, shiftName: shiftCfg.name,
-    workHours, otHours,
-    lateMinutes: Math.round(lateMinutes),
-    isLate: calcIsLate,
-    status, statusEn,
-    deductDays: statusEn === 'absent' ? 1 : statusEn === 'halfday' ? 0.5 : 0,
-  };
+  openModal('shift');
 }
 
-// ===== পেরোল ক্যালকুলেশন =====
-function calculatePayroll(emp, attRecords, month) {
-  const basic      = parseFloat(emp.salary) || 0;
-  const houseRent  = Math.round(basic * 0.5);
-  const medical    = basic > 0 ? 1500 : 0;
-  const transport  = basic > 0 ? 1000 : 0;
-  const dailyRate  = basic > 0 ? basic / 30 : 0;
-  const hourlyRate = basic > 0 ? basic / (HR_CONFIG.workingDaysPerMonth * HR_CONFIG.workHoursPerDay) : 0;
+function saveShift(){
+  const name = document.getElementById('sf-name').value.trim();
+  const start = document.getElementById('sf-start').value;
+  const end = document.getElementById('sf-end').value;
+  const color = document.getElementById('sf-color').value;
+  if(!name){ showToast('শিফটের নাম দিন', 'warning'); return; }
 
-  // হাজিরা সারসংক্ষেপ
-  const presentDays = attRecords.filter(r => r.statusEn === 'present' || r.statusEn === 'late').length;
-  const absentDays  = attRecords.filter(r => r.statusEn === 'absent').length;
-  const halfDays    = attRecords.filter(r => r.statusEn === 'halfday').length;
-  const lateDays    = attRecords.filter(r => r.statusEn === 'late').length;
-  const totalOTHrs  = attRecords.reduce((s, r) => s + (r.otHours || 0), 0);
-  const totalLateMins = attRecords.reduce((s, r) => s + (r.lateMinutes || 0), 0);
-
-  // হাজিরা ভাতা (পূর্ণ উপস্থিতিতে)
-  const attBonus = presentDays >= HR_CONFIG.workingDaysPerMonth ? 500 : 0;
-
-  // ওভারটাইম পে
-  const otPay = Math.round(totalOTHrs * hourlyRate * HR_CONFIG.otRate);
-
-  // কাটা
-  const absentDeduct  = Math.round(absentDays * dailyRate);
-  const halfdayDeduct = Math.round(halfDays * dailyRate * 0.5);
-  const lateDeduct    = Math.round((totalLateMins / 60) * hourlyRate * HR_CONFIG.lateDeductPerMin);
-  const totalDeduct   = absentDeduct + halfdayDeduct + lateDeduct;
-
-  // মোট
-  const grossSalary = basic + houseRent + medical + transport + attBonus + otPay;
-  const netSalary   = Math.max(0, grossSalary - totalDeduct);
-
-  return {
-    empId: emp.id, name: emp.name,
-    month,
-    // আয়
-    basic, houseRent, medical, transport,
-    attBonus, otPay,
-    grossSalary,
-    // কাটা
-    absentDeduct, halfdayDeduct, lateDeduct,
-    totalDeduct,
-    // নেট
-    netSalary,
-    // সারসংক্ষেপ
-    presentDays, absentDays, halfDays, lateDays,
-    totalOTHrs: parseFloat(totalOTHrs.toFixed(1)),
-    totalLateMins,
-    status: 'পেন্ডিং',
-  };
+  if(editingShiftId){
+    const s = shiftById(editingShiftId);
+    Object.assign(s, {name, start, end, color});
+  } else {
+    shifts.push({id: uid(), name, start, end, color});
+  }
+  save();
+  closeModal('shift');
+  renderShifts();
+  showToast('✅ শিফট সেভ হয়েছে');
 }
 
-// ===== XLS ইমপোর্ট + অটো ক্যালকুলেশন =====
-function processImportedData(rawRows, month) {
-  if(!rawRows || !rawRows.length) return [];
-
-  // রোস্টার থেকে কর্মীর শিফট ম্যাপ বানাই
-  const rosterShiftMap = {};
-  rosterData.forEach(r => {
-    rosterShiftMap[r.name] = r.shifts[0] || 'D'; // ডিফল্ট শিফট
-  });
-
-  // প্রতিটি রো প্রসেস করি
-  return rawRows.map(row => {
-    const name = row['Name'] || row['নাম'] || row['Emp ID'] || '';
-    const empShift = rosterShiftMap[name] || null;
-    return calculateAttendance(row, empShift);
-  });
+function deleteShift(id){
+  if(!confirm('এই শিফটটা মুছে দেবেন? রোস্টারে যেসব ঘরে এই শিফট বসানো আছে সেগুলো খালি হয়ে যাবে।')) return;
+  shifts = shifts.filter(s=>s.id!==id);
+  Object.keys(assignments).forEach(k=>{ if(assignments[k]===id) delete assignments[k]; });
+  save();
+  renderShifts();
+  showToast('🗑️ শিফট মুছে গেছে', 'warning');
 }
-
-// ===== সারসংক্ষেপ রিপোর্ট =====
-function generateAttSummary(processedRows) {
-  const byEmp = {};
-  processedRows.forEach(r => {
-    if(!byEmp[r.name]) byEmp[r.name] = {
-      name: r.name, records: [],
-      present: 0, absent: 0, late: 0, halfday: 0,
-      totalOT: 0, totalLateMins: 0,
-    };
-    byEmp[r.name].records.push(r);
-    if(r.statusEn === 'present') byEmp[r.name].present++;
-    else if(r.statusEn === 'absent') byEmp[r.name].absent++;
-    else if(r.statusEn === 'late'){ byEmp[r.name].late++; byEmp[r.name].present++; }
-    else if(r.statusEn === 'halfday') byEmp[r.name].halfday++;
-    byEmp[r.name].totalOT += r.otHours || 0;
-    byEmp[r.name].totalLateMins += r.lateMinutes || 0;
-  });
-  return Object.values(byEmp);
-}
-
 
 // ===================================================
-// AUTO MATCHING ENGINE — নাম/আইডি মিলিয়ে ক্যালকুলেশন
+// EMPLOYEES PAGE
 // ===================================================
-
-// Employees শিট থেকে কর্মী খোঁজা
-function findEmployee(nameOrId) {
-  if(!nameOrId || nameOrId === '—') return null;
-  const q = String(nameOrId).trim().toLowerCase();
-
-  return employees.find(emp => {
-    const empName = String(emp.name || '').trim().toLowerCase();
-    const empId   = String(emp.id   || '').trim().toLowerCase();
-    return empName === q || empId === q ||
-           empName.includes(q) || q.includes(empName) ||
-           empId === q;
-  }) || null;
-}
-
-// রোস্টার থেকে শিফট খোঁজা
-function findEmpShift(nameOrId) {
-  const q = String(nameOrId || '').trim().toLowerCase();
-  const r = rosterData.find(r =>
-    String(r.name || '').trim().toLowerCase() === q ||
-    String(r.id   || '').trim().toLowerCase() === q
-  );
-  return r ? (r.shifts[0] || 'D') : null;
-}
-
-// ===== মূল ম্যাচিং ফাংশন =====
-async function matchAndProcess(rawRows, month) {
-  // Sheets থেকে কর্মী লিস্ট লোড (না থাকলে)
-  if(!employees.length) {
-    const res = await api('getEmployees');
-    if(res && res.data) {
-      employees = res.data.map((e,i) => ({
-        id:     e['ID']        || '',
-        name:   e['নাম']       || '',
-        post:   e['পদ']        || '',
-        dept:   e['বিভাগ']     || '',
-        salary: parseFloat(e['মূল বেতন']) || 0,
-        shift:  e['শিফট']      || 'D',
-        status: e['অবস্থা']    || 'সক্রিয়',
-        color:  empColor(i),
-      }));
-    }
-  }
-
-  const matched   = [];  // মিলেছে
-  const unmatched = [];  // মেলেনি
-
-  rawRows.forEach(row => {
-    const rawName = row['Name'] || row['নাম'] || row['Emp ID'] || row['ID'] || '';
-    const emp = findEmployee(rawName);
-
-    if(!emp) {
-      // মেলেনি — স্কিপ
-      unmatched.push(rawName);
-      return;
-    }
-
-    // মিলেছে — শিফট নির্ধারণ
-    const rosterShift = findEmpShift(emp.name) || emp.shift || 'D';
-
-    // হাজিরা ক্যালকুলেশন
-    const attResult = calculateAttendance(row, rosterShift);
-
-    // কর্মীর তথ্য যোগ করি
-    attResult.empId   = emp.id;
-    attResult.name    = emp.name;
-    attResult.dept    = emp.dept;
-    attResult.salary  = emp.salary;
-    attResult.shift   = rosterShift;
-
-    // ওভারটাইম টাকা হিসাব
-    const dailyRate  = emp.salary / 30;
-    const hourlyRate = emp.salary / (26 * 8);
-    attResult.otPay  = Math.round(attResult.otHours * hourlyRate * HR_CONFIG.otRate);
-    attResult.deductAmount = Math.round(attResult.deductDays * dailyRate);
-
-    matched.push(attResult);
-  });
-
-  return { matched, unmatched };
-}
-
-// ===== ম্যাচিং রেজাল্ট দেখানো =====
-async function showMatchResult(matched, unmatched, month) {
-  let card = document.getElementById('imported-log-card');
-  if(!card){
-    card = document.createElement('div');
-    card.id = 'imported-log-card';
-    card.className = 'card mt-16';
-    document.getElementById('page-import').appendChild(card);
-  }
-
-  const totalPresent = matched.filter(r => r.statusEn==='present'||r.statusEn==='late').length;
-  const totalAbsent  = matched.filter(r => r.statusEn==='absent').length;
-  const totalLate    = matched.filter(r => r.statusEn==='late').length;
-  const totalOT      = matched.reduce((s,r) => s+(r.otHours||0), 0).toFixed(1);
-  const totalOTPay   = matched.reduce((s,r) => s+(r.otPay||0), 0);
-  const totalDeduct  = matched.reduce((s,r) => s+(r.deductAmount||0), 0);
-
-  const statusMap = {
-    'উপস্থিত':'badge-success','অনুপস্থিত':'badge-danger',
-    'দেরি':'badge-purple','অর্ধদিন':'badge-warning'
-  };
-
-  card.innerHTML = `
-  <div class="card-header">
-    <div class="card-title">✅ ম্যাচিং রেজাল্ট — ${month}</div>
-    <div style="display:flex;gap:8px">
-      <span class="badge badge-success">${matched.length} জন মিলেছে</span>
-      ${unmatched.length ? `<span class="badge badge-danger">${unmatched.length} জন মেলেনি</span>` : ''}
-    </div>
-  </div>
-
-  <!-- সারসংক্ষেপ -->
-  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;padding:16px;border-bottom:1px solid var(--border)">
-    <div style="text-align:center;padding:12px;background:#ecfdf5;border-radius:8px">
-      <div style="font-size:22px;font-weight:700;color:#059669">${totalPresent}</div>
-      <div style="font-size:11px;color:#065f46;margin-top:2px">✅ উপস্থিত</div>
-    </div>
-    <div style="text-align:center;padding:12px;background:#fef2f2;border-radius:8px">
-      <div style="font-size:22px;font-weight:700;color:#dc2626">${totalAbsent}</div>
-      <div style="font-size:11px;color:#991b1b;margin-top:2px">❌ অনুপস্থিত</div>
-    </div>
-    <div style="text-align:center;padding:12px;background:#f5f3ff;border-radius:8px">
-      <div style="font-size:22px;font-weight:700;color:#7c3aed">${totalLate}</div>
-      <div style="font-size:11px;color:#5b21b6;margin-top:2px">⏰ দেরি</div>
-    </div>
-    <div style="text-align:center;padding:12px;background:#eff6ff;border-radius:8px">
-      <div style="font-size:22px;font-weight:700;color:#2563eb">${totalOT}</div>
-      <div style="font-size:11px;color:#1e40af;margin-top:2px">⏱️ OT ঘণ্টা</div>
-    </div>
-    <div style="text-align:center;padding:12px;background:#fffbeb;border-radius:8px">
-      <div style="font-size:16px;font-weight:700;color:#d97706">৳${totalOTPay.toLocaleString()}</div>
-      <div style="font-size:11px;color:#92400e;margin-top:2px">💰 OT টাকা</div>
-    </div>
-  </div>
-
-  ${unmatched.length ? `
-  <div style="padding:12px 16px;background:#fef2f2;border-bottom:1px solid #fecaca">
-    <div style="font-size:12px;font-weight:700;color:#991b1b;margin-bottom:6px">
-      ⚠️ এই নামগুলো Employees শিটে নেই — আগে কর্মী যোগ করুন:
-    </div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap">
-      ${[...new Set(unmatched)].map(n=>`<span class="badge badge-danger">${n}</span>`).join('')}
-    </div>
-  </div>` : ''}
-
-  <!-- বিস্তারিত টেবিল -->
-  <div class="table-wrap">
-    <table>
-      <thead><tr>
-        <th>কর্মী</th><th>বিভাগ</th><th>তারিখ</th><th>শিফট</th>
-        <th>ইন</th><th>আউট</th><th>ঘণ্টা</th>
-        <th>OT</th><th>দেরি</th><th>কাটা</th><th>অবস্থা</th>
-      </tr></thead>
-      <tbody>
-        ${matched.map(r=>`<tr>
-          <td>
-            <div style="font-weight:600">${r.name}</div>
-            <div style="font-size:11px;color:var(--text-muted)">${r.empId||''}</div>
-          </td>
-          <td><span style="font-size:12px;color:var(--text-muted)">${r.dept||'—'}</span></td>
-          <td>${r.date}</td>
-          <td>
-            <span class="shift-badge shift-${(r.shift||'d').toLowerCase()}">${r.shift||'D'}</span>
-            <div style="font-size:10px;color:var(--text-muted);margin-top:2px">${r.shiftName||''}</div>
-          </td>
-          <td><strong>${r.in}</strong></td>
-          <td><strong>${r.out}</strong></td>
-          <td>${r.workHours>0?r.workHours+' ঘণ্টা':'—'}</td>
-          <td style="color:var(--purple)">${r.otHours>0?r.otHours+'ঘণ্টা<br><small>৳'+r.otPay+'</small>':'—'}</td>
-          <td style="color:var(--warning)">${r.lateMinutes>0?r.lateMinutes+' মিনিট':'—'}</td>
-          <td style="color:var(--danger)">${r.deductAmount>0?'৳'+r.deductAmount:'—'}</td>
-          <td><span class="badge ${statusMap[r.status]||'badge-info'}">${r.status}</span></td>
-        </tr>`).join('')}
-      </tbody>
-    </table>
-  </div>
-
-  <!-- কর্মী ভিত্তিক সারসংক্ষেপ -->
-  <div style="padding:16px;border-top:1px solid var(--border)">
-    <div style="font-size:12px;font-weight:700;margin-bottom:12px">📊 কর্মী ভিত্তিক সারসংক্ষেপ:</div>
-    <div style="overflow-x:auto">
-      <table style="font-size:12px">
-        <thead><tr>
-          <th>কর্মী</th><th>মূল বেতন</th><th>উপস্থিত</th>
-          <th>অনুপস্থিত</th><th>দেরি</th>
-          <th>OT ঘণ্টা</th><th>OT টাকা</th>
-          <th>কাটা</th><th>আনুমানিক নেট</th>
-        </tr></thead>
-        <tbody>
-          ${generateEmpSummaryRows(matched)}
-        </tbody>
-      </table>
-    </div>
-  </div>`;
-}
-
-function generateEmpSummaryRows(matched) {
-  const byEmp = {};
-  matched.forEach(r => {
-    if(!byEmp[r.name]) byEmp[r.name] = {
-      name:r.name, empId:r.empId, salary:r.salary||0, dept:r.dept||'',
-      present:0, absent:0, late:0, otHours:0, otPay:0, deduct:0
-    };
-    const e = byEmp[r.name];
-    if(r.statusEn==='present'||r.statusEn==='late') e.present++;
-    if(r.statusEn==='absent') e.absent++;
-    if(r.statusEn==='late') e.late++;
-    e.otHours  += r.otHours      || 0;
-    e.otPay    += r.otPay        || 0;
-    e.deduct   += r.deductAmount || 0;
-  });
-
-  return Object.values(byEmp).map(e => {
-    const houseRent = Math.round(e.salary * 0.5);
-    const medical   = e.salary > 0 ? 1500 : 0;
-    const transport = e.salary > 0 ? 1000 : 0;
-    const gross     = e.salary + houseRent + medical + transport + Math.round(e.otPay);
-    const net       = Math.max(0, gross - e.deduct);
-    return `<tr>
-      <td><strong>${e.name}</strong><br><span style="color:var(--text-muted)">${e.empId}</span></td>
-      <td>৳${e.salary.toLocaleString()}</td>
-      <td style="color:var(--secondary)">${e.present} দিন</td>
-      <td style="color:var(--danger)">${e.absent} দিন</td>
-      <td style="color:var(--purple)">${e.late} দিন</td>
-      <td style="color:var(--purple)">${e.otHours.toFixed(1)}</td>
-      <td style="color:var(--secondary)">৳${Math.round(e.otPay).toLocaleString()}</td>
-      <td style="color:var(--danger)">৳${e.deduct.toLocaleString()}</td>
-      <td><strong style="color:var(--primary)">৳${net.toLocaleString()}</strong></td>
-    </tr>`;
-  }).join('');
-}
-
-
-async function confirmImport(){
-  if(!importedData.length){showToast('কোনো ডাটা নেই','warning');return;}
-  const month = document.querySelector('#page-import input[type=month]')?.value || new Date().toISOString().slice(0,7);
-
-  // বাটন লক
-  const btn = document.getElementById('confirm-import-btn');
-  if(btn){ btn.disabled=true; btn.textContent='⏳ ম্যাচ করছি...'; }
-
-  showToast('🔍 কর্মী তালিকার সাথে মিলিয়ে দেখছি...','info');
-
-  // ম্যাচিং + ক্যালকুলেশন
-  const { matched, unmatched } = await matchAndProcess(importedData, month);
-
-  if(!matched.length){
-    showToast('❌ কোনো কর্মী মেলেনি! আগে Employees শিটে কর্মী যোগ করুন।','danger');
-    if(btn){ btn.disabled=false; btn.textContent='✅ কনফার্ম ইমপোর্ট'; }
-    return;
-  }
-
-  // রেজাল্ট দেখাই
-  await showMatchResult(matched, unmatched, month);
-
-  // Sheets এ পাঠাই
-  const parsed = matched.map(r => ({
-    name: r.name, date: r.date,
-    in: r.in, out: r.out,
-    hours: r.workHours, ot: r.otHours,
-    late: r.isLate, absent: r.statusEn==='absent',
-    shift: r.shift, lateMinutes: r.lateMinutes,
-    status: r.status,
-  }));
-
-  // Google Sheets এ পাঠাও
-  const res=await api('importAttendance',{month,rows:JSON.stringify(parsed)});
-  if(res){
-    showToast(`✅ ${res.total} সারি ইমপোর্ট হয়েছে! উপস্থিত:${res.present} অনুপস্থিত:${res.absent}`);
-    document.getElementById('import-preview').style.display='none';
-    importedData=[];
-
-    // locally update attLogs for instant display
-    attLogs=parsed.map(r=>({
-      date:r.date,name:r.name,id:r.name,
-      in:r.in==='true'||r.in==='True'?'—':r.in,
-      out:r.out==='true'||r.out==='True'?'—':r.out,
-      hours:'—',ot:'—',
-      late:r.late?'হ্যাঁ':'না',
-      status:r.absent?'absent':r.late?'late':'present'
-    }));
-    renderDashAttTable();
-
-    // Show results card
-    let card=document.getElementById('imported-log-card');
-    if(!card){card=document.createElement('div');card.id='imported-log-card';card.className='card mt-16';document.getElementById('page-import').appendChild(card);}
-    const statusMap={'উপস্থিত':'badge-success','অনুপস্থিত':'badge-danger','দেরি':'badge-purple','অর্ধদিন':'badge-warning'};
-
-    // সারসংক্ষেপ কার্ড
-    const totalPresent = processed.filter(r=>r.statusEn==='present'||r.statusEn==='late').length;
-    const totalAbsent  = processed.filter(r=>r.statusEn==='absent').length;
-    const totalLate    = processed.filter(r=>r.statusEn==='late').length;
-    const totalOT      = processed.reduce((s,r)=>s+(r.otHours||0),0).toFixed(1);
-
-    card.innerHTML=`
-    <div class="card-header">
-      <div class="card-title">📋 ইমপোর্ট সারসংক্ষেপ (${processed.length} রেকর্ড)</div>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:16px;border-bottom:1px solid var(--border)">
-      <div style="text-align:center;padding:12px;background:#ecfdf5;border-radius:8px">
-        <div style="font-size:22px;font-weight:700;color:#059669">${totalPresent}</div>
-        <div style="font-size:11px;color:#065f46;margin-top:2px">✅ উপস্থিত</div>
-      </div>
-      <div style="text-align:center;padding:12px;background:#fef2f2;border-radius:8px">
-        <div style="font-size:22px;font-weight:700;color:#dc2626">${totalAbsent}</div>
-        <div style="font-size:11px;color:#991b1b;margin-top:2px">❌ অনুপস্থিত</div>
-      </div>
-      <div style="text-align:center;padding:12px;background:#f5f3ff;border-radius:8px">
-        <div style="font-size:22px;font-weight:700;color:#7c3aed">${totalLate}</div>
-        <div style="font-size:11px;color:#5b21b6;margin-top:2px">⏰ দেরি</div>
-      </div>
-      <div style="text-align:center;padding:12px;background:#eff6ff;border-radius:8px">
-        <div style="font-size:22px;font-weight:700;color:#2563eb">${totalOT}</div>
-        <div style="font-size:11px;color:#1e40af;margin-top:2px">⏱️ OT ঘণ্টা</div>
-      </div>
-    </div>
-    <div class="table-wrap"><table>
-      <thead><tr>
-        <th>নাম</th><th>তারিখ</th><th>শিফট</th>
-        <th>ইন</th><th>আউট</th>
-        <th>কাজের ঘণ্টা</th><th>OT</th>
-        <th>দেরি</th><th>অবস্থা</th>
-      </tr></thead>
-      <tbody>${processed.map(r=>`<tr>
-        <td><strong>${r.name}</strong></td>
-        <td>${r.date}</td>
-        <td><span class="shift-badge shift-${(r.shift||'d').toLowerCase()}">${r.shift||'D'}</span></td>
-        <td>${r.in}</td>
-        <td>${r.out}</td>
-        <td><strong>${r.workHours||0} ঘণ্টা</strong></td>
-        <td style="color:var(--purple)">${r.otHours>0?r.otHours+' ঘণ্টা':'—'}</td>
-        <td>${r.lateMinutes>0?r.lateMinutes+' মিনিট':'না'}</td>
-        <td><span class="badge ${statusMap[r.status]||'badge-info'}">${r.status}</span></td>
-      </tr>`).join('')}</tbody>
-    </table></div>
-    <div style="padding:16px;border-top:1px solid var(--border)">
-      <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:10px">কর্মী ভিত্তিক সারসংক্ষেপ:</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px">
-        ${summary.map(s=>`<div style="background:var(--bg);border-radius:8px;padding:10px;font-size:12px">
-          <div style="font-weight:600;margin-bottom:6px">${s.name}</div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap">
-            <span class="badge badge-success">${s.present}দিন</span>
-            ${s.absent>0?`<span class="badge badge-danger">${s.absent}অনুপস্থিত</span>`:''}
-            ${s.late>0?`<span class="badge badge-purple">${s.late}দেরি</span>`:''}
-            ${s.totalOT>0?`<span class="badge badge-info">OT:${s.totalOT.toFixed(1)}ঘণ্টা</span>`:''}
-          </div>
-        </div>`).join('')}
-      </div>
-    </div>`;
-  }
-}
-
-// ===== PAYROLL =====
-async function loadPayroll(){
-  const month = document.querySelector('#page-payroll input[type=month]')?.value || new Date().toISOString().slice(0,7);
-  const res = await api('getPayroll', {month});
-  if(!res) return;
-  const data = res.data || [];
-  if(data.length){
-    payrollData = data.map((r,i) => ({
-      id:r['কর্মী আইডি'], name:r['নাম'],
-      basic:parseFloat(r['মূল বেতন'])||0,
-      att:parseFloat(r['হাজিরা ভাতা'])||0,
-      ot:parseFloat(r['ওভারটাইম পে'])||0,
-      bonus:parseFloat(r['বোনাস'])||0,
-      deduct:parseFloat(r['কাটা'])||0,
-      net:parseFloat(r['নেট বেতন'])||0,
-      status:r['অবস্থা']||'পেন্ডিং',
-      color:empColor(i)
-    }));
-    updatePayrollSummary();
-  }
-  renderPayrollTable();
-}
-
-async function generatePayroll(){
-  const month = document.querySelector('#page-payroll input[type=month]')?.value || new Date().toISOString().slice(0,7);
-
-  // বাটন লক
-  const btn = document.querySelector('#page-payroll .btn-primary');
-  if(btn){ btn.textContent='⏳ তৈরি হচ্ছে...'; btn.disabled=true; }
-
-  // প্রথমে Sheets থেকে হাজিরা ডাটা আনি
-  const attRes = await api('getAttendance', {month});
-  const attData = (attRes?.data || []);
-
-  // কর্মী তালিকা — লোকাল না থাকলে Sheets থেকে আনি
-  let empList = employees.filter(e => e.status==='সক্রিয়' || e.status==='active');
-  if(!empList.length){
-    const empRes = await api('getEmployees');
-    empList = (empRes?.data || []).map((e,i) => ({
-      id: e['ID'], name: e['নাম'], post: e['পদ'], dept: e['বিভাগ'],
-      salary: parseFloat(e['মূল বেতন'])||0, shift: e['শিফট']||'D',
-      status: e['অবস্থা'], color: empColor(i)
-    }));
-    employees = empList;
-  }
-
-  // হাজিরা ডাটা থেকে অনন্য কর্মী বের করি (Sheets এ কর্মী না থাকলেও)
-  const empFromAtt = {};
-  attData.forEach(r => {
-    const key = r['কর্মী আইডি'] || r['নাম'] || '';
-    if(key && !empFromAtt[key]){
-      empFromAtt[key] = { id:key, name:r['নাম']||key };
-    }
-  });
-
-  // মার্জ — Sheets কর্মী + হাজিরা থেকে পাওয়া কর্মী
-  const allEmp = [...empList];
-  Object.values(empFromAtt).forEach(ea => {
-    if(!allEmp.find(e => e.id===ea.id || e.name===ea.name)){
-      allEmp.push({ id:ea.id, name:ea.name, salary:0, color:empColor(allEmp.length) });
-    }
-  });
-
-  if(!allEmp.length){
-    showToast('⚠️ কোনো কর্মী বা হাজিরা ডাটা নেই! আগে XLS ইমপোর্ট করুন।','warning');
-    if(btn){ btn.textContent='💰 পেরোল তৈরি করুন'; btn.disabled=false; }
-    return;
-  }
-
-  // পেরোল ক্যালকুলেশন
-  const totalDays = 26;
-  payrollData = allEmp.map((emp, i) => {
-    const basic = parseFloat(emp.salary)||0;
-
-    // হাজিরা ফিল্টার
-    const empAtt = attData.filter(a =>
-      a['কর্মী আইডি']===emp.id || a['নাম']===emp.name || a['কর্মী আইডি']===emp.name
-    );
-    const presentDays = empAtt.filter(a =>
-      a['অবস্থা']==='উপস্থিত' || a['অবস্থা']==='দেরি'
-    ).length;
-    const leaveDays = empAtt.filter(a => a['অবস্থা']==='ছুটি').length;
-    const absentDays = Math.max(0, totalDays - presentDays - leaveDays);
-
-    // ভাতা
-    const houseRent  = Math.round(basic * 0.5);
-    const medical    = basic > 0 ? 1500 : 0;
-    const transport  = basic > 0 ? 1000 : 0;
-    const att        = presentDays >= totalDays ? 500 : 0;
-
-    // ওভারটাইম — হাজিরা থেকে সরাসরি
-    let otHours = 0;
-    empAtt.forEach(a => {
-      const ot = parseFloat(a['ওভারটাইম'])||0;
-      otHours += ot;
-    });
-    const hourlyRate = basic > 0 ? (basic / 208) * 1.5 : 0;
-    const otPay = Math.round(otHours * hourlyRate);
-
-    // কাটা
-    const dailyRate = basic > 0 ? basic / 30 : 0;
-    const deduct = Math.round(absentDays * dailyRate);
-    const net = basic + houseRent + medical + transport + att + otPay - deduct;
-
-    return {
-      id: emp.id, name: emp.name, color: emp.color||empColor(i),
-      basic, att, ot: otPay, bonus: 0, deduct, net: Math.max(0, net),
-      status: 'পেন্ডিং',
-      _presentDays: presentDays, _absentDays: absentDays, _otHours: otHours
-    };
-  });
-
-  // Sheets এ পাঠাও (ব্যাকগ্রাউন্ডে)
-  api('generatePayroll', {month}).catch(()=>{});
-
-  renderPayrollTable();
-  updatePayrollSummary();
-
-  if(btn){ btn.textContent='💰 পেরোল তৈরি করুন'; btn.disabled=false; }
-  showToast('✅ ' + payrollData.length + ' জনের পেরোল তৈরি হয়েছে!');
-}
-
-function updatePayrollSummary(){
-  const totalEarning = payrollData.reduce((s,e) => s+(e.basic||0)+(e.att||0)+(e.ot||0)+(e.bonus||0), 0);
-  const totalDeduct  = payrollData.reduce((s,e) => s+(e.deduct||0), 0);
-  const totalNet     = payrollData.reduce((s,e) => s+(e.net||0), 0);
-  const boxes = document.querySelectorAll('.payroll-box-value');
-  if(boxes[0]) boxes[0].textContent = '৳' + totalEarning.toLocaleString('bn-BD');
-  if(boxes[1]) boxes[1].textContent = '৳' + totalDeduct.toLocaleString('bn-BD');
-  if(boxes[2]) boxes[2].textContent = '৳' + totalNet.toLocaleString('bn-BD');
-}
-
-function renderPayrollTable(){
-  const tbody=document.getElementById('payroll-table');
-  if(!tbody) return;
-  if(!payrollData.length){
-    tbody.innerHTML='<tr><td colspan="9" style="text-align:center;padding:30px;color:var(--text-muted)">পেরোল তৈরি হয়নি — "পেরোল তৈরি করুন" ক্লিক করুন</td></tr>';
-    return;
-  }
-  const statusMap={'পেন্ডিং':'badge-warning','অনুমোদিত':'badge-success'};
-  tbody.innerHTML=payrollData.map(e=>`<tr>
-    <td><div class="emp-cell">
-      <div class="emp-avatar" style="background:${e.color}">${(e.name||'?')[0]}</div>
-      <div><div class="emp-name-text">${e.name}</div><div class="emp-id-text">${e.id}</div></div>
-    </div></td>
-    <td>৳${(e.basic||0).toLocaleString()}</td>
-    <td>৳${(e.att||0).toLocaleString()}</td>
-    <td style="color:var(--purple)">৳${(e.ot||0).toLocaleString()}</td>
-    <td style="color:var(--secondary)">৳${(e.bonus||0).toLocaleString()}</td>
-    <td style="color:var(--danger)">৳${(e.deduct||0).toLocaleString()}</td>
-    <td><strong>৳${(e.net||0).toLocaleString()}</strong></td>
-    <td><span class="badge ${statusMap[e.status]||'badge-warning'}">${e.status||'পেন্ডিং'}</span></td>
-    <td><button class="btn btn-outline btn-sm" onclick="openPayslipFromPayroll('${e.id}')">📄 দেখুন</button></td>
-  </tr>`).join('');
-}
-
-// ===== OVERTIME =====
-async function loadOvertime(){
-  const month=document.querySelector('#page-overtime input[type=month]')?.value||new Date().toISOString().slice(0,7);
-  const res=await api('getOvertime',{month});
-  if(!res) return;
-  otData=(res.data||[]).map(r=>({
-    name:r['নাম'],id:r['কর্মী আইডি'],
-    date:r['তারিখ'],normal:r['সাধারণ ঘণ্টা'],
-    ot:r['ওভারটাইম ঘণ্টা'],rate:r['হার'],
-    pay:r['পরিমাণ'],status:r['অবস্থা']==='অনুমোদিত'?'approved':'pending'
-  }));
-  // ওভারটাইম stat আপডেট
-  const totalHrs = otData.reduce((s,r)=>s+parseFloat(r.ot||0),0);
-  const approved = otData.filter(r=>r.status==='approved').length;
-  const pending  = otData.filter(r=>r.status==='pending').length;
-  const totalPay = otData.reduce((s,r)=>s+parseFloat(r.pay||0),0);
-  const sv=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
-  sv('ot-total-hours', totalHrs.toFixed(1));
-  sv('ot-approved',    approved);
-  sv('ot-pending',     pending);
-  sv('ot-total-pay',   '৳'+Math.round(totalPay).toLocaleString());
-  renderOTTable();
-}
-
-async function approveAllOT(){
-  const month=document.querySelector('#page-overtime input[type=month]')?.value||new Date().toISOString().slice(0,7);
-  const res=await api('approveOvertime',{month});
-  if(res){showToast('✅ '+res.message);loadOvertime();}
-}
-
-function renderOTTable(){
-  const tbody=document.getElementById('ot-table');
-  if(!tbody) return;
-  if(!otData.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-muted)">ওভারটাইম ডাটা নেই</td></tr>';return;}
-  tbody.innerHTML=otData.map(r=>{
-    const st=r.status==='approved'?'badge-success':'badge-warning';
-    const sl=r.status==='approved'?'✅ অনুমোদিত':'⌛ পেন্ডিং';
-    return`<tr>
-      <td>${r.name||'—'}<br><span class="emp-id-text">${r.id||''}</span></td>
-      <td>${r.date||'—'}</td><td>${r.normal||'৮'}</td>
-      <td><strong style="color:var(--purple)">${r.ot||'—'}</strong></td>
-      <td>${r.rate||'১.৫'}×</td>
-      <td><strong>৳${r.pay||'—'}</strong></td>
-      <td><span class="badge ${st}">${sl}</span></td>
-      <td class="flex gap-8">
-        ${r.status==='pending'?`<button class="btn btn-success btn-sm">✅</button><button class="btn btn-danger btn-sm">❌</button>`:'<span class="text-muted">—</span>'}
-      </td>
-    </tr>`;
-  }).join('');
-}
-
-// ===== LEAVE =====
-async function loadLeave(){
-  const res=await api('getLeave',{status:'পেন্ডিং'});
-  if(!res) return;
-  const tbody=document.querySelector('#leave-pending-tab table tbody');
-  if(!tbody) return;
-  const data=res.data||[];
-  if(!data.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted)">কোনো পেন্ডিং আবেদন নেই</td></tr>';return;}
-  tbody.innerHTML=data.map(r=>`<tr>
-    <td><div class="emp-cell"><div class="emp-avatar" style="background:${empColor(0)}">${(r['নাম']||'?')[0]}</div><div><div class="emp-name-text">${r['নাম']||'—'}</div></div></div></td>
-    <td><span class="badge badge-info">${r['ছুটির ধরন']||'—'}</span></td>
-    <td>${r['শুরু তারিখ']||'—'}</td><td>${r['শেষ তারিখ']||'—'}</td>
-    <td>${r['দিন']||'—'} দিন</td>
-    <td>${r['কারণ']||'—'}</td>
-    <td class="flex gap-8">
-      <button class="btn btn-success btn-sm" onclick="approveLeaveRow('${r['আবেদন আইডি']}',this)">✅ অনুমোদন</button>
-      <button class="btn btn-danger btn-sm" onclick="rejectLeaveRow('${r['আবেদন আইডি']}',this)">❌ বাতিল</button>
-    </td>
-  </tr>`).join('');
-}
-
-async function approveLeaveRow(id, btn){
-  const res=await api('approveLeave',{id});
-  if(res){showToast('✅ ছুটি অনুমোদিত');btn.closest('tr').querySelector('td:last-child').innerHTML='<span class="badge badge-success">✅ অনুমোদিত</span>';}
-}
-
-async function rejectLeaveRow(id, btn){
-  const res=await api('rejectLeave',{id});
-  if(res){showToast('❌ ছুটি বাতিল','warning');btn.closest('tr').querySelector('td:last-child').innerHTML='<span class="badge badge-danger">❌ বাতিল</span>';}
-}
-
-function approveLeave(btn){ btn.closest('tr').querySelector('td:last-child').innerHTML='<span class="badge badge-success">✅ অনুমোদিত</span>'; }
-function rejectLeave(btn){ btn.closest('tr').querySelector('td:last-child').innerHTML='<span class="badge badge-danger">❌ বাতিল</span>'; }
-
-async function submitLeaveApplication(){
-  const modal=document.getElementById('modal-applyLeave');
-  const sel=modal.querySelector('select').value;
-  const leaveType=modal.querySelectorAll('select')[1].value;
-  const startDate=modal.querySelectorAll('input[type=date]')[0].value;
-  const endDate=modal.querySelectorAll('input[type=date]')[1].value;
-  const reason=modal.querySelector('textarea').value;
-  if(!startDate||!endDate){showToast('তারিখ দিন','warning');return;}
-  const res=await api('applyLeave',{empId:'',empName:sel,leaveType,startDate,endDate,reason});
-  if(res){showToast('✅ ছুটির আবেদন জমা হয়েছে');closeModal('applyLeave');loadLeave();}
-}
-
-// ===== ROSTER =====
-let selectedShiftPick = 'D';
-
-async function loadRoster(){
-  // কর্মী তালিকা না থাকলে লোড করি
+function renderEmployees(){
+  const list = document.getElementById('employee-list');
   if(!employees.length){
-    const res = await api('getEmployees');
-    if(res && res.data){
-      employees = res.data.map((e,i)=>({
-        id:e['ID'], name:e['নাম'], dept:e['বিভাগ'],
-        shift:e['শিফট']||'D', color:empColor(i), status:e['অবস্থা']
-      }));
-    }
+    list.innerHTML = `<div style="text-align:center;padding:36px;color:var(--text-muted)">কোনো কর্মী নেই — "➕ নতুন কর্মী" চাপুন</div>`;
+    return;
   }
+  list.innerHTML = employees.map((e,i)=>`
+    <div class="emp-list-item">
+      <div class="emp-cell">
+        <div class="emp-avatar" style="background:${AVATAR_COLORS[i % AVATAR_COLORS.length]}">${(e.name||'?')[0]}</div>
+        <div><div class="emp-name">${e.name}</div><div class="emp-dept">${e.dept||'—'}</div></div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-outline btn-sm" onclick="openEmployeeModal('${e.id}')">✏️ এডিট</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteEmployee('${e.id}')">🗑️</button>
+      </div>
+    </div>`).join('');
+}
 
-  // Sheets থেকে রোস্টার আনি
-  const res = await api('getRoster');
-  if(res && res.data && res.data.length){
-    rosterData = res.data.map(r=>({
-      id: r['কর্মী আইডি'], name:r['নাম'],
-      shifts:[r['সোম']||'D',r['মঙ্গল']||'D',r['বুধ']||'D',
-              r['বৃহঃ']||'D',r['শুক্র']||'D',r['শনি']||'OFF',r['রবি']||'OFF']
-    }));
+function openEmployeeModal(id=null){
+  editingEmployeeId = id;
+  document.getElementById('emp-modal-title').textContent = id ? 'কর্মী এডিট করুন' : 'নতুন কর্মী';
+  document.getElementById('emp-delete-btn').style.display = id ? 'inline-flex' : 'none';
+  if(id){
+    const e = employees.find(x=>x.id===id);
+    document.getElementById('em-name').value = e.name;
+    document.getElementById('em-dept').value = e.dept||'';
   } else {
-    // কর্মী লিস্ট থেকে ডিফল্ট রোস্টার বানাই
-    rosterData = employees
-      .filter(e=>e.status==='সক্রিয়'||e.status==='active'||!e.status)
-      .map(e=>({
-        id:e.id, name:e.name,
-        shifts:[e.shift||'D',e.shift||'D',e.shift||'D',e.shift||'D',e.shift||'D','OFF','OFF']
-      }));
+    document.getElementById('em-name').value = '';
+    document.getElementById('em-dept').value = '';
   }
+  openModal('employee');
+}
 
+function saveEmployee(){
+  const name = document.getElementById('em-name').value.trim();
+  const dept = document.getElementById('em-dept').value.trim();
+  if(!name){ showToast('কর্মীর নাম দিন', 'warning'); return; }
+
+  if(editingEmployeeId){
+    const e = employees.find(x=>x.id===editingEmployeeId);
+    Object.assign(e, {name, dept});
+  } else {
+    employees.push({id: uid(), name, dept});
+  }
+  save();
+  closeModal('employee');
+  renderEmployees();
   renderRoster();
-  updateShiftEmpDropdown();
+  showToast('✅ কর্মী সেভ হয়েছে');
+}
+
+function deleteEmployee(id){
+  if(!confirm('এই কর্মীকে মুছে দেবেন? রোস্টার থেকেও তার সব শিফট মুছে যাবে।')) return;
+  employees = employees.filter(e=>e.id!==id);
+  Object.keys(assignments).forEach(k=>{ if(k.startsWith(id+'_')) delete assignments[k]; });
+  save();
+  renderEmployees();
+  renderRoster();
+  showToast('🗑️ কর্মী মুছে গেছে', 'warning');
+}
+
+function deleteEmployeeFromModal(){
+  if(editingEmployeeId){ closeModal('employee'); deleteEmployee(editingEmployeeId); }
+}
+
+// ===================================================
+// ROSTER PAGE
+// ===================================================
+function cycleKey(empId, dayKey){ return empId + '_' + dayKey; }
+
+function cycleAssignment(empId, dayKey){
+  const key = cycleKey(empId, dayKey);
+  const seq = [null, ...shifts.map(s=>s.id), OFF];
+  const cur = assignments[key] ?? null;
+  const idx = seq.indexOf(cur);
+  const next = seq[(idx+1) % seq.length];
+  if(next === null) delete assignments[key];
+  else assignments[key] = next;
+  save();
+  renderRoster();
+}
+
+function chipHtml(empId, dayKey){
+  const key = cycleKey(empId, dayKey);
+  const val = assignments[key];
+  if(!val) return `<span class="shift-chip empty" onclick="cycleAssignment('${empId}',${dayKey})">—</span>`;
+  if(val === OFF) return `<span class="shift-chip off" onclick="cycleAssignment('${empId}',${dayKey})">ছুটি</span>`;
+  const s = shiftById(val);
+  if(!s) return `<span class="shift-chip empty" onclick="cycleAssignment('${empId}',${dayKey})">—</span>`;
+  return `<span class="shift-chip" style="background:${s.color}22;color:${s.color};border-color:${s.color}55" onclick="cycleAssignment('${empId}',${dayKey})" title="${s.name} (${s.start}-${s.end})">${s.name.slice(0,2)}</span>`;
 }
 
 function renderRoster(){
-  const grid = document.getElementById('roster-grid');
-  if(!grid) return;
-
-  // বিভাগ ফিল্টার
-  const deptFilter = document.getElementById('roster-dept-filter')?.value || '';
-  let data = rosterData;
-  if(deptFilter){
-    const deptEmps = employees.filter(e=>e.dept===deptFilter).map(e=>e.name);
-    data = data.filter(r => deptEmps.includes(r.name));
-  }
-
-  if(!data.length){
-    grid.innerHTML = '<div style="padding:30px;text-align:center;color:var(--text-muted);grid-column:1/-1">কোনো কর্মী নেই — আগে কর্মী যোগ করুন</div>';
-    return;
-  }
-
-  const shiftClass = {D:'shift-d',E:'shift-e',N:'shift-n',OFF:'shift-off'};
-  grid.style.gridTemplateColumns = '150px repeat(7,1fr)';
-
-  let html = `<div class="roster-cell header">কর্মী</div>`;
-  weekDays.forEach(d => html += `<div class="roster-cell header">${d}</div>`);
-
-  data.forEach((emp, ei) => {
-    const empIdx = rosterData.findIndex(r=>r.name===emp.name);
-    html += `<div class="roster-cell emp-name" style="font-size:12px">${emp.name}</div>`;
-    (emp.shifts||['D','D','D','D','D','OFF','OFF']).forEach((s,di) => {
-      const shift = s||'OFF';
-      html += `<div class="roster-cell" style="cursor:pointer" onclick="cycleShift(${empIdx},${di})" title="ক্লিক করে শিফট বদলান">
-        <span class="shift-badge ${shiftClass[shift]||'shift-off'}">${shift}</span>
-      </div>`;
-    });
-  });
-
-  grid.innerHTML = html;
-  updateRosterSummary(data);
-}
-
-// ক্লিক করলে শিফট সাইকেল: D → E → N → OFF → D
-function cycleShift(empIdx, dayIdx){
-  const cycle = ['D','E','N','OFF'];
-  const current = rosterData[empIdx]?.shifts[dayIdx] || 'D';
-  const nextIdx = (cycle.indexOf(current) + 1) % cycle.length;
-  rosterData[empIdx].shifts[dayIdx] = cycle[nextIdx];
-  renderRoster();
-}
-
-function updateRosterSummary(data){
-  const count = {D:0,E:0,N:0,OFF:0};
-  data.forEach(emp => {
-    (emp.shifts||[]).forEach(s => { if(count[s]!==undefined) count[s]++; });
-  });
-  const sv=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v+' জন×দিন';};
-  sv('rs-d', count.D);
-  sv('rs-e', count.E);
-  sv('rs-n', count.N);
-  sv('rs-off', count.OFF);
-}
-
-// শিফট মডাল — কর্মী ড্রপডাউন
-function updateShiftEmpDropdown(){
-  const sel = document.getElementById('shift-emp-select');
-  if(!sel) return;
-  sel.innerHTML = '<option value="all">— সব কর্মী —</option>' +
-    rosterData.map((r,i)=>`<option value="${i}">${r.name}</option>`).join('');
-}
-
-function selectShiftPick(shift){
-  selectedShiftPick = shift;
-  ['D','E','N','OFF'].forEach(s=>{
-    const el = document.getElementById('shift-pick-'+s);
-    if(el) el.style.borderColor = s===shift ? 'var(--primary)' : 'var(--border)';
-  });
-}
-
-function applyShiftSetting(){
-  const empVal = document.getElementById('shift-emp-select')?.value;
-  const checkedDays = [...document.querySelectorAll('#shift-day-checkboxes input:checked')].map(c=>parseInt(c.value));
-  if(!checkedDays.length){ showToast('অন্তত একটি দিন সিলেক্ট করুন','warning'); return; }
-  if(!selectedShiftPick){ showToast('শিফট সিলেক্ট করুন','warning'); return; }
-
-  if(empVal==='all'){
-    rosterData.forEach(emp=>{
-      checkedDays.forEach(d=>{ emp.shifts[d] = selectedShiftPick; });
-    });
-    showToast('✅ সব কর্মীর শিফট আপডেট হয়েছে');
+  renderRosterStats();
+  const table = document.getElementById('roster-table');
+  if(!employees.length){
+    table.innerHTML = `<tr><td style="padding:36px;text-align:center;color:var(--text-muted)">কোনো কর্মী নেই — আগে "কর্মী তালিকা" থেকে কর্মী যোগ করুন।</td></tr>`;
   } else {
-    const idx = parseInt(empVal);
-    checkedDays.forEach(d=>{ rosterData[idx].shifts[d] = selectedShiftPick; });
-    showToast('✅ ' + rosterData[idx].name + ' এর শিফট আপডেট হয়েছে');
+    let head = `<tr><th>কর্মী</th>${DAYS.map(d=>`<th>${d.label}</th>`).join('')}</tr>`;
+    let body = employees.map(e=>`
+      <tr>
+        <td><div class="emp-cell">
+          <div class="emp-avatar" style="background:${AVATAR_COLORS[employees.indexOf(e)%AVATAR_COLORS.length]}">${(e.name||'?')[0]}</div>
+          <div><div class="emp-name">${e.name}</div><div class="emp-dept">${e.dept||'—'}</div></div>
+        </div></td>
+        ${DAYS.map(d=>`<td>${chipHtml(e.id, d.key)}</td>`).join('')}
+      </tr>`).join('');
+    table.innerHTML = head + body;
   }
-  closeModal('setShift');
-  renderRoster();
+
+  const legend = document.getElementById('roster-legend');
+  legend.innerHTML = shifts.map(s=>`
+    <div class="legend-item"><span class="color-dot" style="background:${s.color}"></span>${s.name} (${s.start}-${s.end})</div>
+  `).join('') + `<div class="legend-item"><span class="color-dot" style="background:var(--off-color)"></span>ছুটি</div>`;
 }
 
-async function saveRosterToSheet(){
-  if(!rosterData.length){ showToast('রোস্টার খালি!','warning'); return; }
-  const week = document.getElementById('roster-week')?.value || '';
-  const res = await api('saveRoster', {
-    rows: JSON.stringify(rosterData.map(r=>({
-      empId: r.id||r.name, name: r.name,
-      shifts: r.shifts, week
-    })))
+function renderRosterStats(){
+  const todayKey = JS_DAY_TO_KEY[new Date().getDay()];
+  const counts = {};
+  shifts.forEach(s=>counts[s.id]=0);
+  let offCount = 0;
+  employees.forEach(e=>{
+    const v = assignments[cycleKey(e.id, todayKey)];
+    if(v === OFF) offCount++;
+    else if(v && counts[v] !== undefined) counts[v]++;
   });
-  if(res) showToast('✅ রোস্টার সেভ হয়েছে!');
-}
-
-function printRoster(){
-  window.print();
-}
-
-// ===== CALENDAR =====
-function drawCalendar(){
-  const cal=document.getElementById('att-calendar');
-  if(!cal) return;
-  const statuses=['present','present','present','present','weekend','present','present',
-    'present','late','present','present','weekend','leave','present',
-    'present','present','present','present','weekend','present','absent',
-    'present','present','present','leave','weekend'];
-  const statusLabel={present:'✓',absent:'✗',leave:'ছ',holiday:'ছু',weekend:'বন্ধ',late:'দেরি'};
-  let html=weekDays.map(d=>`<div class="att-day-header">${d}</div>`).join('');
-  for(let i=0;i<6;i++) html+=`<div class="att-day empty"></div>`;
-  statuses.forEach((s,i)=>{
-    html+=`<div class="att-day ${s}"><div class="day-num">${i+1}</div><div class="day-status">${statusLabel[s]||''}</div></div>`;
+  const box = document.getElementById('roster-stats');
+  const todayLabel = DAYS.find(d=>d.key===todayKey).label;
+  let html = `
+    <div class="stat-card"><div class="stat-value">${employees.length}</div><div class="stat-label">মোট কর্মী</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--warning)">${todayLabel}</div><div class="stat-label">আজকের দিন</div></div>`;
+  const top2 = shifts.slice(0,2);
+  top2.forEach(s=>{
+    html += `<div class="stat-card"><div class="stat-value" style="color:${s.color}">${counts[s.id]||0}</div><div class="stat-label">আজ ${s.name}-এ আছেন</div></div>`;
   });
-  cal.innerHTML=html;
-}
-
-// ===== PAYSLIP =====
-function showPayslip(empId){
-  const pr=payrollData.find(e=>e.id===empId)||{};
-  const emp=employees.find(e=>e.id===empId)||{};
-  const basic=pr.basic||emp.salary||0;
-  const houseRent=Math.round(basic*0.5);
-  const medical=1500, transport=1000;
-  const net=(pr.net||0)+houseRent+medical+transport;
-  document.getElementById('payslip-content').innerHTML=`
-  <div class="payslip">
-    <div class="payslip-header">
-      <div class="payslip-company">আপনার প্রতিষ্ঠানের নাম</div>
-      <div class="payslip-title">বেতন বিবরণী — ${new Date().toLocaleDateString('bn-BD',{year:'numeric',month:'long'})}</div>
-    </div>
-    <div class="payslip-info">
-      <div>
-        <div class="payslip-info-row"><span class="pir-label">কর্মী নাম:</span> ${emp.name||pr.name||'—'}</div>
-        <div class="payslip-info-row"><span class="pir-label">আইডি:</span> ${empId}</div>
-        <div class="payslip-info-row"><span class="pir-label">পদ:</span> ${emp.post||'—'}</div>
-        <div class="payslip-info-row"><span class="pir-label">বিভাগ:</span> ${emp.dept||'—'}</div>
-      </div>
-      <div>
-        <div class="payslip-info-row"><span class="pir-label">কার্যদিবস:</span> ২৬ দিন</div>
-        <div class="payslip-info-row"><span class="pir-label">ওভারটাইম:</span> ${pr.ot||0} টাকা</div>
-      </div>
-    </div>
-    <table class="payslip-table">
-      <thead><tr><th>আয়</th><th>৳</th><th>কাটা</th><th>৳</th></tr></thead>
-      <tbody>
-        <tr><td>মূল বেতন</td><td>${basic.toLocaleString()}</td><td>অনুপস্থিত কাটা</td><td>${(pr.deduct||0).toLocaleString()}</td></tr>
-        <tr><td>বাড়ি ভাড়া ভাতা</td><td>${houseRent.toLocaleString()}</td><td>অন্যান্য কাটা</td><td>০</td></tr>
-        <tr><td>চিকিৎসা ভাতা</td><td>${medical.toLocaleString()}</td><td></td><td></td></tr>
-        <tr><td>যাতায়াত ভাতা</td><td>${transport.toLocaleString()}</td><td></td><td></td></tr>
-        <tr><td>হাজিরা ভাতা</td><td>${(pr.att||0).toLocaleString()}</td><td></td><td></td></tr>
-        <tr><td>ওভারটাইম</td><td>${(pr.ot||0).toLocaleString()}</td><td></td><td></td></tr>
-        <tr><td>বোনাস</td><td>${(pr.bonus||0).toLocaleString()}</td><td></td><td></td></tr>
-        <tr style="font-weight:700;background:#f8fafc"><td>মোট আয়</td><td>${(basic+houseRent+medical+transport+(pr.att||0)+(pr.ot||0)+(pr.bonus||0)).toLocaleString()}</td><td>মোট কাটা</td><td>${(pr.deduct||0).toLocaleString()}</td></tr>
-      </tbody>
-    </table>
-    <div style="margin-top:16px;padding:14px;background:var(--primary-light);border-radius:8px;display:flex;justify-content:space-between;align-items:center">
-      <span style="font-weight:600;font-size:15px">নেট বেতন</span>
-      <span style="font-weight:700;font-size:22px;color:var(--primary)">৳${net.toLocaleString()}</span>
-    </div>
-    <div style="margin-top:24px;display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted)">
-      <div>কর্মীর স্বাক্ষর: _______________</div>
-      <div>কর্তৃপক্ষের স্বাক্ষর: _______________</div>
-    </div>
-  </div>`;
-  openModal('payslip');
-}
-
-// ===== SETTINGS =====
-async function loadSettings(){
-  const res=await api('getSettings');
-  if(!res) return;
-  const d=res.data||{};
-  const fields=document.querySelectorAll('#page-settings input,#page-settings select');
-  if(d.company_name && fields[0]) fields[0].value=d.company_name;
-  if(d.office_start && fields[2]) fields[2].value=d.office_start;
-  if(d.office_end && fields[3]) fields[3].value=d.office_end;
-  if(d.grace_minutes && fields[4]) fields[4].value=d.grace_minutes;
-}
-
-// ===== INIT =====
-async function init(){
-  setDate();
-  drawCalendar();
-  await loadDashboard();
-}
-
-init();
-
-// ===== DEPARTMENTS & DESIGNATIONS =====
-
-// লোকাল স্টেট
-let departments = [
-  {name:'উৎপাদন', head:'রাহেলা বেগম'},
-  {name:'অ্যাকাউন্টস', head:'করিম সাহেব'},
-  {name:'HR', head:'নাসরিন'},
-  {name:'IT', head:'রাফি'},
-  {name:'মার্কেটিং', head:'সুমাইয়া'},
-  {name:'অপারেশন', head:'ইমরান'},
-];
-
-let designations = [
-  {name:'ম্যানেজার', dept:'সব', grade:'A'},
-  {name:'সিনিয়র অফিসার', dept:'সব', grade:'B'},
-  {name:'অফিসার', dept:'সব', grade:'C'},
-  {name:'সহকারী', dept:'সব', grade:'D'},
-  {name:'অপারেটর', dept:'উৎপাদন', grade:'E'},
-  {name:'হেলপার', dept:'উৎপাদন', grade:'F'},
-];
-
-function loadDepartments(){
-  renderDeptTable();
-  renderDesigTable();
-}
-
-function renderDeptTable(){
-  const tbody = document.getElementById('dept-tbody');
-  if(!tbody) return;
-  if(!departments.length){
-    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-muted)">কোনো বিভাগ নেই</td></tr>';
-    return;
+  if(top2.length < 2){
+    html += `<div class="stat-card"><div class="stat-value" style="color:var(--off-color)">${offCount}</div><div class="stat-label">আজ ছুটিতে আছেন</div></div>`;
   }
-  // কর্মী সংখ্যা গণনা
-  const countByDept = {};
-  employees.forEach(e => {
-    countByDept[e.dept] = (countByDept[e.dept]||0) + 1;
-  });
-
-  tbody.innerHTML = departments.map((d,i) => `<tr>
-    <td><strong>${d.name}</strong></td>
-    <td><span class="badge badge-info">${countByDept[d.name]||0} জন</span></td>
-    <td>${d.head||'—'}</td>
-    <td>
-      <button class="btn btn-outline btn-sm" onclick="openEditDeptModal(${i})">✏️ এডিট</button>
-    </td>
-  </tr>`).join('');
+  box.innerHTML = html;
 }
 
-function renderDesigTable(){
-  const tbody = document.getElementById('desig-tbody');
-  if(!tbody) return;
-  const gradeBadge = {A:'badge-purple',B:'badge-info',C:'badge-success',D:'badge-warning',E:'badge-warning',F:'badge-danger'};
-  tbody.innerHTML = designations.map((d,i) => `<tr>
-    <td><strong>${d.name}</strong></td>
-    <td>${d.dept}</td>
-    <td><span class="badge ${gradeBadge[d.grade]||'badge-info'}">${d.grade}</span></td>
-    <td>
-      <button class="btn btn-outline btn-sm" onclick="openEditDesigModal(${i})">✏️ এডিট</button>
-    </td>
-  </tr>`).join('');
-}
-
-// ===== DEPT MODAL =====
-function openAddDeptModal(){
-  document.getElementById('editDeptModalTitle').textContent = '🏢 নতুন বিভাগ যোগ';
-  document.getElementById('editDeptOldName').value = '';
-  document.getElementById('editDeptName').value = '';
-  document.getElementById('editDeptHead').value = '';
-  openModal('editDept');
-}
-
-function openEditDeptModal(idx){
-  const d = departments[idx];
-  document.getElementById('editDeptModalTitle').textContent = '🏢 বিভাগ এডিট — ' + d.name;
-  document.getElementById('editDeptOldName').value = d.name;
-  document.getElementById('editDeptName').value = d.name;
-  document.getElementById('editDeptHead').value = d.head||'';
-  openModal('editDept');
-}
-
-function saveDept(){
-  const oldName = document.getElementById('editDeptOldName').value;
-  const newName = document.getElementById('editDeptName').value.trim();
-  const head    = document.getElementById('editDeptHead').value.trim();
-  if(!newName){showToast('বিভাগের নাম দিন!','warning');return;}
-
-  if(oldName){
-    // এডিট
-    const idx = departments.findIndex(d=>d.name===oldName);
-    if(idx>=0) departments[idx] = {name:newName, head};
-    showToast('✅ বিভাগ আপডেট হয়েছে');
-  } else {
-    // নতুন
-    if(departments.find(d=>d.name===newName)){showToast('এই নামে বিভাগ আছে!','warning');return;}
-    departments.push({name:newName, head});
-    showToast('✅ নতুন বিভাগ যোগ হয়েছে');
-  }
-  closeModal('editDept');
-  renderDeptTable();
-  updateDeptDropdowns();
-}
-
-function deleteDept(){
-  const name = document.getElementById('editDeptOldName').value;
-  if(!name){closeModal('editDept');return;}
-  const empCount = employees.filter(e=>e.dept===name).length;
-  if(empCount>0){showToast('এই বিভাগে '+empCount+' জন কর্মী আছে! আগে তাদের সরান।','danger');return;}
-  departments = departments.filter(d=>d.name!==name);
-  showToast('🗑️ বিভাগ মুছে গেছে','warning');
-  closeModal('editDept');
-  renderDeptTable();
-  updateDeptDropdowns();
-}
-
-// ===== DESIG MODAL =====
-function openAddDesigModal(){
-  document.getElementById('editDesigModalTitle').textContent = '💼 নতুন পদ যোগ';
-  document.getElementById('editDesigOldName').value = '';
-  document.getElementById('editDesigName').value = '';
-  document.getElementById('editDesigGrade').value = 'C';
-  updateDesigDeptDropdown();
-  openModal('editDesig');
-}
-
-function openEditDesigModal(idx){
-  const d = designations[idx];
-  document.getElementById('editDesigModalTitle').textContent = '💼 পদ এডিট — ' + d.name;
-  document.getElementById('editDesigOldName').value = d.name;
-  document.getElementById('editDesigName').value = d.name;
-  document.getElementById('editDesigGrade').value = d.grade||'C';
-  updateDesigDeptDropdown(d.dept);
-  openModal('editDesig');
-}
-
-function updateDesigDeptDropdown(selected='সব'){
-  const sel = document.getElementById('editDesigDept');
-  if(!sel) return;
-  sel.innerHTML = '<option value="সব">সব</option>' +
-    departments.map(d=>`<option value="${d.name}" ${d.name===selected?'selected':''}>${d.name}</option>`).join('');
-}
-
-function saveDesig(){
-  const oldName = document.getElementById('editDesigOldName').value;
-  const newName = document.getElementById('editDesigName').value.trim();
-  const dept    = document.getElementById('editDesigDept').value;
-  const grade   = document.getElementById('editDesigGrade').value;
-  if(!newName){showToast('পদের নাম দিন!','warning');return;}
-
-  if(oldName){
-    const idx = designations.findIndex(d=>d.name===oldName);
-    if(idx>=0) designations[idx] = {name:newName, dept, grade};
-    showToast('✅ পদ আপডেট হয়েছে');
-  } else {
-    designations.push({name:newName, dept, grade});
-    showToast('✅ নতুন পদ যোগ হয়েছে');
-  }
-  closeModal('editDesig');
-  renderDesigTable();
-  updatePostDropdowns();
-}
-
-function deleteDesig(){
-  const name = document.getElementById('editDesigOldName').value;
-  if(!name){closeModal('editDesig');return;}
-  designations = designations.filter(d=>d.name!==name);
-  showToast('🗑️ পদ মুছে গেছে','warning');
-  closeModal('editDesig');
-  renderDesigTable();
-  updatePostDropdowns();
-}
-
-// কর্মী যোগের ফর্মে বিভাগ ও পদ আপডেট
-function updateDeptDropdowns(){
-  const sels = document.querySelectorAll('#modal-addEmployee select');
-  if(sels[1]){
-    sels[1].innerHTML = departments.map(d=>`<option value="${d.name}">${d.name}</option>`).join('');
-  }
-  // filter bar
-  document.querySelectorAll('select').forEach(sel=>{
-    if(sel.innerHTML.includes('সব বিভাগ')&&!sel.id){
-      sel.innerHTML = '<option value="">সব বিভাগ</option>'+
-        departments.map(d=>`<option value="${d.name}">${d.name}</option>`).join('');
-    }
-  });
-}
-
-function updatePostDropdowns(){
-  const sels = document.querySelectorAll('#modal-addEmployee select');
-  if(sels[0]){
-    sels[0].innerHTML = designations.map(d=>`<option value="${d.name}">${d.name}</option>`).join('');
-  }
-}
-
-
-// ===== EMPLOYEE EDIT =====
-function openEditEmpModal(empId){
-  const emp = employees.find(e => e.id === empId);
-  if(!emp){ showToast('কর্মী পাওয়া যায়নি','danger'); return; }
-
-  document.getElementById('editEmpId').value       = emp.id || '';
-  document.getElementById('editEmpIdField').value  = emp.id || '';
-  document.getElementById('editEmpName').value     = emp.name || '';
-  document.getElementById('editEmpSalary').value   = emp.salary || '';
-  document.getElementById('editEmpPhone').value    = emp.phone || '';
-  document.getElementById('editEmpNid').value      = emp.nid || '';
-  document.getElementById('editEmpBank').value     = emp.bank || '';
-  document.getElementById('editEmpStatus').value   = emp.status === 'active' ? 'সক্রিয়' : (emp.status || 'সক্রিয়');
-  document.getElementById('editEmpShift').value    = emp.shift || 'D';
-
-  // যোগদান তারিখ — YYYY-MM-DD ফরম্যাটে সেট
-  const joinVal = emp.join || '';
-  if(joinVal && joinVal.includes('-') && joinVal.length >= 10){
-    document.getElementById('editEmpJoin').value = joinVal.slice(0,10);
-  } else {
-    document.getElementById('editEmpJoin').value = '';
-  }
-
-  // পদ সিলেক্ট
-  const postSel = document.getElementById('editEmpPost');
-  [...postSel.options].forEach(o => { o.selected = o.value === emp.post; });
-  if(![...postSel.options].find(o=>o.selected) && emp.post){
-    const opt = document.createElement('option');
-    opt.value = emp.post; opt.textContent = emp.post; opt.selected = true;
-    postSel.appendChild(opt);
-  }
-
-  // বিভাগ সিলেক্ট
-  const deptSel = document.getElementById('editEmpDept');
-  [...deptSel.options].forEach(o => { o.selected = o.value === emp.dept; });
-  if(![...deptSel.options].find(o=>o.selected) && emp.dept){
-    const opt = document.createElement('option');
-    opt.value = emp.dept; opt.textContent = emp.dept; opt.selected = true;
-    deptSel.appendChild(opt);
-  }
-
-  openModal('editEmployee');
-}
-
-let _savingEmployee = false;
-
-async function saveEditEmployee(){
-  if(_savingEmployee) return;
-
-  const id     = document.getElementById('editEmpId').value;
-  const name   = document.getElementById('editEmpName').value.trim();
-  const post   = document.getElementById('editEmpPost').value;
-  const dept   = document.getElementById('editEmpDept').value;
-  const salary = document.getElementById('editEmpSalary').value;
-  const join   = document.getElementById('editEmpJoin').value;
-  const phone  = document.getElementById('editEmpPhone').value;
-  const nid    = document.getElementById('editEmpNid').value;
-  const shift  = document.getElementById('editEmpShift').value;
-  const bank   = document.getElementById('editEmpBank').value;
-  const status = document.getElementById('editEmpStatus').value;
-
-  if(!name){ showToast('নাম দিন!','warning'); return; }
-
-  _savingEmployee = true;
-  const btn = document.querySelector('#modal-editEmployee .btn-primary');
-  if(btn){ btn.textContent = '⏳ সেভ হচ্ছে...'; btn.disabled = true; }
-
-  // লোকাল স্টেট আপডেট
-  const idx = employees.findIndex(e => e.id === id);
-  if(idx >= 0){
-    employees[idx] = { ...employees[idx], name, post, dept, salary: parseFloat(salary)||0, join, phone, nid, shift, bank, status };
-  }
-
-  // Google Sheets আপডেট
-  const res = await api('updateEmployee', { id, নাম:name, পদ:post, বিভাগ:dept, 'মূল বেতন':salary, 'যোগদান তারিখ':join, ফোন:phone, এনআইডি:nid, শিফট:shift, 'ব্যাংক অ্যাকাউন্ট':bank, অবস্থা:status });
-
-  _savingEmployee = false;
-  if(btn){ btn.textContent = '✅ সেভ করুন'; btn.disabled = false; }
-
-  showToast('✅ ' + name + ' এর তথ্য আপডেট হয়েছে');
-  closeModal('editEmployee');
-  renderEmployeeTable(employees);
-}
-
-async function deleteEmployee(){
-  const id   = document.getElementById('editEmpId').value;
-  const name = document.getElementById('editEmpName').value;
-  if(!confirm(name + ' কে নিষ্ক্রিয় করবেন?')) return;
-
-  const idx = employees.findIndex(e => e.id === id);
-  if(idx >= 0) employees[idx].status = 'নিষ্ক্রিয়';
-
-  await api('deleteEmployee', { id });
-  showToast('⚠️ ' + name + ' নিষ্ক্রিয় করা হয়েছে', 'warning');
-  closeModal('editEmployee');
-  renderEmployeeTable(employees);
-}
-
-
-// ===== ROTATION SHIFT =====
-
+// ===================================================
+// ROTATION
+// ===================================================
 function openRotationModal(){
-  // মাস ডিফল্ট
-  const now = new Date();
-  document.getElementById('rot-month').value = now.toISOString().slice(0,7);
-
-  // কর্মী ড্রপডাউন
-  const sel = document.getElementById('rot-emp-select');
-  sel.innerHTML = rosterData.map((r,i) =>
-    `<option value="${i}">${r.name}</option>`
-  ).join('');
-
-  // সব সিলেক্ট করি ডিফল্টে
-  [...sel.options].forEach(o => o.selected = true);
-
-  document.getElementById('rot-preview').innerHTML = '<span style="color:var(--text-muted)">প্রিভিউ দেখতে "প্রিভিউ" বাটন চাপুন</span>';
-  openModal('rotationShift');
-}
-
-function getRotationConfig(){
-  return {
-    w1: document.getElementById('rot-w1').value,
-    w2: document.getElementById('rot-w2').value,
-    w3: document.getElementById('rot-w3').value,
-    w4: document.getElementById('rot-w4').value,
-    offFri: document.getElementById('rot-off-fri').checked,
-    offSat: document.getElementById('rot-off-sat').checked,
-    offSun: document.getElementById('rot-off-sun').checked,
-    month: document.getElementById('rot-month').value,
-  };
-}
-
-// একটি মাসের জন্য রোটেশন শিফট ক্যালকুলেট করে
-function calcMonthlyRotation(cfg){
-  const [year, month] = cfg.month.split('-').map(Number);
-  const firstDay = new Date(year, month-1, 1);
-  const lastDay  = new Date(year, month, 0).getDate();
-  const rotation = [cfg.w1, cfg.w2, cfg.w3, cfg.w4];
-
-  // সপ্তাহ ০ = মাসের ১ম সপ্তাহ
-  const days = [];
-  for(let d=1; d<=lastDay; d++){
-    const date   = new Date(year, month-1, d);
-    const dow    = date.getDay(); // 0=রবি, 1=সোম, ..., 6=শনি
-    const isFri  = dow===5;
-    const isSat  = dow===6;
-    const isSun  = dow===0;
-
-    // ছুটির দিন চেক
-    if((cfg.offFri && isFri)||(cfg.offSat && isSat)||(cfg.offSun && isSun)){
-      days.push({date:d, day:dow, shift:'OFF'});
-      continue;
-    }
-
-    // কোন সপ্তাহ — মাসের শুরু থেকে কত সপ্তাহ গেছে
-    const weekOfMonth = Math.floor((d + firstDay.getDay() - 1) / 7);
-    const shift = rotation[weekOfMonth % 4] || 'D';
-    days.push({date:d, day:dow, shift});
-  }
-  return days;
-}
-
-function previewRotation(){
-  const cfg = getRotationConfig();
-  if(!cfg.month){ showToast('মাস সিলেক্ট করুন','warning'); return; }
-
-  const days = calcMonthlyRotation(cfg);
-  const dayNames = ['রবি','সোম','মঙ্গল','বুধ','বৃহঃ','শুক্র','শনি'];
-  const shiftClass = {D:'shift-d',E:'shift-e',N:'shift-n',OFF:'shift-off'};
-  const shiftLabel = {D:'সকাল',E:'দুপুর',N:'রাত',OFF:'ছুটি'};
-
-  // সপ্তাহ ভাগ করে দেখাই
-  let html = '<div style="display:flex;flex-direction:column;gap:6px">';
-  let week = [];
-  days.forEach((d,i) => {
-    week.push(d);
-    if(d.day===0 || i===days.length-1){ // রবিবার বা শেষ দিন
-      const weekNum = Math.ceil((d.date)/7);
-      html += `<div style="display:flex;align-items:center;gap:4px">
-        <span style="font-size:10px;color:var(--text-muted);min-width:40px">সপ্তাহ ${weekNum}</span>`;
-      week.forEach(wd => {
-        html += `<div style="text-align:center;min-width:36px">
-          <div style="font-size:9px;color:var(--text-muted)">${dayNames[wd.day]}</div>
-          <div style="font-size:10px">${wd.date}</div>
-          <span class="shift-badge ${shiftClass[wd.shift]}" style="font-size:9px;padding:1px 4px">${wd.shift}</span>
-        </div>`;
-      });
-      html += '</div>';
-      week = [];
-    }
-  });
-  html += '</div>';
-
-  // সারসংক্ষেপ
-  const count = {D:0,E:0,N:0,OFF:0};
-  days.forEach(d => { if(count[d.shift]!==undefined) count[d.shift]++; });
-  html += `<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
-    <span class="badge badge-info">সকাল: ${count.D} দিন</span>
-    <span class="badge badge-success">দুপুর: ${count.E} দিন</span>
-    <span class="badge badge-purple">রাত: ${count.N} দিন</span>
-    <span class="badge badge-warning">ছুটি: ${count.OFF} দিন</span>
-  </div>`;
-
-  document.getElementById('rot-preview').innerHTML = html;
+  const box = document.getElementById('rotation-days');
+  box.innerHTML = DAYS.map((d,i)=>`
+    <div class="form-group" style="margin-bottom:10px">
+      <label class="form-label">${d.label}</label>
+      <select class="form-control rot-day-select" data-day="${d.key}">
+        <option value="">— খালি —</option>
+        ${shifts.map(s=>`<option value="${s.id}" ${i%7===0 && s===shifts[0] ? '' : ''}>${s.name}</option>`).join('')}
+        <option value="${OFF}">ছুটি</option>
+      </select>
+    </div>`).join('');
+  openModal('rotation');
 }
 
 function applyRotation(){
-  const cfg = getRotationConfig();
-  if(!cfg.month){ showToast('মাস সিলেক্ট করুন','warning'); return; }
-
-  const selEmp = [...document.querySelectorAll('#rot-emp-select option:checked')].map(o=>parseInt(o.value));
-  if(!selEmp.length){ showToast('কর্মী সিলেক্ট করুন','warning'); return; }
-
-  const days = calcMonthlyRotation(cfg);
-
-  // রোস্টার ডাটা আপডেট — ৭ দিনের সাপ্তাহিক ভিউতে (প্রথম সপ্তাহ দেখাই)
-  // সোম=1, মঙ্গল=2, বুধ=3, বৃহঃ=4, শুক্র=5, শনি=6, রবি=0
-  const dowMap = {1:0,2:1,3:2,4:3,5:4,6:5,0:6}; // সাইডবার ইনডেক্স
-
-  selEmp.forEach(idx => {
-    if(!rosterData[idx]) return;
-    // সব সপ্তাহের শিফট আলাদা রাখি
-    rosterData[idx].monthlySchedule = days;
-    rosterData[idx].rotationConfig  = cfg;
-
-    // ১ম সপ্তাহ রোস্টার গ্রিডে দেখাই
-    const week1 = [cfg.w1,cfg.w1,cfg.w1,cfg.w1,cfg.w1, cfg.offSat?'OFF':cfg.w1, cfg.offSun?'OFF':cfg.w1];
-    if(cfg.offFri) week1[4] = 'OFF';
-    rosterData[idx].shifts = week1;
-
-    // মাসিক শিফট সংরক্ষণের জন্য রোস্টার গ্রিড সপ্তাহ দেখানো
-    rosterData[idx].weeklyShifts = {
-      w1: [cfg.w1,cfg.w1,cfg.w1,cfg.w1, cfg.offFri?'OFF':cfg.w1, cfg.offSat?'OFF':cfg.w1, cfg.offSun?'OFF':cfg.w1],
-      w2: [cfg.w2,cfg.w2,cfg.w2,cfg.w2, cfg.offFri?'OFF':cfg.w2, cfg.offSat?'OFF':cfg.w2, cfg.offSun?'OFF':cfg.w2],
-      w3: [cfg.w3,cfg.w3,cfg.w3,cfg.w3, cfg.offFri?'OFF':cfg.w3, cfg.offSat?'OFF':cfg.w3, cfg.offSun?'OFF':cfg.w3],
-      w4: [cfg.w4,cfg.w4,cfg.w4,cfg.w4, cfg.offFri?'OFF':cfg.w4, cfg.offSat?'OFF':cfg.w4, cfg.offSun?'OFF':cfg.w4],
-    };
+  if(!employees.length){ showToast('আগে কর্মী যোগ করুন', 'warning'); return; }
+  const selects = [...document.querySelectorAll('.rot-day-select')];
+  const pattern = DAYS.map(d=>{
+    const sel = selects.find(s=>parseInt(s.dataset.day)===d.key);
+    return sel.value || null;
   });
+  const stagger = document.getElementById('rot-stagger').checked;
 
-  closeModal('rotationShift');
-  renderRotationRoster();
-  showToast('✅ '+selEmp.length+' জনের রোটেশন শিফট সেট হয়েছে!');
-}
-
-// রোটেশন মোডে রোস্টার গ্রিড — ৪ সপ্তাহ দেখাই
-function renderRotationRoster(){
-  const grid = document.getElementById('roster-grid');
-  if(!grid) return;
-
-  const rotEmp = rosterData.filter(r => r.weeklyShifts);
-  const normalEmp = rosterData.filter(r => !r.weeklyShifts);
-
-  if(!rotEmp.length){ renderRoster(); return; }
-
-  const shiftClass = {D:'shift-d',E:'shift-e',N:'shift-n',OFF:'shift-off'};
-  const shiftLabel = {D:'সকাল',E:'দুপুর',N:'রাত',OFF:'ছুটি'};
-  const weeks = ['সপ্তাহ ১','সপ্তাহ ২','সপ্তাহ ৩','সপ্তাহ ৪'];
-  const wKeys = ['w1','w2','w3','w4'];
-
-  grid.style.gridTemplateColumns = '150px repeat(4,1fr)';
-
-  let html = `<div class="roster-cell header">কর্মী</div>`;
-  weeks.forEach(w => html += `<div class="roster-cell header">${w}</div>`);
-
-  rotEmp.forEach((emp, ei) => {
-    html += `<div class="roster-cell emp-name" style="font-size:12px">${emp.name}<div style="font-size:10px;color:var(--text-muted)">🔄 রোটেশন</div></div>`;
-    wKeys.forEach(wk => {
-      const wShifts = emp.weeklyShifts[wk];
-      const mainShift = wShifts ? wShifts[0] : 'D';
-      const offDays = wShifts ? wShifts.filter(s=>s==='OFF').length : 0;
-      html += `<div class="roster-cell" style="cursor:pointer">
-        <span class="shift-badge ${shiftClass[mainShift]}">${mainShift}</span>
-        <div style="font-size:9px;color:var(--text-muted);margin-top:2px">${shiftLabel[mainShift]}</div>
-        ${offDays?`<div style="font-size:9px;color:var(--text-muted)">${offDays}দিন ছুটি</div>`:''}
-      </div>`;
+  employees.forEach((e, empIdx)=>{
+    const offset = stagger ? empIdx : 0;
+    DAYS.forEach((d, i)=>{
+      const patVal = pattern[(i + offset) % 7];
+      const key = cycleKey(e.id, d.key);
+      if(patVal) assignments[key] = patVal;
+      else delete assignments[key];
     });
   });
-
-  // সাধারণ কর্মী
-  if(normalEmp.length){
-    html += `<div class="roster-cell header" style="grid-column:1/-1;background:#f0f4f8;font-size:11px">সাধারণ শিফট কর্মী</div>`;
-    html += `<div class="roster-cell header">কর্মী</div>`;
-    weekDays.forEach(d => html += `<div class="roster-cell header">${d}</div>`);
-    grid.style.gridTemplateColumns = '150px repeat(7,1fr)';
-    normalEmp.forEach((emp,ei) => {
-      const idx = rosterData.findIndex(r=>r.name===emp.name);
-      html += `<div class="roster-cell emp-name" style="font-size:12px">${emp.name}</div>`;
-      (emp.shifts||['D','D','D','D','D','OFF','OFF']).forEach((s,di) => {
-        html += `<div class="roster-cell" style="cursor:pointer" onclick="cycleShift(${idx},${di})">
-          <span class="shift-badge ${shiftClass[s]||'shift-off'}">${s}</span>
-        </div>`;
-      });
-    });
-  }
-
-  grid.innerHTML = html;
+  save();
+  closeModal('rotation');
+  renderRoster();
+  showToast('🔄 রোটেশন প্রয়োগ হয়েছে সবার উপর');
 }
 
-</script>
-
-<!-- Edit Department Modal -->
-<div class="modal-overlay" id="modal-editDept">
-  <div class="modal" style="max-width:460px">
-    <div class="modal-header">
-      <div class="modal-header-left"><button class="modal-back" onclick="goBack()" style="display:none" title="পেছনে যান">←</button><div class="modal-title" id="editDeptModalTitle">🏢 বিভাগ এডিট</div></div>
-      <button class="modal-close" onclick="closeModal('editDept')">✕</button>
-    </div>
-    <div class="modal-body">
-      <input type="hidden" id="editDeptOldName">
-      <div class="form-group mb-16">
-        <label class="form-label">বিভাগের নাম *</label>
-        <input type="text" id="editDeptName" class="form-control" placeholder="বিভাগের নাম">
-      </div>
-      <div class="form-group mb-16">
-        <label class="form-label">বিভাগ প্রধান</label>
-        <input type="text" id="editDeptHead" class="form-control" placeholder="প্রধানের নাম">
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-danger btn-sm" onclick="deleteDept()" style="margin-right:auto">🗑️ মুছুন</button>
-      <button class="btn btn-outline" onclick="closeModal('editDept')">বাতিল</button>
-      <button class="btn btn-primary" onclick="saveDept()">✅ সেভ করুন</button>
-    </div>
-  </div>
-</div>
-
-<!-- Edit Designation Modal -->
-<div class="modal-overlay" id="modal-editDesig">
-  <div class="modal" style="max-width:460px">
-    <div class="modal-header">
-      <div class="modal-header-left"><button class="modal-back" onclick="goBack()" style="display:none" title="পেছনে যান">←</button><div class="modal-title" id="editDesigModalTitle">💼 পদ এডিট</div></div>
-      <button class="modal-close" onclick="closeModal('editDesig')">✕</button>
-    </div>
-    <div class="modal-body">
-      <input type="hidden" id="editDesigOldName">
-      <div class="form-group mb-16">
-        <label class="form-label">পদের নাম *</label>
-        <input type="text" id="editDesigName" class="form-control" placeholder="পদের নাম">
-      </div>
-      <div class="form-group mb-16">
-        <label class="form-label">বিভাগ</label>
-        <select id="editDesigDept" class="form-control">
-          <option value="সব">সব</option>
-        </select>
-      </div>
-      <div class="form-group mb-16">
-        <label class="form-label">গ্রেড</label>
-        <select id="editDesigGrade" class="form-control">
-          <option value="A">A — সর্বোচ্চ</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-          <option value="D">D</option>
-          <option value="E">E</option>
-          <option value="F">F — সর্বনিম্ন</option>
-        </select>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-danger btn-sm" onclick="deleteDesig()" style="margin-right:auto">🗑️ মুছুন</button>
-      <button class="btn btn-outline" onclick="closeModal('editDesig')">বাতিল</button>
-      <button class="btn btn-primary" onclick="saveDesig()">✅ সেভ করুন</button>
-    </div>
-  </div>
-</div>
-
-<!-- Edit Employee Modal -->
-<div class="modal-overlay" id="modal-editEmployee">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-header-left"><button class="modal-back" onclick="goBack()" style="display:none" title="পেছনে যান">←</button><div class="modal-title">✏️ কর্মী এডিট</div></div>
-      <button class="modal-close" onclick="closeModal('editEmployee')">✕</button>
-    </div>
-    <div class="modal-body">
-      <input type="hidden" id="editEmpId">
-      <div class="form-grid">
-        <div class="form-group"><label class="form-label">পূর্ণ নাম *</label><input type="text" id="editEmpName" class="form-control" placeholder="কর্মীর পূর্ণ নাম"></div>
-        <div class="form-group"><label class="form-label">কর্মী আইডি</label><input type="text" id="editEmpIdField" class="form-control" disabled style="background:#f8fafc;color:var(--text-muted)"></div>
-        <div class="form-group"><label class="form-label">পদ</label>
-          <select id="editEmpPost" class="form-control">
-            <option>অপারেটর</option><option>সিনিয়র অপারেটর</option><option>সিনিয়র অফিসার</option><option>অফিসার</option><option>সহকারী</option><option>ম্যানেজার</option><option>হেলপার</option>
-          </select>
-        </div>
-        <div class="form-group"><label class="form-label">বিভাগ</label>
-          <select id="editEmpDept" class="form-control">
-            <option>উৎপাদন</option><option>অ্যাকাউন্টস</option><option>HR</option><option>IT</option><option>মার্কেটিং</option><option>অপারেশন</option>
-          </select>
-        </div>
-        <div class="form-group"><label class="form-label">মূল বেতন (৳)</label><input type="number" id="editEmpSalary" class="form-control" placeholder="20000"></div>
-        <div class="form-group"><label class="form-label">যোগদান তারিখ</label><input type="date" id="editEmpJoin" class="form-control"></div>
-        <div class="form-group"><label class="form-label">ফোন নম্বর</label><input type="text" id="editEmpPhone" class="form-control" placeholder="01XXXXXXXXX"></div>
-        <div class="form-group"><label class="form-label">এনআইডি নম্বর</label><input type="text" id="editEmpNid" class="form-control"></div>
-        <div class="form-group"><label class="form-label">ডিফল্ট শিফট</label>
-          <select id="editEmpShift" class="form-control">
-            <option value="D">দিনের শিফট (D)</option>
-            <option value="E">সন্ধ্যা শিফট (E)</option>
-            <option value="N">রাতের শিফট (N)</option>
-          </select>
-        </div>
-        <div class="form-group"><label class="form-label">ব্যাংক অ্যাকাউন্ট</label><input type="text" id="editEmpBank" class="form-control" placeholder="অ্যাকাউন্ট নম্বর"></div>
-        <div class="form-group form-full"><label class="form-label">অবস্থা</label>
-          <select id="editEmpStatus" class="form-control">
-            <option value="সক্রিয়">সক্রিয়</option>
-            <option value="নিষ্ক্রিয়">নিষ্ক্রিয়</option>
-          </select>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-danger btn-sm" onclick="deleteEmployee()" style="margin-right:auto">🗑️ নিষ্ক্রিয় করুন</button>
-      <button class="btn btn-outline" onclick="closeModal('editEmployee')">বাতিল</button>
-      <button class="btn btn-primary" onclick="saveEditEmployee()">✅ সেভ করুন</button>
-    </div>
-  </div>
-</div>
-
-<!-- Set Shift Modal -->
-<div class="modal-overlay" id="modal-setShift">
-  <div class="modal" style="max-width:500px">
-    <div class="modal-header">
-      <div class="modal-header-left"><button class="modal-back" onclick="goBack()" style="display:none" title="পেছনে যান">←</button><div class="modal-title">✏️ শিফট সেট করুন</div></div>
-      <button class="modal-close" onclick="closeModal('setShift')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group mb-16">
-        <label class="form-label">কর্মী নির্বাচন</label>
-        <select id="shift-emp-select" class="form-control">
-          <option value="all">— সব কর্মী —</option>
-        </select>
-      </div>
-      <div class="form-group mb-16">
-        <label class="form-label">দিন নির্বাচন</label>
-        <div style="display:flex;gap:8px;flex-wrap:wrap" id="shift-day-checkboxes">
-          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" value="0" checked> সোম</label>
-          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" value="1" checked> মঙ্গল</label>
-          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" value="2" checked> বুধ</label>
-          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" value="3" checked> বৃহঃ</label>
-          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" value="4" checked> শুক্র</label>
-          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" value="5"> শনি</label>
-          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" value="6"> রবি</label>
-        </div>
-      </div>
-      <div class="form-group mb-16">
-        <label class="form-label">শিফট</label>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
-          <div id="shift-pick-D" onclick="selectShiftPick('D')" style="border:2px solid var(--border);border-radius:8px;padding:10px;text-align:center;cursor:pointer">
-            <span class="shift-badge shift-d">D</span><div style="font-size:11px;margin-top:4px">দিন</div>
-          </div>
-          <div id="shift-pick-E" onclick="selectShiftPick('E')" style="border:2px solid var(--border);border-radius:8px;padding:10px;text-align:center;cursor:pointer">
-            <span class="shift-badge shift-e">E</span><div style="font-size:11px;margin-top:4px">সন্ধ্যা</div>
-          </div>
-          <div id="shift-pick-N" onclick="selectShiftPick('N')" style="border:2px solid var(--border);border-radius:8px;padding:10px;text-align:center;cursor:pointer">
-            <span class="shift-badge shift-n">N</span><div style="font-size:11px;margin-top:4px">রাত</div>
-          </div>
-          <div id="shift-pick-OFF" onclick="selectShiftPick('OFF')" style="border:2px solid var(--border);border-radius:8px;padding:10px;text-align:center;cursor:pointer">
-            <span class="shift-badge shift-off">OFF</span><div style="font-size:11px;margin-top:4px">ছুটি</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('setShift')">বাতিল</button>
-      <button class="btn btn-primary" onclick="applyShiftSetting()">✅ প্রয়োগ করুন</button>
-    </div>
-  </div>
-</div>
-
-<!-- Rotation Shift Modal -->
-<div class="modal-overlay" id="modal-rotationShift">
-  <div class="modal" style="max-width:560px">
-    <div class="modal-header">
-      <div class="modal-header-left"><button class="modal-back" onclick="goBack()" style="display:none" title="পেছনে যান">←</button><div class="modal-title">🔄 রোটেশন শিফট সেটআপ</div></div>
-      <button class="modal-close" onclick="closeModal('rotationShift')">✕</button>
-    </div>
-    <div class="modal-body">
-
-      <div class="notice notice-info mb-16">
-        💡 প্রতি সপ্তাহে শিফট অটো পরিবর্তন হবে: সকাল → দুপুর → রাত → সকাল...
-      </div>
-
-      <div class="form-group mb-16">
-        <label class="form-label">কর্মী নির্বাচন</label>
-        <select id="rot-emp-select" class="form-control" multiple style="height:120px">
-        </select>
-        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">Ctrl চেপে একাধিক কর্মী সিলেক্ট করুন</div>
-      </div>
-
-      <div class="form-group mb-16">
-        <label class="form-label">মাস নির্বাচন</label>
-        <input type="month" id="rot-month" class="form-control" value="">
-      </div>
-
-      <div class="form-group mb-16">
-        <label class="form-label">রোটেশন ক্রম (সপ্তাহ ১ → ২ → ৩ → ৪)</label>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
-          <div>
-            <div style="font-size:11px;font-weight:600;color:var(--text-muted);margin-bottom:4px;text-align:center">সপ্তাহ ১</div>
-            <select id="rot-w1" class="form-control">
-              <option value="D">D — সকাল</option>
-              <option value="E">E — দুপুর</option>
-              <option value="N">N — রাত</option>
-              <option value="OFF">OFF — ছুটি</option>
-            </select>
-          </div>
-          <div>
-            <div style="font-size:11px;font-weight:600;color:var(--text-muted);margin-bottom:4px;text-align:center">সপ্তাহ ২</div>
-            <select id="rot-w2" class="form-control">
-              <option value="D">D — সকাল</option>
-              <option value="E" selected>E — দুপুর</option>
-              <option value="N">N — রাত</option>
-              <option value="OFF">OFF — ছুটি</option>
-            </select>
-          </div>
-          <div>
-            <div style="font-size:11px;font-weight:600;color:var(--text-muted);margin-bottom:4px;text-align:center">সপ্তাহ ৩</div>
-            <select id="rot-w3" class="form-control">
-              <option value="D">D — সকাল</option>
-              <option value="E">E — দুপুর</option>
-              <option value="N" selected>N — রাত</option>
-              <option value="OFF">OFF — ছুটি</option>
-            </select>
-          </div>
-          <div>
-            <div style="font-size:11px;font-weight:600;color:var(--text-muted);margin-bottom:4px;text-align:center">সপ্তাহ ৪</div>
-            <select id="rot-w4" class="form-control">
-              <option value="D" selected>D — সকাল</option>
-              <option value="E">E — দুপুর</option>
-              <option value="N">N — রাত</option>
-              <option value="OFF">OFF — ছুটি</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group mb-16">
-        <label class="form-label">সাপ্তাহিক ছুটির দিন</label>
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" id="rot-off-fri" checked> শুক্রবার</label>
-          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" id="rot-off-sat"> শনিবার</label>
-          <label style="display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" id="rot-off-sun"> রবিবার</label>
-        </div>
-      </div>
-
-      <!-- প্রিভিউ -->
-      <div class="form-group">
-        <label class="form-label">প্রিভিউ (প্রথম কর্মী)</label>
-        <div id="rot-preview" style="background:var(--bg);border-radius:8px;padding:12px;font-size:12px;overflow-x:auto"></div>
-      </div>
-
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="previewRotation()">👁️ প্রিভিউ</button>
-      <button class="btn btn-outline" onclick="closeModal('rotationShift')">বাতিল</button>
-      <button class="btn btn-primary" onclick="applyRotation()">✅ রোটেশন প্রয়োগ করুন</button>
-    </div>
-  </div>
-</div>
-</div>
-<script>
-// ===== MODAL BACK BUTTON SYSTEM =====
-const modalHistory = [];
-
-function openModalWithBack(name, fromModal = null) {
-  if(fromModal) {
-    modalHistory.push(fromModal);
-    document.getElementById('modal-' + fromModal)?.classList.remove('open');
-  }
-  const modal = document.getElementById('modal-' + name);
-  if(!modal) return;
-  modal.classList.add('open');
-  const backBtn = modal.querySelector('.modal-back');
-  if(backBtn) backBtn.style.display = fromModal ? 'flex' : 'none';
+// ===================================================
+// EXPORT CSV
+// ===================================================
+function exportCSV(){
+  if(!employees.length){ showToast('কর্মী তালিকা খালি', 'warning'); return; }
+  let rows = [['কর্মীর নাম', 'বিভাগ', ...DAYS.map(d=>d.label)]];
+  employees.forEach(e=>{
+    const row = [e.name, e.dept||'', ...DAYS.map(d=>{
+      const v = assignments[cycleKey(e.id, d.key)];
+      if(!v) return '';
+      if(v === OFF) return 'ছুটি';
+      const s = shiftById(v);
+      return s ? s.name : '';
+    })];
+    rows.push(row);
+  });
+  const csv = rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'roster.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('⬇️ CSV ডাউনলোড হয়েছে');
 }
 
-function goBack() {
-  document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
-  if(modalHistory.length > 0) {
-    const prev = modalHistory.pop();
-    const prevModal = document.getElementById('modal-' + prev);
-    if(prevModal) {
-      prevModal.classList.add('open');
-      // prev মডালের back বাটন — আরও হিস্ট্রি থাকলে দেখাই
-      const backBtn = prevModal.querySelector('.modal-back');
-      if(backBtn) backBtn.style.display = modalHistory.length > 0 ? 'flex' : 'none';
-    }
-  }
+// ===================================================
+// INIT — কিছু নমুনা ডেটা না থাকলে শুরু করার সুবিধার্থে
+// ===================================================
+if(!employees.length){
+  employees = [
+    {id: uid(), name:'রহিম উদ্দিন', dept:'সুইং অপারেটর'},
+    {id: uid(), name:'করিম মিয়া', dept:'কোয়ালিটি চেকার'},
+    {id: uid(), name:'সালমা বেগম', dept:'কাটিং সেকশন'},
+  ];
+  save();
 }
 
-// পে-স্লিপ → back → পেরোল
-function openPayslipFromPayroll(empId) {
-  showPayslip(empId);
-  const backBtn = document.querySelector('#modal-payslip .modal-back');
-  if(backBtn) {
-    backBtn.style.display = 'flex';
-    backBtn.onclick = () => {
-      closeModal('payslip');
-    };
-  }
-}
-
-function openPayslipFromEmp(empId) {
-  showPayslip(empId);
-  const backBtn = document.querySelector('#modal-payslip .modal-back');
-  if(backBtn) {
-    backBtn.style.display = 'flex';
-    backBtn.onclick = () => closeModal('payslip');
-  }
-}
-
-// editEmployee খুললে back দেখাই না (সরাসরি খোলে)
-const _origOpenEditEmpModal = typeof openEditEmpModal !== 'undefined' ? openEditEmpModal : null;
-
-// editDept → back → editDesig chain
-function openEditDeptWithBack(idx) {
-  openEditDeptModal(idx);
-  const backBtn = document.querySelector('#modal-editDept .modal-back');
-  if(backBtn) backBtn.style.display = 'none';
-}
-
-function openEditDesigWithBack(idx) {
-  openEditDesigModal(idx);
-  const backBtn = document.querySelector('#modal-editDesig .modal-back');
-  if(backBtn) backBtn.style.display = 'none';
-}
-
-// setShift → rotationShift chain
-function openRotationFromShift() {
-  openModalWithBack('rotationShift', 'setShift');
-}
-
-// keyboard shortcut: Escape = goBack বা closeModal
-document.addEventListener('keydown', e => {
-  if(e.key === 'Escape') {
-    const openModals = [...document.querySelectorAll('.modal-overlay.open')];
-    if(openModals.length > 0) {
-      if(modalHistory.length > 0) {
-        goBack();
-      } else {
-        openModals.forEach(m => m.classList.remove('open'));
-      }
-    }
-  }
-});
-
+renderRoster();
+renderShifts();
+renderEmployees();
 </script>
 </body>
 </html>
-<style>
-/* modal-header-left fix */
-.modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.modal-header-left {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-</style>
